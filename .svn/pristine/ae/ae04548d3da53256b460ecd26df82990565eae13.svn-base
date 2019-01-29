@@ -1,0 +1,229 @@
+<!----------------------------------
+****--@name     ${*}
+****--@role     ${*}
+****--@date     2018/4/23
+****--@author   zzh
+----------------------------------->
+<template>
+    <div class="questionBank">
+        <header-title v-if="!studentId">
+            <slot>题库</slot>
+        </header-title>
+        <div class="stance" v-if="!studentId"></div>
+        <flexbox v-if="studentId">
+            <flexbox-item :span="6/8"><x-input style="font-size: 0.13rem" placeholder="请输入搜索项" v-model="form.title"></x-input></flexbox-item>
+            <flexbox-item :span="2/8"><button mini style="border:0.02rem solid #fff;width: 100%;background: #fff;font-size: 0.13rem;color: #1b1b1b;" @click="search">搜索</button></flexbox-item>
+        </flexbox>
+        <div class="questionBankHeader" style="z-index: 100" :class="{'position':studentId}">
+            <ul class="questionBank_nav">
+                <li style="width: 25%">
+                    <select class="select" v-model="form.grade" @change="setSubjectList" placeholder="年级">
+                        <option value='' disabled selected style='display:none;'>年级</option>
+                        <option v-for="option in gradeList" :value="option.code">
+                            {{ option.name }}
+                        </option>
+                    </select>
+                </li>
+                <li style="width: 25%">
+                    <select class="select" v-model="form.subject" @change="setSubject" placeholder="科目">
+                        <option value='' disabled selected style='display:none;'>科目</option>
+                        <option v-for="option in subjectList" :value="option.code">
+                            {{ option.value }}
+                        </option>
+                    </select>
+                </li>
+                <li style="width: 25%">
+                    <select class="select" v-model="form.types" @change="getProductList" placeholder="类别">
+                        <option value='' disabled selected style='display:none;'>类别</option>
+                        <option v-for="(option,index) in typesList" :value="option.value">
+                            {{ option.title }}
+                        </option>
+                    </select>
+                </li>
+                <li style="width: 25%">
+                    <select class="select" v-model="form.textbookVersionId" @change="getProductList" placeholder="教材">
+                        <option value='' disabled selected style='display:none;'>教材</option>
+                        <option v-for="(option,index) in textBookList" :value="option.id">
+                            {{ option.name }}
+                        </option>
+                    </select>
+                </li>
+            </ul>
+        </div>
+        <div class="stance" v-if="!studentId"></div>
+        <div style="clear: both;height: 0.1rem;background: #DEEAE1"></div>
+
+        <div class="tBook" ref="scroller">
+        <scroller lock-x  @on-scroll-bottom="onScrollBottom" ref="scrollerBottom" :height="top" :scroll-bottom-offst="200">
+
+        <div class="question_grade">
+
+            <div class="content" style="height: 1.44rem" v-for="(item,index) in data" :key="index">
+                <div @click="open(item.id)">
+                    <img :src="item.icon||'sa'" onerror="this.src='../../../../sasmobile/img/1_07.jpg'"/>
+                </div>
+                <div class="homePage_book">
+                    <div>{{item.title}}</div>
+                    <div><span> 价格：</span><span v-if="item.productTypes == 0"
+                                                class="price">{{item.currentPrice | money}}</span>
+                        <span v-else class="price">{{item.currentPrice == null ? '0' : item.currentPrice
+                            }}积分</span></div>
+                    <div><span>试卷：</span><span>{{item.spec}}{{item.unit | unit }} </span></div>
+                    <!--<div>-->
+                        <!--<span>{{item.currentPrice}}</span>-->
+                        <!--&lt;!&ndash;<span v-if="item.productTypes == 0"></span><span ></span> </span>&ndash;&gt;-->
+
+                        <!--<span>{{item.number}}</span></div>-->
+                    <!--<div><span>{{item.paper}}</span><span>{{item.unit|unit}}</span></div>-->
+                    <div style="max-height: 0.4rem;overflow: hidden;display: block">
+                    <p>{{item.content}}</p>
+                    </div>
+                </div>
+            </div>
+            <load-more tip="加载更多" :show-loading="false" v-if="this.num*10<this.totalCount"></load-more>
+        </div>
+        </scroller>
+        </div>
+    </div>
+</template>
+<script>
+  /* 当前组件必要引入 */
+  import HeaderTitle from './header'
+
+  import api from './api'
+  // 当前组件引入全局的util
+  // let Util = null;
+  export default {
+    props:['studentId'],
+    data () {
+      return {
+        top:'0',
+        changes: 'question_grade',
+        value: '',
+        form: {
+          subject: '',
+          types: this.$route.query.id||'',
+          grade: '',
+          title: '',
+          textbookVersionId: '',
+          productTypes: '',
+          curPage:this.num,
+          pageSize:10,
+        },
+        num:1,
+        temp:false,
+        totalCount:0,
+        loading:false,
+        gradeList: null,
+        subjectList: null,
+        textBookList:null,
+        typesList: [{value: 1, title: '小升初'}, {value: 2, title: '初升高'}, {value: 3, title: '中考'}, {
+          value: 4,
+          title: '高考'
+        }, {value: 5, title: '会考'}, {value: 6, title: '期中'}, {value: 7, title: '期末'}, {
+          value: 8,
+          title: '初高衔接'
+        }, {value: 9, title: '寒暑假'}, {value: 10, title: '同步学练'}],
+        data: [],
+
+      }
+    },
+    methods: {
+      search(){
+
+        this.form={
+          subject: '',
+          types: '',
+          grade: '',
+          title: this.form.title,
+          textbookVersionId: '',
+          productTypes: '',
+          curPage:this.num,
+          pageSize:10,
+
+        }
+        this.getProductList ()
+      },
+      // 初始化请求列表数据
+      init () {
+        if(this.$store.state.envs){
+          this.gradeList = this.$store.state.envs.gradeList;
+          this.textBookList=this.$store.state.envs.textBookVersionList;
+        }
+        this.getProductList ()
+      },
+      setSubjectList () {
+        this.subjectList = this.$store.state.envs.gradeMap[this.form.grade];
+        this.form.subject='';
+        this.getProductList();
+      },
+      setSubject(){//更改科目
+        this.getProductList();
+      },
+      onScrollBottom () {
+        if (this.onFetching) {
+          if(this.num*10<this.totalCount){
+            if(this.temp) {
+              this.num++;
+              this.getProductList ()
+            }
+          }else {
+
+          }
+
+        } else {
+          this.onFetching = true
+          setTimeout(() => {
+            this.$nextTick(() => {
+              this.$refs.scrollerBottom.reset()
+            })
+            this.onFetching = false
+          }, 2000)
+        }
+      },
+      change (index) {
+        // this.changes = index
+        this.$router.push({name: index})
+      },
+      open (id) {
+        this.$router.push({name: 'questionGradeContent',query:{id:id}})
+      },
+      getProductList () {
+        let options = {
+          url: api.productList.path,
+          params: this.form,
+          /**
+           * 服务端返回的状态码检查,默认状态码检查前执行
+           * @param {*} data  服务器端返回的实际数据结构,根据不同业务格式不同
+           * @param {object} res 服务器端返回的response值 {data:'**',status:{conde:0,msg:'请求数据成功!'}}
+           */
+          ajaxSuccess: (data, res) => {
+            this.data = data['dataList']
+            this.data.map((item)=>{
+              item.icon= this.getStaticPath(item.icon)
+            })
+          }
+        }
+        this.ajax(options)
+      }
+    },
+    created () {
+      this.init()
+
+    },
+    mounted () {
+      this.top = -this.$refs.scroller.offsetTop + ''
+    },
+    components: {HeaderTitle},
+    watch: {
+      $route (to, from) {
+        //				console.log(to.name)
+        this.changes = to.name
+      }
+    }
+  }
+</script>
+<style lang="scss">
+    @import "../../css/questionbank";
+    @import '../../css/question_child/question_grade';
+</style>

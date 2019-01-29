@@ -1,0 +1,12 @@
+const urlPrefix = '/product/' // 当前模块api前缀
+const api = {
+  productList: { // 推荐练习
+    path: urlPrefix + 'list',
+    method: 'get'
+  },
+  productGet:{
+    path: urlPrefix + 'get',
+    method: 'get'
+  }
+}
+export default api

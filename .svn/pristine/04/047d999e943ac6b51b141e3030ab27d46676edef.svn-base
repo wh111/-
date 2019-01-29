@@ -1,0 +1,83 @@
+<!----------------------------------
+****--@name     pDynamic_content
+****--@role     ${*}
+****--@date     2018/5/2
+****--@author   zzh
+----------------------------------->
+<!----------------------------------
+****--@name     pDynamic
+****--@role     ${*}
+****--@date     2018/5/2
+****--@author   zzh
+----------------------------------->
+<template>
+  <div class="pDynamic_content">
+    <header-title>
+      <slot>学习动态</slot>
+    </header-title>
+    <div class="stance"></div>
+    <div class="hello_img">
+      <img src="../../../../sasmobile/img/03.jpg" alt="">
+      <div>李明</div>
+      <div>
+        <span>北京市四中</span>
+        <span>七年级一班</span>
+      </div>
+    </div>
+    <div v-for="(item,index) in data" :key="index">
+      <div class="homework">
+        <div>{{item.name}}</div>
+      </div>
+      <flexbox wrap="wrap" :gutter="0" class="pDynamic_content">
+        <flexbox-item :span="12">
+          <span></span>
+          <span>完成了</span>
+          <span>《初三数学·第三章力学》的测评</span>
+        </flexbox-item>
+        <flexbox-item :span="12">
+          <span></span>
+          <span>提问了</span>
+          <span>3个疑难问题</span>
+        </flexbox-item>
+        <flexbox-item :span="12">
+          <span></span>
+          <span>解答了</span>
+          <span>2个疑难问题</span>
+        </flexbox-item>
+        <flexbox-item :span="12">
+          <span></span>
+          <span>练习了</span>
+          <span>《三年高考五年模拟》专题库</span>
+        </flexbox-item>
+      </flexbox>
+    </div>
+
+  </div>
+</template>
+<script>
+import HeaderTitle from '../header'
+export default{
+  data () {
+    return {
+      data: [
+        {name: '昨天'},
+        {name: '今天'},
+        {name: '明天'}
+      ]
+    }
+  },
+  mounted () {
+  },
+  methods: {
+  },
+  created () {
+
+  },
+  components: {
+    HeaderTitle
+  }
+}
+</script>
+<style lang="scss">
+  @import '../../../pcss/patriarch/pDynamic_content';
+</style>

@@ -1,0 +1,106 @@
+<!----------------------------------
+****--@name     ${*}
+****--@role     ${*}
+****--@date     2018/4/24
+****--@author   zzh
+----------------------------------->
+<template>
+    <div class="recentPractice_over">
+        <header-title>
+            <slot>
+                <div class="txt">{{$route.query.name}}</div>
+            </slot>
+        </header-title>
+        <div class="stance"></div>
+        <div v-for="(item,index) in data" :key="index">
+            <div class="recentPractice_last_title">{{item.name}}</div>
+            <grid class="recentPractice_last_grid" :cols="6" :show-lr-borders="false">
+                <grid-item v-for="(item,index) in item.child" :key="index">
+                    <div class="grid-center" @click="open(item.seq)">
+                        <span>{{item.seq}}</span>
+                    </div>
+                </grid-item>
+            </grid>
+        </div>
+    </div>
+</template>
+<script>
+  /* 当前组件必要引入 */
+  import HeaderTitle from '../header'
+  import api from './api'
+  // 当前组件引入全局的util
+  let Util = null
+  export default {
+    data () {
+      return {
+        typeList: [],
+        dataList: null,
+        data:[]
+      }
+    },
+    methods: {
+      // 初始化请求列表数据
+      init () {
+        this.queryQuestionList()
+      },
+      open (val) {
+        this.$router.push({name:'questionDetail',query:{questionId:item.id,types:item.types,type:this.$route.query.type}})
+//        this.$router.push({
+//          name: 'recentPractice_last', query: {
+//            name: this.$route.query.name, questionsId: val,
+//            productId: this.$route.query.productId,
+//            papersId: this.$route.query.papersId
+//          }
+//        })
+      },
+      queryQuestionList () {
+        let options = {
+          url: api.queryQuestionList.path,
+          params: {
+            papersId: this.$route.query.papersId,
+            productId: this.$route.query.productId
+          },
+          /**
+           * 服务端返回的状态码检查,默认状态码检查前执行
+           * @param {*} data  服务器端返回的实际数据结构,根据不同业务格式不同
+           * @param {object} res 服务器端返回的response值 {data:'**',status:{conde:0,msg:'请求数据成功!'}}
+           */
+          ajaxSuccess: (data, res) => {
+            let arr=[];
+            console.log(data)
+            data.map((item)=>{
+              if(arr.indexOf(item.type)==-1){
+                arr.push(item.type);
+//            this.data[item.questionsTypeName]=[item];
+                this.data.push({name:item.type,child:[item]});
+                // this.data.push({name:item.questionsTypeName;value:1})
+
+              }else {
+                this.data.map((i)=>{
+                  if(i.name==item.type){
+                    i.child.push(item)
+                  }
+                })
+
+              }
+            })
+
+//          this.data.map((item)=>{
+//
+//          })
+          }
+        }
+        this.ajax(options)
+      }
+    },
+    created () {
+      this.init()
+    },
+    mounted () {
+    },
+    components: {HeaderTitle}
+  }
+</script>
+<style lang="scss">
+    @import '../../../css/home/recentPractice_over';
+</style>

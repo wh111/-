@@ -1,0 +1,99 @@
+<!----------------------------------
+****--@name     ${*}
+****--@role     ${*}
+****--@date     2018/4/24
+****--@author   zzh
+----------------------------------->
+<template>
+	<div class="recentPractice_last">
+		<header-title>
+			<slot>
+				<div class="txt">北京市昌平一中七年级联考</div>
+			</slot>
+		</header-title>
+		<div class="stance"></div>
+    <topic-alert></topic-alert>
+		<div class="tab_content">
+			<div v-if="type==1">
+				<recent-practice-last></recent-practice-last>
+			</div>
+			<div v-if="type==2">笔记1323200..</div>
+			<div v-if="type==3">收藏</div>
+		</div>
+	</div>
+</template>
+<script>
+/* 当前组件必要引入 */
+import TopicAlert from '../commonality/topicAlert'
+import RecentPracticeLast from './recentPractice_last_question'
+import HeaderTitle from '../header'
+// 当前组件引入全局的util
+let Util = null
+export default {
+  data () {
+    return {
+      type: 1,
+      show: false,
+      show1: false
+    }
+  },
+  methods: {
+    // 初始化请求列表数据
+    init () {
+
+    },
+    change (type) {
+      this.type = type
+      if (type === 2) {
+        this.show = true
+      } else if (type === 1) {
+        this.show1 = true
+      }
+    },
+    onCancel () {
+      console.log('on cancel')
+    },
+    onConfirm (msg) {
+      console.log('on confirm')
+      if (msg) {
+        alert(msg)
+      }
+    },
+    onHide () {
+      console.log('on hide')
+    },
+    onShow () {
+      console.log('on show')
+    },
+    onItemClick () {
+      console.log('on item click')
+    }
+  },
+  created () {
+    this.init()
+  },
+  mounted () {},
+  components: {
+    TopicAlert,
+    RecentPracticeLast,
+    HeaderTitle
+  }
+}
+</script>
+<style lang="scss">
+  .txt{
+    width:1.5rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .recentPractice_last_note > div > div > .weui-dialog{
+    height: 3.05rem;
+    border-radius: 0.15rem;
+    .weui-dialog__ft{
+      width: 100%;
+        bottom: 0;
+        position: absolute;
+    }
+  }
+</style>

@@ -1,0 +1,19 @@
+.myErrors {
+    .myErrors_header {
+        color: #000;
+        .vux-flexbox {
+            box-sizing: border-box;
+            height: 0.5rem;
+            border-bottom: 1px solid #EDF3EE;
+            padding: 0 0.15rem;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+    }
+}
+
+.vux-x-icon {
+    fill: #DBDBDB;
+}
+

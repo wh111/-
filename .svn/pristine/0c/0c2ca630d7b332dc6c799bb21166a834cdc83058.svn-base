@@ -1,0 +1,45 @@
+import Vue from 'vue'
+import Router from 'vue-router'
+import { utils } from '../libs/util.js'
+
+/**
+ * 登录路由引用
+ */
+import Login from './login'
+import student from './student/index'
+import patriarch from './patriarch/index'
+import teacher from './teacher/index'
+
+import { AlertPlugin, Confirm, Grid, GridItem } from 'vux'
+Vue.use(Confirm)
+Vue.use(AlertPlugin)
+Vue.use(Grid)
+Vue.use(GridItem)
+
+Vue.use(Router)
+
+let base = utils.base
+
+let currentRouter = [
+  Login,
+  {path: '*', redirect: '/login'},
+  student,
+  patriarch,
+  teacher
+]
+
+let router = new Router({
+  base: base,
+  mode: 'history',
+  routes: currentRouter
+})
+
+/* router.beforeEach((to, from, next) => {
+  // 必须登录才能访问
+  if (to.meta.requireAuth && !utils.isLogin()) {
+    next('/login')
+  } else {
+    next()
+  }
+}) */
+export default router

@@ -1,0 +1,125 @@
+.recentPractice_next_question {
+    background: #DEEAE1;
+    box-sizing: border-box;
+
+    min-height: 6rem;
+    .questionType {
+        font-size: 0.12rem;
+        line-height: 0.2rem;
+    }
+    .yellowColor {
+        color: #fd7416;
+        font-size: 0.12rem;
+        padding: 0 0.02rem
+    }
+    .submit-active {
+        margin-top: 0.1rem;
+        background: rgb(253, 116, 22) !important;
+        color: rgb(255, 255, 255);
+        border: 1px solid rgb(253, 116, 22);
+    }
+    .question_header {
+        //display: flex;
+        //justify-content: space-between;
+        height: 0.3rem;
+        h3 {
+            font-size: 0.15rem;
+            color: #1B1B1B;
+
+        }
+        span {
+            color: #707070 !important;
+            font-size: 0.11rem;
+            span {
+                color: rgb(253, 116, 22) !important;
+                margin: 0 0.05rem;
+            }
+        }
+
+    }
+    .last_question {
+        font-weight: bold;
+
+        .question_sidebar {
+            margin: 0.1rem 0.06rem 0.1rem 0;
+            span {
+                color: #8A8D8B;
+                font-size: 0.12rem;
+            }
+            span:nth-of-type(2) {
+                color: #EC6A42;
+                margin-left: 0.05rem
+            }
+        }
+        .question_content {
+            border-radius: 0.08rem;
+            box-sizing: border-box;
+            padding: 0.18rem 0.16rem;
+            color: #747474;
+            background: #FFFFFF;
+            font-weight: bold;
+            margin-bottom: 0.1rem;
+        }
+        .question_footer {
+            background: #FFFFFF;
+            box-sizing: border-box;
+            padding: 0.18rem 0.16rem;
+            > div:nth-of-type(1) {
+                box-sizing: border-box;
+                padding: 0 0.14rem 0.16rem 0;
+                border-bottom: 0.01rem solid gray;
+                font-weight: 600;
+                span {
+                    margin-right: 0.14rem;
+                }
+            }
+            > div:nth-of-type(2) {
+                box-sizing: border-box;
+                padding: 0.16rem 0 0.16rem 0;
+                font-size: 0.12rem;
+                color: #9F9F9F;
+                > span {
+                    color: red;
+                    font-size: 0.12rem;
+                }
+            }
+        }
+    }
+    .option {
+        width: 3.45rem;
+        height: 0.45rem;
+        display: flex;
+        align-items: center;
+        box-sizing: border-box;
+        padding: 0.1rem;
+        background: #FFFFFF;
+        margin: 0.1rem auto;
+        border-radius: 0.08rem;
+        > span {
+            margin-right: 0.1rem;
+        }
+        > span:nth-of-type(1) {
+            display: inline-block;
+            width: 0.25rem;
+            height: 0.25rem;
+            text-align: center;
+            line-height: 0.25rem;
+            border-radius: 50%;
+            background: #E5E5E5;
+            color: #666666;
+            font-size: 0.14rem;
+        }
+        > span:not(:nth-of-type(1)) {
+            color: #747474;
+        }
+    }
+    .active {
+        border: 0.01rem solid #FD7416;
+        background: #FD7416 !important;
+        color: #fff !important;
+        > span:nth-of-type(1) {
+            background: #FD7416;
+            color: #FFFFFF;
+        }
+    }
+}

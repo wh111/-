@@ -1,0 +1,21 @@
+const urlPrefix = '/product/' // 当前模块api前缀
+const api = {
+  productList: { // 推荐练习
+    path: urlPrefix + 'list',
+    method: 'get'
+  },
+  productGet:{
+    path: urlPrefix + 'get',
+    method: 'get'
+  },
+  toOrder: {//下单  生成订单
+    path: '/order/toOrder',
+    method: 'post'
+  },
+  getOrder:{//获取订单信息
+    path: '/order/getOrder',
+    method: 'get'
+  },
+  
+}
+export default api

@@ -1,0 +1,185 @@
+.pQuestion{
+  .header{
+      box-sizing: border-box;
+      padding: 0.15rem 0 0.08rem 0.15rem;
+      background: #DEEAE1;
+      >span{
+          color:#888888;
+      }
+      >span:nth-of-type(1){
+          font-size: 0.14rem;
+          margin-right: 0.16rem;
+      }
+      >span:nth-of-type(2){
+          font-size: 0.11rem;
+      }
+  }
+  .contents{
+      display: flex;
+      justify-content: space-between;
+      align-content: center;
+      flex-wrap: wrap;
+      box-sizing: border-box;
+      padding: 0.16rem;
+      .content{
+          width: 1.1rem;
+          height: 1.4rem;
+          margin-bottom: 0.08rem;
+          >div,>p,>li{
+              width: 100%;
+              text-align: left;
+              box-sizing: border-box;
+              padding: 0 0.01rem;
+              margin-top: 0.03rem;
+          }
+          >img{
+              height: 0.7rem;
+          }
+          >div:nth-of-type(1){
+              color:rgba(27,27,27,1);
+              font-size: 0.13rem;
+
+          }
+          >div:nth-of-type(2){
+              width: 100%;
+              color:rgba(112,112,112,1);
+              font-size: 0.1rem;
+              span{
+                  font-size: 0.1rem;
+              }
+          }
+          .price{
+              margin-top: 0.08rem;
+              color:#FD7416;
+              font-size: 0.13rem;
+              span{
+                  font-size: 0.13rem;
+              }
+          }
+      }
+
+  }
+  .pFooter{
+    .content{
+      display: flex;
+      align-items: center;
+      box-sizing: border-box;
+      padding-right: 0.15rem;
+      padding-left: 0.1rem;
+      >:first-child{
+        //border: 1px solid #E9E9E9;
+        border-radius: 0.05rem;
+        width: 0.9rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0.05rem 0.2rem;
+        margin: 0.2rem 0.15rem;
+        >img{
+          //width: 0.675rem;
+          height: 0.9rem;
+        }
+      }
+    }
+    .homePage_book{
+      >div{
+        font-size: 0.16rem;
+        color: #5D5D5D;
+        font-weight: bolder;
+        margin-bottom: 0.03rem;
+      }
+      >div:not(:first-child){
+        display: inline-block;
+        margin-right: 0.2rem;
+        margin-bottom: 0.03rem;
+        span{
+          font-size: 0.12rem;
+        }
+        >span:nth-of-type(1){
+          color: #909090;
+          margin-right: 0.05rem;
+        }
+        >span:nth-of-type(2){
+          color: #EF7E5D;
+        }
+      }
+      p{
+        font-size: 0.14rem;
+        color: #909090;
+      }
+    }
+  }
+  .pSearch{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 0.04rem 0.15rem;
+    background: #FFFFFF;
+    z-index: 666;
+    >div{
+      width: 2.97rem;
+      height: 0.22rem;
+      line-height: 0.22rem;
+      background: #F5F5F5;
+      border-radius: 0.2rem;
+      overflow: hidden;
+      input{
+        height: 99%;
+        width: 90%;
+        background: #F5F5F5;
+        border: 0;
+      }
+      .weui-icon-search {
+        margin-left: 0.12rem;
+        margin-top: -0.03rem;
+      }
+    }
+    >input{
+      font-size: 0.13rem;
+      background: 0;
+      border: 0;
+      font-weight: bold;
+      color:rgba(27,27,27,0.8);
+      outline: none;
+    }
+  }
+  #searchBar{
+    a{
+      text-decoration: none;
+    }
+  }
+  .pSearch{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 0.04rem 0.15rem;
+    >div{
+      width: 2.97rem;
+      height: 0.22rem;
+      line-height: 0.22rem;
+      background: #F5F5F5;
+      border-radius: 0.2rem;
+      overflow: hidden;
+      input{
+        height: 99%;
+        width: 90%;
+        background: #F5F5F5;
+        border: 0;
+      }
+      .weui-icon-search {
+        margin-left: 0.12rem;
+        margin-top: -0.03rem;
+      }
+    }
+    >input{
+      font-size: 0.13rem;
+      background: 0;
+      border: 0;
+      font-weight: bold;
+      color:rgba(27,27,27,0.8);
+      outline: none;
+    }
+  }
+}

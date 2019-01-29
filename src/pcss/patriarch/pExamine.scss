@@ -1,0 +1,36 @@
+.pExamine{
+  .txt{
+    width:1.5rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .singleChoice{
+    border-bottom: 0.15rem solid #DEEAE1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    box-sizing: border-box;
+    padding: 0 0.08rem 0.15rem 0.08rem;
+    >li{
+      font-weight: bold;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 0.35rem;
+      height: 0.35rem;
+      border-radius: 0.03rem;
+      margin: 0.1rem;
+      color:rgba(255,255,255,0.8);
+      background:rgba(26,173,25,1);
+    }
+  }
+  .over_footer{
+    margin: 0.18rem 0.15rem 0.05rem 0.15rem;
+    font-weight: bold;
+    color:#4B4B4B;
+  }
+
+}

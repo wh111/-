@@ -1,0 +1,48 @@
+.tHomework {
+    .greenButton{
+        background-color: #1AAD19;
+    }
+    .tHomeworkStep {
+        box-sizing: border-box;
+        padding: 0.08rem 0.35rem 0 0.35rem;
+    }
+    font-weight: bold;
+    color: #363636;
+    .vux-flexbox {
+        box-sizing: border-box;
+        padding: 0.18rem 0.1rem 0.18rem 0.16rem;
+        border-bottom: 1px solid #EDF3EE;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .btn_wrap{
+        text-align: center;
+    }
+    .tHomeworkSteps {
+        display: flex;
+        justify-content: space-between;
+        box-sizing: border-box;
+        padding: 0 0.405rem 0.1rem 0.15rem;
+        > li {
+            color: rgba(136, 136, 136, 1);
+            font-size: 0.12rem;
+        }
+        > li:nth-of-type(1) {
+            margin-left: 0.15rem;
+        }
+        > li:nth-of-type(2) {
+            margin-left: -0.05rem;
+        }
+    }
+    .tHomeworkBook {
+        box-sizing: border-box;
+        padding: 0.17rem 0 0.075rem 0.18rem;
+        background: #DEEAE1;
+        color: rgba(136, 136, 136, 1);
+        font-size: 0.14rem;
+    }
+    .btn_wrap {
+        padding: 0 0.1rem;
+        margin-top: 0.2rem;
+    }
+}

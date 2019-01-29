@@ -1,0 +1,94 @@
+.pDynamic_content {
+  .hello_img {
+    position: relative;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 0.16rem;
+    >img {
+      margin-top: 0.23rem;
+    }
+    >div:nth-of-type(1) {
+      font-size: 0.15rem;
+      color: #1B1B1B;
+    }
+    .school {
+
+      font-size: 0.14rem;
+      color: #c7c7cc;
+      .middle {
+        color: #EBEBEB;
+        position: relative;
+        font-size: 0.11rem;
+        line-height: 0.2rem;
+      }
+      .left {
+        position: absolute;
+        right: 0.1rem;
+        width: 1.5rem;
+        text-align: right;
+        color: #707070;
+        font-size: 0.11rem
+      }
+      .right {
+        position: absolute;
+        left: 0.1rem;
+        text-align: left;
+        width: 1.5rem;
+        color: #707070;
+        font-size: 0.11rem
+      }
+    }
+
+  }
+  .homework {
+    box-sizing: border-box;
+    padding: 0.15rem 0 0.05rem 0.15rem;
+    width: 100%;
+    background: #DEEAE1;
+    color: rgba(136, 136, 136, 1);
+  }
+  .pDynamic_content{
+    box-sizing: border-box;
+    padding: 0.15rem;
+    border-bottom: 1px solid #F4F4F4;
+    >.vux-flexbox-item{
+      display: flex;
+      align-items: center;
+      >span:nth-of-type(1){
+        display: inline-block;
+        width: 0.08rem;
+        height: 0.08rem;
+        border-radius: 0.08rem;
+        background: #FD7416;
+        margin-right: 0.08rem;
+      }
+      >span:nth-of-type(2){
+        font-size: 0.13rem;
+        color: #34B633;
+        font-weight: bold;
+      }
+      >span:nth-of-type(3){
+        color: #707070;
+        font-size: 0.13rem;
+      }
+    }
+  }
+  .btn {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    box-sizing: border-box;
+    padding: 0.12rem 0;
+    border-bottom: 0.13rem solid #DEEAE1;
+    button {
+      border: 0;
+      color:rgba(26,173,25,1);
+      background: #FFFFFF;
+      font-size: 0.14rem;
+    }
+    .vux-x-icon {
+      fill: #DBDBDB;
+    }
+  }
+}

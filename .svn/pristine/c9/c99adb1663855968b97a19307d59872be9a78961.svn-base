@@ -1,0 +1,16 @@
+.pFeedback{
+    background: #F1F5F4;
+    height: 6.67rem;
+    .header{
+        width: 100%;
+        font-size: 0.15rem;
+        color:rgba(27,27,27,0.7);
+        font-weight: bold;
+        margin: 2rem 0 1.77rem 0;
+        text-align: center;
+    }
+    .pPrimary{
+        width: 3.35rem;
+        height: 0.47rem;
+    }
+}

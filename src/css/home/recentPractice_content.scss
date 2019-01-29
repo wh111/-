@@ -1,0 +1,144 @@
+*{
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.recentPractice_content{
+  .contents{
+
+    border-bottom: 0.01rem solid #DEEAE1;
+    box-sizing: border-box;
+    padding-right: 0.15rem;
+    padding-left: 0.15rem;
+    height: 1.4rem;
+    .img{
+      margin-top: 0.2rem;
+
+      border: 0.01rem solid #DCDCDC;
+      border-radius: 0.02rem;
+      width: 0.9rem;
+      height: 0.9rem;
+      text-align: center;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    img{
+      width: 0.6rem;
+      margin-top: 0.04rem;
+    }
+  }
+  .homePage_book{
+
+    width: 2.4rem;
+    float: right;
+    margin-top: 0.2rem;
+    margin-left: 0.1rem;
+    display: inline-block;
+    overflow: hidden;
+    >div{
+      font-size: 0.15rem;
+      color: #1B1B1B;
+      margin-bottom: 0.03rem;
+    }
+    >div:not(:first-child){
+      display: inline-block;
+      margin-right: 0.2rem;
+      margin-bottom: 0.03rem;
+      span{
+        font-size: 0.12rem;
+      }
+      >span:nth-of-type(1){
+        color: #707070;
+        margin-right: 0.05rem;
+      }
+      >span:nth-of-type(2){
+        color: #EC6941;
+      }
+    }
+    button{
+      width: 0.5rem;
+      height: 0.2rem;
+      line-height: 0.2rem;
+      background: #EC6941;
+      color: #fff;
+      font-size: 0.11rem;
+      border-radius: 0.02rem;
+      border: none;
+      position: relative;
+      top: -0.03rem;
+    }
+    .contentShop{
+      color: #626262;
+      font-size: 0.1rem;
+      line-height: 0.2rem;
+      overflow: hidden;
+      height: 0.4rem;
+      display: inline-block;
+      margin: 0;
+      width: 2.4rem;
+    }
+    p{
+      font-size: 0.14rem;
+      color: #909090;
+    }
+  }
+  .weui-progress__bar{
+    width: 1rem;
+  }
+  .recentContent{
+    box-sizing: border-box;
+    padding: 0.17rem 0.15rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 0.01rem solid #F6F9F7;
+    >li>div>p{
+      color: #1B1B1B;
+      font-size: 0.15rem;
+      margin-bottom: 0.1rem;
+    }
+    .one{
+      font-size: 0.12rem;
+      color: #626262;
+      margin-right: 0.05rem;
+    }
+    .two{
+      font-size: 0.12rem;
+      color: #EC6941;
+      margin-right: 0.1rem;
+    }
+    li:nth-of-type(2){
+      color: #626262;
+      font-size: 0.3rem;
+    }
+  }
+  .progress1{
+    margin: 0.08rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 2rem;
+    >div{
+      color: #626262;
+      font-size: 0.12rem;
+    }
+  }
+  div.weui-progress{
+    width: 70%;
+  }
+  .content{
+    border-bottom: 0.05rem solid #DEEAE1;
+    padding-bottom: 0.3rem
+  }
+  .vux-x-icon {
+    fill: #DBDBDB;
+  }
+  #progress1_x{
+    border-radius: 0.5rem;
+    overflow: hidden;
+  }
+  #progress1_x > div{
+    height: 10px;
+  }
+
+}

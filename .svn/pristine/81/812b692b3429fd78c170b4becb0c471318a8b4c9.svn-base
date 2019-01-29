@@ -1,0 +1,36 @@
+.recentPractice_over{
+  .txt{
+    width:1.5rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .singleChoice{
+    border-bottom: 0.05rem solid #DEEAE1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    box-sizing: border-box;
+    padding: 0 0.08rem 0.15rem 0.08rem;
+    >li{
+      font-weight: bold;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 0.35rem;
+      height: 0.35rem;
+      border-radius: 0.03rem;
+      margin: 0.1rem;
+      color: #D0F0E1;
+      background: #00BD71;
+    }
+  }
+  .over_footer{
+    margin: 0.18rem 0.15rem 0.05rem 0.15rem;
+    font-weight: bold;
+    color:#4B4B4B;
+  }
+
+}

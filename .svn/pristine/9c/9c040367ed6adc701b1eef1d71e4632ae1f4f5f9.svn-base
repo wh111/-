@@ -1,0 +1,52 @@
+const firstChild = {
+  path: '/student/commonality/myOrder',
+  name: 'myOrder',
+  component: resolve => {
+    require.ensure([], () => {
+      resolve(require('../../../pages/student/firstChild/myOrder'))
+    }, 'student')
+  },
+  redirect: to => {
+    return '/student/commonality/myOrder/allBook'
+  },
+  children: [
+    { // 个人中心——我的订单——全部
+      path: '/student/commonality/myOrder/allBook',
+      name: 'allBook',
+      component: resolve => {
+        require.ensure([], () => {
+          resolve(require('../../../pages/student/firstChild/allBook'))
+        }, 'student')
+      }
+    },
+    { // 个人中心——我的订单——未付款
+      path: '/student/commonality/myOrder/non_payment',
+      name: 'non_payment',
+      component: resolve => {
+        require.ensure([], () => {
+          resolve(require('../../../pages/student/firstChild/non_payment'))
+        }, 'student')
+      }
+    },
+    { // 个人中心——我的订单——已完成
+      path: '/student/commonality/myOrder/accomplish',
+      name: 'accomplish',
+      component: resolve => {
+        require.ensure([], () => {
+          resolve(require('../../../pages/student/firstChild/accomplish'))
+        }, 'student')
+      }
+    },
+    { // 个人中心——我的订单——已取消
+      path: '/student/commonality/myOrder/cancel',
+      name: 'cancel',
+      component: resolve => {
+        require.ensure([], () => {
+          resolve(require('../../../pages/student/firstChild/cancel'))
+        }, 'student')
+      }
+    }
+
+  ]
+}
+export default firstChild

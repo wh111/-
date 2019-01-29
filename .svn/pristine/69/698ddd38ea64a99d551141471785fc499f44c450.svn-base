@@ -1,0 +1,77 @@
+<!----------------------------------
+****--@name     最近练习列表页面
+****--@role     学生
+****--@date     2018/4/24
+****--@author   zzh
+----------------------------------->
+<template>
+    <div class="recentPractice">
+      <header-title>
+        <slot>最近练习</slot>
+      </header-title>
+      <div class="stance"></div>
+      <div @click="open">
+        <div class="content" v-for="(item,index) in data" :key="index">
+          <div>
+            <img src="../../../../static/img/1_07.jpg"/>
+          </div>
+          <div class="homePage_book">
+            <div>{{item.title}}</div>
+            <div><span>{{item.price}}</span><span>{{item.number}}</span></div>
+            <div><span>{{item.paper}}</span><span>{{item.numbers}}</span></div>
+            <p>{{item.content}}</p>
+          </div>
+        </div>
+      </div>
+      <flexbox v-if="data.length==0" orient="vertical" :gutter="10">
+        <flexbox-item><div class="text-center">好久没有学习了!</div></flexbox-item>
+      </flexbox>
+    </div>
+</template>
+<script>
+/* 当前组件必要引入 */
+import api from './api.js'
+import HeaderTitle from '../header'
+// 当前组件引入全局的util
+export default {
+  data () {
+    return {
+      data: []
+    }
+  },
+  methods: {
+    // 初始化请求列表数据
+    init () {
+      this.getMyCurrentStudyProductList()
+    },
+    open () {
+      this.$router.push({name: 'recentPractice_content'})
+    },
+    // 获取最近练习的题库
+    getMyCurrentStudyProductList () {
+      let options = {
+        url: api.myCurrentStudyProductList.path,
+        /**
+         * 服务端返回的状态码检查,默认状态码检查前执行
+         * @param {*} data  服务器端返回的实际数据结构,根据不同业务格式不同
+         * @param {object} res 服务器端返回的response值 {data:'**',status:{conde:0,msg:'请求数据成功!'}}
+         */
+        ajaxSuccess: (data, res) => {
+          this.data = data['dataList']
+        }
+      }
+      this.ajax(options)
+    },
+
+  },
+  created () {
+    this.init()
+  },
+  mounted () {
+  },
+  components: {HeaderTitle}
+}
+</script>
+<style lang="scss">
+  @import '../../../css/home/recentpractice';
+</style>

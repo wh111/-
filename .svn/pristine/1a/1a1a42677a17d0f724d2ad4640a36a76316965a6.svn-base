@@ -1,0 +1,19 @@
+const api = {
+  login: {// 登录
+    path: '/login',
+    method: 'post'
+  },
+  userInfo: {// 登录
+    path: '/user/getUserInfo',
+    method: 'get'
+  },
+  loginOut: {// 退出登录
+    path: '/logout',
+    method: 'delete'
+  },
+  getMyInfo: {//
+    path: '/app/stu/student/getMyInfo',
+    method: 'get'
+  }
+}
+export default api

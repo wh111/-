@@ -1,0 +1,51 @@
+<template>
+  <div class="pMine">
+    <header-title>
+      <slot>个人中心</slot>
+    </header-title>
+    <div class="stance"></div>
+    <div class="hello_img">
+      <img src="../../../../static/img/03.jpg" alt="">
+      <div style="margin-left: -0.05rem">
+        <span style="color: #4E4E4E;">李明</span>
+      </div>
+    </div>
+    <div class="hello_tab">
+      <div>
+        <div @click="open('pMyorder')">我的订单</div>
+        <div> <x-icon type="ios-arrow-forward" size="0.3rem"></x-icon></div>
+      </div>
+      <div>
+        <div @click="open('pMyfavorite')">我的收藏</div>
+
+        <div> <x-icon type="ios-arrow-forward" size="0.3rem"></x-icon></div>
+      </div>
+      <div>
+        <div @click="open('pFeedback')">留言反馈</div>
+        <div> <x-icon type="ios-arrow-forward" size="0.3rem"></x-icon></div>
+      </div>
+    </div>
+    <router-view/>
+  </div>
+</template>
+<script>
+import HeaderTitle from '../header'
+export default{
+  data () {
+    return {
+      type: ''
+    }
+  },
+  methods: {
+    open (type) {
+      this.$router.push({name: type})
+    }
+  },
+  created () {
+  },
+  components: {HeaderTitle}
+}
+</script>
+<style lang="scss">
+  @import '../../../pcss/pMine';
+</style>

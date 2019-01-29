@@ -1,0 +1,26 @@
+.appraisal_math_open_math{
+   .navigation_first{
+    color:rgba(125,125,125,1);
+    border-bottom: 0.05rem solid #DEE9E1;
+    font-weight: 600
+  }
+  .appraisal_progress{
+    border-radius: 0.05rem;
+    overflow: hidden;
+    >div{
+      height: 10px;
+    }
+  }
+  .open{
+    border-radius: 0.05rem;
+    margin: 0.15rem;
+    background: #11A640;
+    color: #DBEFE1;
+    font-weight:bold;
+    height: 0.4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+}

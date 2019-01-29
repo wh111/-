@@ -1,0 +1,187 @@
+<!--
+****--@file     login.vue
+****--@date     2018/04/23 9:29
+****--@author   zyc
+****--@describe  登录
+-->
+<template>
+  <div class="helloWord">
+    <div style="position: fixed">
+      <div>
+        <ul class="hello_header">
+          <li>
+            <x-icon type="ios-arrow-back" size="0.3rem"></x-icon>
+            <div>返回</div><div>关闭</div>
+          </li>
+          <li>绑定学生</li>
+          <li>
+            <div></div><div></div><div></div>
+          </li>
+        </ul>
+      </div>
+      <div class="hello_content">
+        <div>
+          <div @click="start">绑定学生账号</div>
+        </div>
+        <alert v-model="show1" title="绑定账号" @on-show="onShow" @on-hide="onHide">
+          <input ref="inputs" style="outline: none;border: 0" type="text" v-model="radioValue" placeholder="输入学生账号">
+          <flexbox-item align="left"><checklist :options="commonList" v-model="radioValue" :max="1" @on-change="change" id="change"></checklist></flexbox-item>
+        </alert>
+        <div>请先绑定您的学生，以便查看学生信息</div>
+      </div>
+    </div>
+  </div>
+
+    <!--<div>-->
+      <!--登录页面######登录页面-->
+      <!--<p>-->
+        <!--是否登录：{{isLogin}}-->
+      <!--</p>-->
+      <!--<p>-->
+        <!--当前登录的Token：&#45;&#45;{{token}}-&#45;&#45;-->
+      <!--</p>-->
+      <!--<p>-->
+        <!--当前登录的人员ID：{{userInfo.account}}-->
+      <!--</p>-->
+      <!--<p>-->
+        <!--当前登录的人员：{{userInfo.account}}-->
+      <!--</p>-->
+      <!--<p>-->
+        <!--当前登录的邮箱：{{userInfo.account}}-->
+      <!--</p>-->
+      <!--<p>-->
+        <!--<button @click="login">登录</button>-->
+      <!--</p>-->
+      <!--<p>-->
+        <!--<button @click="getUserInfo">获取用户信息</button>-->
+      <!--</p>-->
+      <!--<p>-->
+        <!--<button @click="loginOut">退出登录</button>-->
+      <!--</p>-->
+    <!--</div>-->
+</template>
+
+<script>
+import api from './api'
+import HeaderTitle from '../header'
+export default {
+  name: 'Login',
+  data () {
+    return {
+      radioValue: [ ],
+      show1: false,
+      title: '13123',
+      commonList: [ 'China', 'Japan', 'America' ]
+    }
+  },
+  created () {
+    this.init()
+  },
+  methods: {
+    init () {
+      // this.login()
+      // this.concurrentAjax()
+    },
+    onHide () {
+      this.open()
+    },
+    onShow () {
+    },
+    change (val, label) {
+      // console.log('change', val, label)
+    },
+    start () {
+      this.show1 = true
+    },
+    open () {
+      console.log(this.$refs.inputs.value)
+      if (this.$refs.inputs.value === this.commonList[0]) {
+        this.$router.push({name: 'student'})
+      }
+      if (this.$refs.inputs.value === this.commonList[1]) {
+        this.$router.push({name: 'patriarch'})
+      }
+      if (this.$refs.inputs.value === this.commonList[2]) {
+        this.$router.push({name: 'teacher'})
+      }
+    },
+
+    login: function () {
+      let obj = {
+        vue: this,
+        options: {
+          method: api.login.method,
+          url: api.login.path,
+          data: {
+            username: 'admin',
+            password: 666666
+          }
+        }
+      }
+      this.$store.dispatch('getLoginTokenByPost', obj)
+    },
+    getUserInfo () {
+      let obj = {
+        vue: this,
+        options: {
+          method: api.userInfo.method,
+          url: api.userInfo.path
+        }
+      }
+      this.$store.dispatch('getLoginInfoByGet', obj)
+    },
+    loginOut () {
+      let obj = {
+        vue: this,
+        options: {
+          method: api.loginOut.method,
+          url: api.loginOut.path
+        }
+      }
+      this.$store.dispatch('loginOut', obj)
+    },
+    concurrentAjax () {
+      let postArr = [
+        {
+          url: '/login',
+          method: 'post',
+          data: {
+            username: 'admin',
+            password: 666666
+          }
+        },
+        {// 登录
+          url: '/user/getUserInfo',
+          method: 'get'
+        }
+      ]
+      /* this.fetch.get({// 登录
+        url: '/user/getUserInfo'
+      }, function (data, res) {
+        console.log(data)
+      }) */
+      this.ajax(null)
+      this.fetch.all(postArr, function (loginData, userInfoData) {
+        console.log(loginData)
+        console.log(userInfoData)
+      })
+    }
+  },
+  computed: {
+    token () {
+      return this.$store.state.token
+    },
+    userInfo () {
+      return this.$store.state.loginInfo || {}
+    },
+    isLogin () {
+      return this.$store.state.isLogin
+    }
+  },
+  components: {HeaderTitle}
+}
+</script>
+<style lang="scss">
+  @import '../../css/HelloWord';
+  @import '../../css/header';
+</style>

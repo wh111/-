@@ -1,0 +1,55 @@
+<!----------------------------------
+****--@name     tResponses
+****--@role     ${*}
+****--@date     2018/5/7
+****--@author   zzh
+----------------------------------->
+<template>
+    <div class="tResponses">
+      <header-title>一班群</header-title>
+      <div class="stance"></div>
+      <ul class="tResponsesHeader">
+        <li @click="open('tAlready')" :class="show === 'tAlready' ? 'active' : ''">已批改 (20)</li>
+        <li @click="open('tNone')" :class="show === 'tNone' ? 'active' : ''">未批改 (70)</li>
+        <li @click="open('tAccomplish')" :class="show === 'tAccomplish' ? 'active' : ''">未完成 (99)</li>
+      </ul>
+      <router-view/>
+    </div>
+</template>
+<script>
+/* 当前组件必要引入 */
+import HeaderTitle from '../header'
+// 当前组件引入全局的util
+// let Util = null
+export default {
+  data () {
+    return {
+      show: 'tAlready'
+    }
+  },
+  methods: {
+    // 初始化请求列表数据
+    init () {
+
+    },
+    open (type) {
+      this.$router.push({name: type})
+    }
+  },
+  created () {
+    this.init()
+  },
+  mounted () {
+  },
+  watch: {
+    $route (to, from) {
+      //				console.log(to.name)
+      this.show = to.name
+    }
+  },
+  components: {HeaderTitle}
+}
+</script>
+<style lang="scss">
+  @import "../../../tcss/tResponses";
+</style>

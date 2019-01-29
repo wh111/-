@@ -1,0 +1,39 @@
+.questionGradeContent{
+  .headerImg{
+    >img{
+      width: 100%;
+    }
+    .headerImg_tab{
+      display: flex;
+      border-bottom: 0.01rem solid #EDF4EF;
+      >div{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 50%;
+        height: 0.4rem;
+      }
+    }
+  }
+  .active{
+    background: #FD7416;
+    color: #FEE0D2;
+    font-weight: bold;
+  }
+  .headerImg_content{
+    >div{
+      box-sizing: border-box;
+      padding: 0.2rem 0.15rem;
+      border-bottom: 1px solid #F7FAF8;
+      >h3{
+        font-size: 0.17rem;
+        margin:0 0 0.15rem 0;
+        color:#393939;
+      }
+      >div{
+        font-size: 0.14rem;color: #959595;font-weight: 600
+      }
+    }
+  }
+
+}

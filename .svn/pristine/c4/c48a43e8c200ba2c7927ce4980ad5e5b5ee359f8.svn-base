@@ -1,0 +1,52 @@
+<!----------------------------------
+****--@name     ${*}
+****--@role     ${*}
+****--@date     2018/4/26
+****--@author   zzh
+----------------------------------->
+<template>
+    <div class="myErrors">
+      <header-title>
+        <slot>我的错题</slot>
+      </header-title>
+      <div class="stance"></div>
+      <div class="myErrors_header">
+        <flexbox v-for="index in 6" :key="index" @click.native="open('mistakes')">
+          <flexbox-item :span="6">数学</flexbox-item>
+          <div style="display: flex;align-items: center">
+            <span style="color: #737373">52</span>
+            <x-icon type="ios-arrow-forward" size="0.3rem"></x-icon>
+          </div>
+        </flexbox>
+      </div>
+    </div>
+</template>
+<script>
+/* 当前组件必要引入 */
+import HeaderTitle from '../header'
+// 当前组件引入全局的util
+let Util = null
+export default {
+  data () {
+    return {}
+  },
+  methods: {
+    // 初始化请求列表数据
+    init () {
+
+    },
+    open (type) {
+      this.$router.push({name: type})
+    }
+  },
+  created () {
+    this.init()
+  },
+  mounted () {
+  },
+  components: {HeaderTitle}
+}
+</script>
+<style lang="scss">
+  @import '../../../css/child/myErrors';
+</style>

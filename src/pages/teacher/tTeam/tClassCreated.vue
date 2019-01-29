@@ -1,0 +1,84 @@
+<!----------------------------------
+****--@name     tClassCreated
+****--@role     ${*}
+****--@date     2018/5/7
+****--@author   zzh
+----------------------------------->
+<template>
+    <div class="tClassCreated">
+        <header-title><template v-if="$route.query.type">创建小组群</template><template v-else>创建班级群</template></header-title>
+        <div class="stance"></div>
+        <div class="tName" style="margin: 0 0.15rem">
+            <p style="padding: 0.15rem 0 0 0;">群名称</p>
+            <div>
+                <input v-model="ruleForm.title" style="padding: 0 0.1rem" placeholder="输入群名称"/>
+            </div>
+        </div>
+        <div class="tName" >
+            <p style="padding: 0 0.15rem;">简介</p>
+            <div>
+                <textarea rows="2"  style="padding: 0 0.1rem"  v-model="ruleForm.remark" placeholder="输入群简介"></textarea>
+            </div>
+        </div>
+        <div class="tClassSubmit">
+            <x-button @click.native="toCreate" type="primary">确定</x-button>
+        </div>
+        <alert v-model="messageShow">{{message}}</alert>
+    </div>
+</template>
+<script>
+  /* 当前组件必要引入 */
+  import HeaderTitle from '../header'
+  import api from './api'
+  // 当前组件引入全局的util
+  // let Util = null
+  export default {
+    data () {
+      return {
+        ruleForm: {
+          title: '',
+          remark: '',
+          types: this.$route.query.type,
+
+        },
+        messageShow:false,
+        message:'',
+      }
+    },
+    methods: {
+      // 初始化请求列表数据
+      init () {
+
+      },
+      toCreate () {
+        if(!this.ruleForm.title){
+          this.messageShow=true;
+          this.message='请输入群名称';
+          return
+        }
+        this.ajax({
+          ajaxSuccess: (data,res) => {
+              this.messageShow=true;
+              this.message=res.status.msg||'创建成功'
+          },
+
+          url: api.createGroups.path,
+          method: 'post',
+          data: this.ruleForm,
+
+        })
+
+      },
+
+    },
+    created () {
+      this.init()
+    },
+    mounted () {
+    },
+    components: {HeaderTitle}
+  }
+</script>
+<style lang="scss">
+    @import "../../../tcss/tClassCreated";
+</style>

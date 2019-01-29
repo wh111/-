@@ -1,0 +1,25 @@
+const urlPrefix = '/product/' // 当前模块api前缀
+const api = {
+  myCurrentStudyProductList: { // 最近练习
+    path: urlPrefix + 'myCurrentStudyProductList',
+    method: 'get'
+  },
+  productGet:{
+    path: urlPrefix + 'get',
+    method: 'get'
+  },
+  queryPaperList:{//获取商品包含的试卷集合（开始练习）
+    path: urlPrefix + 'queryPaperList',
+    method: 'get'
+  },
+  queryQuestionList:{
+    path:  '/papers/queryQuestionList',
+    method: 'get'
+  },
+  getQuestionsById:{
+    path:  '/papers/getQuestionsById',
+    method: 'get'
+  },
+  
+}
+export default api

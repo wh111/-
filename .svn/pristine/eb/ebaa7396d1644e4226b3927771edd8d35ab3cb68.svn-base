@@ -1,0 +1,59 @@
+<!----------------------------------
+****--@name     tAlready
+****--@role     ${*}
+****--@date     2018/5/7
+****--@author   zzh
+----------------------------------->
+<template>
+    <div class="tAlready">
+      <div class="tAlreadyBox" v-for="(item,index) in data" :key="index">
+        <ul class="tAlreadyHeader">
+          <li class="HeaderLeft">
+            <div>{{item}}</div>
+            <p>2017-08-09 10:00 上交 | 用时 50分30秒</p>
+          </li>
+          <li class="HeaderRight">
+            <div>100</div>
+            <p>得分</p>
+          </li>
+        </ul>
+        <div class="btns">
+          <button @click="open('tAppraisal')" style="outline: 0;text-decoration: none">查看详情</button>
+          <x-icon type="ios-arrow-forward" size="0.25rem"></x-icon>
+        </div>
+      </div>
+    </div>
+</template>
+<script>
+/* 当前组件必要引入 */
+
+// 当前组件引入全局的util
+// let Util = null
+export default {
+  data () {
+    return {
+      data: [
+        '孙刚', '袁俊', '龙冠园', '离型号'
+      ]
+    }
+  },
+  methods: {
+    // 初始化请求列表数据
+    init () {
+
+    },
+    open (type) {
+      this.$router.push({name: type})
+    }
+  },
+  created () {
+    this.init()
+  },
+  mounted () {
+  },
+  components: {}
+}
+</script>
+<style lang="scss">
+  @import "../../../tcss/tAlready";
+</style>

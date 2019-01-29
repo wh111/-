@@ -1,0 +1,107 @@
+.tHomework {
+    font-weight: normal;
+    div {
+        font-weight: normal;
+    }
+    .vux-step-item-head-finish .vux-step-item-head-inner{
+        background-color: #09bb07;
+        color: #fff;
+    }
+    .weui-icon-success-no-circle{
+        color: #fff;
+    }
+    .innerText {
+        text-align: right;
+        margin-right: 0;
+        width: 3rem;
+    }
+    .margin{
+        margin-right: 0.06rem;
+    }
+    .marginWord{
+        margin-right: 0.1rem;
+    }
+    .active {
+        color: #1cc03b !important;
+    }
+    .vux-table td:before, .vux-table th:before {
+        border-bottom: 1px solid #EDF3EE;
+    }
+    .weui-select {
+        height: 0.22rem;
+        line-height: 0.22rem;
+    }
+    .weui-cells:after {
+        border-bottom: none;
+    }
+    background-color: #DEEAE1;
+    //height: 6.67rem;
+    .vux-cell-value {
+        color: #1cc03b;
+    }
+    .timeBorderTimer .weui-cell_access .weui-cell__ft:after{
+        display: none;
+    }
+    label {
+        margin-bottom: 0;
+    }
+    .timeBorder {
+        margin-top: 0;
+        border-top: solid #DEEAE1 1.17647059em;
+        .weui-cells {
+            margin-top: 0;
+        }
+    }
+    .bolder {
+        font-weight: bold;
+    }
+    .greenButton {
+        background-color: #1AAD19;
+    }
+    .tHomeworkStep {
+        box-sizing: border-box;
+        padding: 0.1rem 0.35rem 0 0.35rem;
+    }
+    color: #363636;
+    .vux-flexbox {
+        box-sizing: border-box;
+        padding: 0.11rem 0.1rem 0.11rem 0.16rem;
+        border-bottom: 1px solid #EDF3EE;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .btn_wrap {
+        text-align: center;
+    }
+    .tHomeworkSteps {
+        display: flex;
+        justify-content: space-between;
+        box-sizing: border-box;
+        padding: 0 0.405rem 0.1rem 0.15rem;
+        > li {
+            color: rgba(136, 136, 136, 1);
+            font-size: 0.12rem;
+        }
+        > li:nth-of-type(1) {
+            margin-left: 0.14rem;
+        }
+        > li:nth-of-type(2) {
+            margin-left: 0.08rem;
+        }
+        > li:nth-of-type(3) {
+            position: relative;
+            left: 0.08rem;
+        }
+    }
+    .tHomeworkBook {
+        box-sizing: border-box;
+        padding: 0.17rem 0 0.075rem 0.18rem;
+        background: #DEEAE1;
+        color: rgba(136, 136, 136, 1);
+        font-size: 0.14rem;
+    }
+    .btn_wrap {
+        padding: 0 0.1rem;
+        margin-top: 0.2rem;
+    }
+}

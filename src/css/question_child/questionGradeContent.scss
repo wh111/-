@@ -1,0 +1,50 @@
+.questionGradeContent{
+  .vux-no-group-title {
+    margin-top: 0em;
+  }
+  .headerImg{
+    >img{
+      width: 100%;
+    }
+    .headerImg_tab{
+      display: flex;
+      border-bottom: 0.01rem solid #EDF4EF;
+      >div{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 50%;
+        height: 0.4rem;
+      }
+      .priceLeft{
+        span{
+           font-size: 0.12rem;
+          color: #1B1B1B;
+        }
+      }
+    }
+  }
+  .active{
+    background: #FD7416;
+    color: #fff;
+    font-size: 0.15rem;
+  }
+  .headerImg_content{
+    >div{
+      box-sizing: border-box;
+      padding: 0.2rem 0.15rem;
+      border-bottom: 1px solid #F7FAF8;
+      >h3{
+        font-size: 0.17rem;
+        margin:0 0 0.1rem 0;
+        color:#1b1b1b;
+      }
+      >div{
+        font-size: 0.12rem;
+        color: #626262;
+        line-height: 0.2rem;
+      }
+    }
+  }
+
+}

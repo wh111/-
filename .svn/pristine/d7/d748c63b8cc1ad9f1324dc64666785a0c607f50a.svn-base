@@ -1,0 +1,44 @@
+const file = '/';//当前模块api前缀
+const api = {
+  sysMsgList: {//
+    path: 'sysMsg/list',
+    method: 'get'
+  },
+  sysMsgGet:{
+    path: 'sysMsg/get',
+    method: 'get'
+  },
+  groupsList: {//
+    path: 'groups/list',
+    method: 'get'
+  },
+  orderList:{//获取订单
+    path: 'order/list',
+    method: 'get'
+  },
+  queryStudents:{
+    path: 'groups/queryStudents',
+    method: 'get'
+  },
+  getByNo:{//获取群
+    path: 'groups/getByNo',
+    method: 'get'
+  },
+  joinGroup:{//申请加入群组
+    path: '/groups/join',
+    method: 'post'
+  },
+  get: {//
+    path: file + '/get?id=',
+    method: 'get'
+  },
+  modify: {//
+    path: file + '/modify',
+    method: 'put'
+  },
+  delete: {//
+    path: file + '/remove?ids=',
+    method: 'delete'
+  }
+}
+export default api 

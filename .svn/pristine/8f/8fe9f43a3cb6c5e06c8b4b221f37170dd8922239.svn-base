@@ -1,0 +1,64 @@
+<!----------------------------------
+****--@name     personal
+****--@role     ${*}
+****--@date     2018/5/2
+****--@author   zzh
+----------------------------------->
+<template>
+  <div class="personal">
+    <header-title>
+      <slot>个人资料</slot>
+    </header-title>
+    <div class="stance"></div>
+    <div class="myErrors_header">
+      <flexbox v-for="(item,index) in data" :key="index">
+        <flexbox-item :span="6">{{item.name}}</flexbox-item>
+        <div style="display: flex;align-items: center" v-if="index === 0">
+          <span style="color: #737373"><img src="../../../../static/img/03.jpg" id="personal_img"/></span>
+          <x-icon type="ios-arrow-forward" size="0.3rem"></x-icon>
+        </div>
+        <div style="display: flex;align-items: center" v-else>
+          <span style="color: #737373">{{item.title}}</span>
+          <x-icon type="ios-arrow-forward" size="0.3rem"></x-icon>
+        </div>
+      </flexbox>
+
+    </div>
+  </div>
+</template>
+<script>
+/* 当前组件必要引入 */
+import HeaderTitle from '../header'
+// 当前组件引入全局的util
+let Util = null
+export default {
+  data () {
+    return {
+      data: [
+        {name: '头像', title: ''},
+        {name: '昵称', title: '大司马'},
+        {name: '真实姓名', title: '小一闪'},
+        {name: '年级', title: '初二'},
+        {name: '学校', title: '北京市海淀一中'},
+        {name: '市区', title: '北京 北京市 海淀区'}
+      ]
+    }
+  },
+  methods: {
+    // 初始化请求列表数据
+    init () {
+
+    }
+
+  },
+  created () {
+    this.init()
+  },
+  mounted () {
+  },
+  components: {HeaderTitle}
+}
+</script>
+<style lang="scss">
+  @import '../../../css/child/personal';
+</style>

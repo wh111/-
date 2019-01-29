@@ -1,0 +1,90 @@
+<!----------------------------------
+****--@name     ${*}
+****--@role     ${*}
+****--@date     2018/4/25
+****--@author   zzh
+----------------------------------->
+<template>
+    <div class="appraisal_math_open_start">
+      <header-title>
+        <slot>第一章：二次根式</slot>
+      </header-title>
+      <div class="stance"></div>
+      <flexbox class="math_header">
+        <flexbox-item align="center">测评结果</flexbox-item>
+      </flexbox>
+      <div class="vux-circle-demo">
+        <div>
+          <div>得分<span>75分</span></div>
+          <div>用时<span>20分00秒</span></div>
+        </div>
+        <div style='width:0.75rem;height:0.75rem;'>
+          <x-circle :percent="80" :stroke-width="8" :trail-width="6" :stroke-color="['#11A640', '#11A640']" trail-color="#E5E5E5">
+            <span :style="{color: strokeColor2}" style="font-size: 0.2rem">{{percent2}}%</span>
+          </x-circle>
+        </div>
+        <div>
+          <div><span>15道</span>答对</div>
+          <div><span>0</span>答错</div>
+        </div>
+      </div>
+      <div class="progress_book">
+        <flexbox justify="space-between" style="box-sizing: border-box;padding: 0 0.15rem" align="center">
+          <flexbox-item :span="4"><div class="flex-demo">章节掌握度</div></flexbox-item>
+          <x-progress class="appraisal_press" :percent="percent1" :show-cancel="false" style="width: 100%;"></x-progress>
+          <flexbox-item :span="2" align="right"><div class="flex-demo">{{percent1}}%</div></flexbox-item>
+        </flexbox>
+      </div>
+      <div class="math_footer">做题详情</div>
+      <ul class="knowledge">
+        <li>
+          <div>知识点一</div>
+          <div v-for="index in 6" :key="index" @click="open('tMistakes')">{{index}}</div>
+        </li>
+        <li>
+          <div>知识点二</div><div>1</div><div>2</div><div>3</div>
+        </li>
+      </ul>
+      <div class="math_footer">测评分析</div>
+      <div style="box-sizing: border-box;padding: 0.15rem;color: #7B7B7B">
+        本次测评得分50分，你的学习状态为：下游水平。本
+        次测评包含内容为 < 第一章 > 动力学、力学、电磁学，
+        共30道试题，其中难题8道，答对5道，中题5道，答
+        对2道，易题17道，答对2道，正确率为60%，共得
+        分50分。
+      </div>
+    </div>
+</template>
+<script>
+/* 当前组件必要引入 */
+import HeaderTitle from '../header'
+// 当前组件引入全局的util
+// let Util = null
+export default {
+  data () {
+    return {
+      percent1: 20,
+      percent2: 75,
+      strokeColor2: '#1B1B1B'
+    }
+  },
+  methods: {
+    // 初始化请求列表数据
+    init () {
+
+    },
+    open (type) {
+      this.$router.push({name: type})
+    }
+  },
+  created () {
+    this.init()
+  },
+  mounted () {
+  },
+  components: {HeaderTitle}
+}
+</script>
+<style lang="scss">
+  @import '../../../css/appraisal/appraisal_math_open_start';
+</style>

@@ -1,0 +1,104 @@
+<!----------------------------------
+****--@name     ${*}
+****--@role     ${*}
+****--@date     2018/4/24
+****--@author   zzh
+----------------------------------->
+<template>
+    <div class="recentPractice_over">
+        <header-title>
+            <slot>
+                <div class="txt">{{$route.query.name}}</div>
+            </slot>
+        </header-title>
+        <div class="stance"></div>
+        <div v-for="(item,index) in dataList" :key="index">
+            <div class="over_footer">{{item}}</div>
+            <ul class="singleChoice" style="text-align: center">
+                <li v-for="index in 18" :key="index" @click="open(item.id)">{{index}}</li>
+            </ul>
+            <!--<div class="over_footer">单选题</div>-->
+            <!--<ul class="singleChoice"  style="text-align: center">-->
+            <!--<li v-for="index in 18" :key="index" @click="open">{{index}}</li>-->
+            <!--</ul>-->
+            <!--<div class="over_footer">判断退</div>-->
+            <!--<ul class="singleChoice">-->
+            <!--<li v-for="index in 6" :key="index">{{index}}</li>-->
+            <!--</ul>-->
+            <!--<div class="over_footer">问答题</div>-->
+            <!--<ul class="singleChoice">-->
+            <!--<li v-for="index in 12" :key="index">{{index}}</li>-->
+            <!--</ul>-->
+            <!--</div>-->
+        </div>
+    </div>
+</template>
+<script>
+  /* 当前组件必要引入 */
+  import HeaderTitle from '../header'
+  import api from './api'
+  // 当前组件引入全局的util
+  let Util = null
+  export default {
+    data () {
+      return {
+        typeList: [],
+        dataList: null,
+      }
+    },
+    methods: {
+      // 初始化请求列表数据
+      init () {
+        this.queryQuestionList()
+      },
+      open (val) {
+        this.$router.push({
+          name: 'recentPractice_last', query: {
+            name: this.$route.query.name, questionsId: val,
+            productId: this.$route.query.productId,
+            papersId: this.$route.query.papersId
+          }
+        })
+      },
+      queryQuestionList () {
+        let options = {
+          url: api.queryQuestionList.path,
+          params: {
+            papersId: this.$route.query.papersId,
+            productId: this.$route.query.productId
+          },
+          /**
+           * 服务端返回的状态码检查,默认状态码检查前执行
+           * @param {*} data  服务器端返回的实际数据结构,根据不同业务格式不同
+           * @param {object} res 服务器端返回的response值 {data:'**',status:{conde:0,msg:'请求数据成功!'}}
+           */
+          ajaxSuccess: (data, res) => {
+            data['dataList'].map((item) => {
+              if (this.typeList.indexOf(item.type) == -1) {
+                this.typeList.push(item.type)
+                this.dataList[item.type].push(item)
+              } else {
+                this.dataList[item.type].push(item)
+              }
+
+            })
+
+//          this.data.map((item)=>{
+//
+//          })
+          }
+        }
+        this.ajax(options)
+      }
+    },
+    created () {
+      this.init()
+    },
+    mounted () {
+    },
+    components: {HeaderTitle}
+  }
+</script>
+<style lang="scss">
+    @import '../../../css/home/recentPractice_over';
+</style>

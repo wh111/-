@@ -1,0 +1,107 @@
+@import "common";
+
+#homeFirst {
+    .back {
+        position: fixed;
+        height: 6rem;
+        z-index: -1;
+        width: 3.75rem;
+        background: url('/sasmobile/img/background.jpg');
+        background-size: 3.75rem 5.9rem;
+    }
+    #homePage {
+        box-sizing: border-box;
+        padding: 0.15rem;
+        //background: #E9F6ED;
+        .home_name {
+            margin-right: 0.03rem;
+            color: #1B1B1B;
+        }
+        .homePage_head {
+            background: #FFFFFF;
+            box-shadow: 0 0 0.15rem 0.02rem #D6E1D9;
+            border-radius: 0.07rem;
+            margin-bottom: 0.15rem;
+
+        }
+        .headerImg {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 0.01rem solid #F1F1F1;
+            > div:nth-of-type(1) {
+                display: flex;
+                align-items: center;
+                img {
+                    margin: 0.1rem 0.06rem 0.1rem 0.15rem;
+                }
+            }
+            > div:nth-of-type(2) {
+                img {
+                    margin: 0.2rem 0;
+                }
+            }
+        }
+        .homePage_books {
+            color: #7A7A7A;
+            display: flex;
+            box-sizing: border-box;
+            padding: 0.2rem 0;
+
+        }
+        .homePage_book {
+            float: left;
+            text-align: center;
+            padding: 0.1rem;
+            //border-bottom: 1px solid #F1F1F1;
+            width: 33.3333%;
+            > img {
+                width: 0.545rem;
+                height: 0.7rem;
+                margin: 0.15rem 0;
+            }
+            > div:nth-of-type(1) {
+                font-size: 0.15rem;
+                color: #1B1B1B;
+            }
+            > div:nth-of-type(2), > div:nth-of-type(3) {
+                span {
+                    font-size: 0.1rem;
+                }
+                > span:nth-of-type(1) {
+                    color: #707070;
+                    margin-right: 0.05rem;
+                }
+                > span:nth-of-type(2) {
+                    color: #EC6941;
+                }
+            }
+        }
+        .homePage_book:not(:nth-child(3n+0)) {
+            border-right: 1px solid #F1F1F1;
+        }
+        .homePage_center {
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
+            li {
+                width: 1.05rem;
+                margin-right: 0.15rem;
+                height: 0.35rem;
+                list-style: none;
+                background: #11A640;
+                margin-bottom: 0.1rem;
+                border-radius: 0.03rem;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 0.13rem;
+                color: #fff;
+            }
+            .last {
+                margin-right: 0;
+            }
+        }
+    }
+
+}

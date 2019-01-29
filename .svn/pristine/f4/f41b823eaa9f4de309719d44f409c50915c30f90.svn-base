@@ -1,0 +1,1681 @@
+<!----------------------------------
+****--@name     tHomework
+****--@role     ${*}
+****--@date     2018/5/8
+****--@author   zzh
+----------------------------------->
+<template>
+    <div class="tHomework" style="height: 100%">
+        <header-title>
+            <template
+                    v-if="paperType=='homework'">布置作业
+            </template>
+            <template v-else>布置测评</template>
+        </header-title>
+        <div class="stance"></div>
+        <div style="background: #fff">
+            <step v-model="step" background-color='#fbf9fe' gutter="0" class="tHomeworkStep">
+                <step-item></step-item>
+                <step-item></step-item>
+                <step-item></step-item>
+            </step>
+            <ul class="tHomeworkSteps">
+                <li :class="step>=0?'active':''">第一步</li>
+                <li :class="step>=1?'active':''">第二步</li>
+                <li :class="step>=2?'active':''">第三步</li>
+            </ul>
+        </div>
+        <div style="background: #fff;margin-top: 0.2rem">
+            <!-- 第一步 -->
+            <div v-if="step === 0">
+
+                <flexbox>
+                    <flexbox-item class="bolder" :span="6">科目</flexbox-item>
+                    <div class="marginWord"> {{ userTextbookVersionInfo.subject | subject(self) }}</div>
+                </flexbox>
+                <flexbox>
+                    <flexbox-item class="bolder" :span="6">教材</flexbox-item>
+                    <div class="marginWord"> {{ userTextbookVersionInfo.textbookVersionName }}</div>
+                </flexbox>
+                <flexbox>
+                    <flexbox-item class="bolder" :span="2">题型</flexbox-item>
+                    <div class="innerText" style="">{{questionTypeList.toString()}} </div>
+                    <div @click="showSelect('questionType')" style="height: 0.22rem" class="margin">
+
+                        <x-icon type="ios-arrow-forward" size="0.22rem"></x-icon>
+                    </div>
+                </flexbox>
+                <flexbox v-if="type=='homework'">
+                    <flexbox-item class="bolder" :span="6">作业名称</flexbox-item>
+                    <div>
+                        <x-input placeholder-align="right" placeholder="输入名称" text-align="right"
+                                 style="padding: 0 0.15rem;" v-model="formValidate.title"></x-input>
+                    </div>
+                </flexbox>
+                <flexbox v-else>
+                    <flexbox-item class="bolder" :span="6">试卷名称</flexbox-item>
+                    <div>
+                        <x-input placeholder-align="right" placeholder="输入名称" text-align="right"
+                                 style="padding: 0 0.15rem" v-model="formValidate.title"></x-input>
+                    </div>
+                </flexbox>
+                <group class="timeBorder timeBorderTimer" style="">
+                    <datetime-range style="margin-top: 0;border-top: none" title="发布时间"
+                                    :start-date="conductDate(new Date(), 'yyyy-MM-dd')"
+                                    end-date="2030-02-02" format="YYYY-MM-DD HH:mm"
+                                    v-model="startTime" @on-change="onChange('startTime')"></datetime-range>
+                </group>
+                <group class="timeBorder timeBorderTimer" style="margin-top: 0;border: none">
+                    <datetime-range style="margin-top: 0;border-bottom: none" title="截至时间"
+                                    :start-date="conductDate(new Date(), 'yyyy-MM-dd')"
+                                    end-date="2030-02-02" format="YYYY-MM-DD HH:mm"
+                                    v-model="submitTime" @on-change="onChange('submitTime')"></datetime-range>
+                </group>
+                <group class="timeBorder" style="margin-top: 0;border: none">
+                    <datetime-range style="margin-top: 0;border-bottom: none" v-if="paperType !== 'homework'"
+                                    end-date="2030-02-02" title="公布时间"
+                                    :start-date="conductDate(new Date(), 'yyyy-MM-dd')"
+                                    format="YYYY-MM-DD HH:mm" v-model="publishAnswerTime"
+                                    @on-change="onChange('publishAnswerTime')"></datetime-range>
+                </group>
+                <flexbox style="border-top: solid #DEEAE1 1.17647059em;">
+                    <flexbox-item class="bolder" :span="6">防舞弊设置</flexbox-item>
+                    <div>
+                        <selector ref="defaultValueRef" title="" :options="list"
+                                  style="height: 0.22rem;text-align: right" text-align="right" direction="rtl"
+                                  v-model="formValidate.cheatSetQuestionsSeqRandom"></selector>
+                    </div>
+                </flexbox>
+            </div>
+            <!-- 第二步 -->
+            <div v-if="step === 1">
+                <!--<el-form ref="selectFormValidate" :model="selectFormValidate" :rules="testPaperManagementZn1"-->
+                <!--label-width="100px">-->
+                <flexbox>
+                    <flexbox-item class="bolder" :span="6">年级</flexbox-item>
+                    <div>
+                        <selector v-model="formValidate.grade" :options="gradeListSelect"
+                                  @on-change="changeGrade"></selector>
+                    </div>
+                </flexbox>
+                <flexbox>
+                    <flexbox-item class="bolder" :span="6">学期</flexbox-item>
+                    <div>
+                        <selector v-model="formValidate.term" :options="termList" @on-change="changeTerm"></selector>
+                    </div>
+                </flexbox>
+                <div style="height: 0.2rem;background: #DEEAE1"></div>
+                <flexbox>
+                    <flexbox-item class="bolder" :span="6">章节</flexbox-item>
+                    <div class="innerText">{{questionChapterList.toString()}}</div>
+                    <div @click="showSelect('selectChapter')"  class="margin" style="height: 0.22rem">
+                        <x-icon type="ios-arrow-forward" size="0.22rem"></x-icon>
+                    </div>
+                </flexbox>
+                <flexbox>
+                    <flexbox-item class="bolder" :span="6">知识点</flexbox-item>
+                    <div class="innerText">{{questionKnowledge.toString()}}</div>
+                    <div  class="margin" @click="showSelect('selectknowledge')" style="height: 0.22rem">
+                        <x-icon type="ios-arrow-forward" size="0.22rem"></x-icon>
+                    </div>
+                </flexbox>
+                <flexbox>
+                    <flexbox-item class="bolder" :span="6">难度</flexbox-item>
+                    <div>
+                        <selector v-model="selectFormValidate.diffLevelCode" :options="questionDiffMap"
+                                  @on-change="getQuestions"></selector>
+                    </div>
+                </flexbox>
+
+                <!--<el-form-item label="年级：" prop="grade">-->
+                <!--<el-radio-group v-model="formValidate.grade" class="amRadioGroup" @change="changeGrade">-->
+                <!--<el-radio v-for="item in gradeList" :key="item" :label="item.toString()">{{ item | grade(self) }}-->
+                <!--</el-radio>-->
+                <!--</el-radio-group>-->
+                <!--</el-form-item>-->
+                <!--<el-form-item label="学期：" prop="term">-->
+                <!--<el-radio-group v-model="formValidate.term" class="amRadioGroup" @change="changeTerm">-->
+                <!--<el-radio v-for="index in 2" :key="index" :label="(index-1).toString()">{{ (index - 1) |-->
+                <!--term }}-->
+                <!--</el-radio>-->
+                <!--</el-radio-group>-->
+                <!--</el-form-item>-->
+                <!--<el-form-item label="章节：" prop="selectChapter">-->
+                <!--<el-checkbox :indeterminate="isIndeterminateChapter" v-model="checkAllChapter"-->
+                <!--v-if="chapterList" @change="handleCheckAllChapterChange">全选-->
+                <!--</el-checkbox>-->
+                <!--<span v-else>暂无章节（重新选择相关信息试试）</span>-->
+                <!--<el-checkbox-group v-model="selectFormValidate.selectChapter"-->
+                <!--@change="handleCheckedChapterChange">-->
+                <!--<el-checkbox v-for="(item,index) in chapterList" :key="index" :label="item.id">{{item.name}}-->
+                <!--</el-checkbox>-->
+                <!--</el-checkbox-group>-->
+                <!--</el-form-item>-->
+                <!--<el-form-item label="知识点：" prop="selectknowledge">-->
+                <!--<el-checkbox :indeterminate="isIndeterminateKnowledge" v-model="checkAllKnowledge"-->
+                <!--v-if="knowledgeList" @change="handleCheckAllKnowledgeChange">全选-->
+                <!--</el-checkbox>-->
+                <!--<span v-else>暂无知识点（换个章节试试）</span>-->
+                <!--<el-checkbox-group v-model="selectFormValidate.selectknowledge"-->
+                <!--@change="handleCheckedKnowledgeChange">-->
+                <!--<el-checkbox v-for="(item,index) in knowledgeList" :key="index" :label="item.id">-->
+                <!--{{item.name}}-->
+                <!--</el-checkbox>-->
+                <!--</el-checkbox-group>-->
+                <!--</el-form-item>-->
+                <!--<el-form-item label="难度：" prop="diffLevelCode">-->
+                <!--<el-select v-model="selectFormValidate.diffLevelCode" placeholder="请选择">-->
+                <!--<el-option label="全部" value=""></el-option>-->
+                <!--<question-diff-level-option></question-diff-level-option>-->
+                <!--&lt;!&ndash;<el-option v-for="(item,index) in projectDiffLevels" :key="index" :label="item.value"&ndash;&gt;-->
+                <!--&lt;!&ndash;:value="item.code"></el-option>&ndash;&gt;-->
+                <!--</el-select>-->
+                <!--<el-button type="warning" @click="getQuestions">筛选</el-button>-->
+                <!--</el-form-item>-->
+                <flexbox style="background: #DEEAE1">
+                    <flexbox-item :span="6" style="line-height: 0.3rem;height: 0.22rem;font-size: 0.14rem;color: #888">
+                        试卷结构
+                    </flexbox-item>
+                </flexbox>
+                <div style="width: 3.75rem;overflow: auto;margin-top: -0.02rem">
+                    <x-table :cell-bordered="false" :content-bordered="false">
+                        <thead>
+                        <tr style="background-color: #F7F7F7;border-color: #EDF3EE;border-bottom: none">
+                            <th class="bolder" style="text-align: left;padding-left: 0.15rem">知识点名称</th>
+                            <td class="bolder">题型</td>
+                            <td class="bolder">数量</td>
+                            <!--<th style="" v-for="(item,index) in questionHeader" :key="index">{{item.label}}</th>-->
+                            <!--<th style="width: 1rem">操作</th>-->
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <template v-for="(item,index) in questions">
+                            <!--<tr></tr>-->
+                            <td :rowspan="questionHeader.length+1"
+                                style="text-align: left;padding-left: 0.15rem;width: 1.3rem;border-bottom: 0.01rem solid #dbdbdb">{{item.knowledgeName}}
+                            </td>
+                            <template v-for="(i,index1) in questionHeader">
+                                <tr style="border-bottom: 0.01rem solid #dbdbdb">
+                                    <td>{{i.label}}</td>
+                                    <td style="width: 1.2rem;text-align: center">
+                                        <template v-if="questions[index][i.prop]">
+                                            <input v-model="questions[index][i.prop+'_edit']"
+                                                   style="width: 0.34rem;height: 0.2rem;border-radius: 0.03rem;margin-top: 0.1rem;line-height: 0.18rem"></input>
+                                            / {{ questions[index][i.prop] }}
+                                        </template>
+                                        <span v-else>0</span>
+                                    </td>
+                                </tr>
+                            </template>
+                            <!--<div v-for="(i,index) in questionHeader" :key="index">-->
+                            <!--<td v-if="i.prop=="></td>-->
+                            <!--</div>-->
+                            <!--<td  v-for="(i,index1) in questionHeader" :key="index1">-->
+                            <!--{{i.label}}-->
+
+                            <!--</td>-->
+
+                            <!--<td>-->
+                            <!--<x-button @click.native="removeQuestions(index)" mini style="background-color: red;color: white;">删除</x-button>-->
+                            <!--</td>-->
+                        </template>
+                        </tbody>
+                    </x-table>
+                </div>
+                <!--<el-form-item label="试卷结构：">-->
+                <!--<el-table align="center" :context="self" class="questionKnowledgeTable" maxHeight="400"-->
+                <!--:data="questions" tooltip-effect="dark" style="width: 100%">-->
+                <!--<el-table-column label="知识点" prop="knowledgeName" show-overflow-tooltip></el-table-column>-->
+                <!--<el-table-column v-for="(item,index) in questionHeader" :key="index" :label="item.label"-->
+                <!--min-width="200"-->
+                <!--:prop="item.prop" show-overflow-tooltip>-->
+                <!--<template slot-scope="scope">-->
+                <!--<template v-if="scope.row[item.prop]">-->
+                <!--<el-input v-model="scope.row[item.prop+'_edit']" style="width: 70%"></el-input>-->
+                <!--/ {{ scope.row[item.prop] }}-->
+                <!--</template>-->
+                <!--<span v-else>{{ scope.row[item.prop] }}</span>-->
+                <!--</template>-->
+                <!--</el-table-column>-->
+                <!--<el-table-column label="操作" align="center" width="70">-->
+                <!--<template slot-scope="scope">-->
+                <!--<el-button size="small" type="danger" @click="removeQuestions(scope.$index)">删除-->
+                <!--</el-button>-->
+                <!--</template>-->
+                <!--</el-table-column>-->
+                <!--</el-table>-->
+                <!--</el-form-item>-->
+                <!--</el-form>-->
+            </div>
+        </div>
+
+
+
+        <!--<router-view/>-->
+        <!--<div class="btn_wrap">-->
+        <!--<x-button v-if="step2 === 2" type="primary" @click.native="nextStep">发布作业</x-button>-->
+        <!--<x-button v-else type="primary" @click.native="nextStep">下一步</x-button>-->
+        <!--</div>-->
+        <!-- 第三步：题目分布信息 this.getTableDate.questionsTypesDataArr-->
+        <div v-if="step === 2" style="background: #fff">
+            <div style="width: 3.75rem;overflow: auto">
+                <x-table :cell-bordered="false" :content-bordered="false">
+                    <thead>
+                    <tr style="background-color: #F7F7F7">
+                        <th class="border">题型</th>
+                        <th class="border">数量</th>
+                        <template v-if="formValidate.scoreType === 1">
+                            <th>单题分值</th>
+                            <th>总分</th>
+                        </template>
+                        <th style="width: 1.8rem" class="border">知识点</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr style="border-bottom: 0.01rem solid #dbdbdb" v-for="(item,index) in questionsInfo">
+                        <td>{{item.type}}</td>
+                        <td>{{item.num}}</td>
+                        <template v-if="formValidate.scoreType === 1">
+                            <td><input style="width: 60%" v-model="questionsInfo[index].score"
+                                       @input="setThisTotalScore(questionsInfo[index])"></input></td>
+                            <td> {{item.totalScore}}</td>
+                        </template>
+                        <td>
+                            <p style="margin-bottom: -0.01rem;border-bottom: 0.01rem solid #dbdbdb;text-align: left" v-for="(item1,index1) in item.knowledges" :key="index1">
+                                {{ item1.knowledgeName }}（{{ item1.num }}）
+                            </p>
+                        </td>
+                    </tr>
+                    </tbody>
+                </x-table>
+            </div>
+
+            <div style="height: 0.4rem;background: #EDF3EE;padding-left: 0.15rem;line-height: 0.3rem;">
+                <p style="font-size: 0.14rem;color: #888">使用试题库分数，并将总分折算为 100分</p>
+            </div>
+            <!--<el-table align="center" :context="self" maxHeight="400" class="qtt_questionKnowledgeTable"-->
+            <!--:data="getTableDate.questionsTypesDataArr" tooltip-effect="dark"-->
+            <!--:summary-method="getSummaries" show-summary>-->
+            <!--<el-table-column label="题型" prop="name" show-overflow-tooltip></el-table-column>-->
+            <!--<el-table-column label="数量" prop="value" show-overflow-tooltip></el-table-column>-->
+            <!--<template v-if="formValidate.scoreType === 1">-->
+            <!--<el-table-column label="单题分值" prop="score" show-overflow-tooltip>-->
+            <!--<template slot-scope="scope">-->
+            <!--<el-input v-model="scope.row.score" @input="setThisTotalScore(scope.row)"></el-input>-->
+            <!--</template>-->
+            <!--</el-table-column>-->
+            <!--<el-table-column label="总分" prop="totalScore" show-overflow-tooltip></el-table-column>-->
+            <!--</template>-->
+            <!--<el-table-column label="知识点" prop="knowledges" show-overflow-tooltip>-->
+            <!--<template slot-scope="scope">-->
+            <!--<p v-for="(item,index) in scope.row.listarr" :key="index">-->
+            <!--{{ item.name }}（{{ item.value }}）-->
+            <!--</p>-->
+            <!--</template>-->
+            <!--</el-table-column>-->
+            <!--</el-table>-->
+            <!--<h3 class="qtt_h3Title">难度预估：</h3>-->
+            <div class="qtt_chartMain">
+                <!--<el-col :span="4">-->
+                <!--<p class="qtt_centerText difNum">难度值：{{ (selectFormValidate.diffLevelCode || '全部') |-->
+                <!--diffLevelCode(self)-->
+                <!--}}</p>-->
+                <!--</el-col>-->
+                <div style="padding: 0.2rem">
+                    <div id="questionsTypes" class="qtt_chartBox" style="width:100%;height: 2.5rem;"></div>
+                    <!--<p class="qtt_centerText">题型分布</p>-->
+
+                    <!--<p class="qtt_centerText">知识点分布</p>-->
+                </div>
+                <div style="clear: both"></div>
+            </div>
+            <div style="height: 0.2rem;background: #EDF3EE"></div>
+            <div class="qtt_chartMain">
+                <!--<el-col :span="4">-->
+                <!--<p class="qtt_centerText difNum">难度值：{{ (selectFormValidate.diffLevelCode || '全部') |-->
+                <!--diffLevelCode(self)-->
+                <!--}}</p>-->
+                <!--</el-col>-->
+                <div style="padding: 0.2rem">
+                    <!--<p class="qtt_centerText">题型分布</p>-->
+                    <div id="questionsKnowledges" class="qtt_chartBox" style="width: 100%;height: 2.5rem;"></div>
+                    <!--<p class="qtt_centerText">知识点分布</p>-->
+                </div>
+                <div style="clear: both"></div>
+            </div>
+            <!--<flexbox>-->
+            <!--<flexbox-item :span="6">定义分数</flexbox-item>-->
+            <!--<div> 使用试题库分数，并将总分折算为 100分</div>-->
+            <!--</flexbox>-->
+            <flexbox v-if="paperType!=='homework'">
+                <flexbox-item :span="6">答题时长</flexbox-item>
+                <div>
+                    <x-input style="width: 40%;display: inline-block" v-model="formValidate.times"></x-input>
+                    分钟
+                </div>
+            </flexbox>
+
+            <!--<el-form ref="formValidate" :model="formValidate" :rules="testPaperManagementZn2" :inline="true"-->
+            <!--label-width="100px">-->
+            <!--<el-col>-->
+            <!--<el-form-item label="定义分数：">-->
+            <!--<el-radio-group v-model="formValidate.scoreType" @change="changeScoreType">-->
+            <!--<el-radio :label="2">使用试题库分数，并将总分折算为 100分</el-radio>-->
+            <!--&lt;!&ndash;<el-radio :label="1">自定义各题型分值，总分为 {{ formValidate.score }}</el-radio>&ndash;&gt;-->
+            <!--</el-radio-group>-->
+            <!--</el-form-item>-->
+            <!--</el-col>-->
+            <!--<el-col v-if="paperType!=='homework'">-->
+            <!--<el-form-item label="答题时长：" prop="times">-->
+            <!--<el-input v-model="formValidate.times">-->
+            <!--<template slot="append">分钟</template>-->
+            <!--</el-input>-->
+            <!--</el-form-item>-->
+            <!--</el-col>-->
+            <!--</el-form>-->
+        </div>
+        <confirm v-model="showConfirm"
+                 title="请输入/选择"
+                 @on-confirm="onConfirm">
+            <div style="max-height: 2.5rem;overflow: auto">
+                <checklist v-if="confirmType=='questionType'" title="" label-position="left" :options="questionsTypeArr"
+                           v-model="formValidate.questionType"></checklist>
+                <checklist v-if="confirmType=='selectChapter'" title="" label-position="left" :options="chapterList"
+                           v-model="selectFormValidate.selectChapter" @on-change=""></checklist>
+                <checklist v-if="confirmType=='selectknowledge'" title="" label-position="left" :options="knowledgeList"
+                           v-model="selectFormValidate.selectknowledge"></checklist>
+                <!--@on-change="handleCheckedKnowledgeChanget"-->
+            </div>
+        </confirm>
+        <alert v-model="show">{{message}}</alert>
+        <div class="btn_wrap">
+            <!--<x-button type="primary" v-if="step" mini @click.native="prev">上一步</x-button>-->
+
+            <x-button class="greenButton" type="primary" v-if="step < 2" @click.native="next">下一步</x-button>
+            <x-button class="greenButton" type="primary" v-if="step == 2" @click.native="preview">预览</x-button>
+        </div>
+        <div style="height: 0.2rem">
+
+        </div>
+    </div>
+</template>
+<script>
+  /* 当前组件必要引入 */
+  import HeaderTitle from '../header'
+  import api from './api'
+  import { XTable, Step, StepItem, Checklist, DatetimeRange, Group } from 'vux'
+
+  var Echarts = require('echarts')
+  // 当前组件引入全局的util
+  // let Util = null
+  let Util = null
+  let oneDayTime = 1000 * 60 * 60 * 24
+  export default {
+    data () {
+      return {
+        questionChapterList: [],//章节
+        questionKnowledge: [],//知识点
+        gradeListSelect: [],
+        termList: [{key: '0', value: '上学期'}, {key: '1', value: '下学期'}],
+        'startTime': ['',], //new Date(), // 发布时间，时间戳
+        'submitTime': ['',], //new Date(new Date().setDate(new Date().getDate() + 1)), // 截止时间，时间戳
+        'publishAnswerTime': ['',], // 公布答案时间，时间戳（智能组卷使用）
+        startTimeDefault: '',
+        questionTypeList: [],
+        type: this.$route.query.type,
+        confirmType: '',
+        showConfirm: false,
+        show: false,
+        message: '',
+        list: [{key: '0', value: '题目顺序随机'}, {key: '1', value: '选择题候选项随机'}],
+        loading: false,
+        self: this,
+        step: 0,
+        gradeList: [],
+        reserveModalId: {
+          id: 'reserveModal',
+          title: '保存模板'
+        },
+        pickerOptions1: {
+          //选择结束时间后设置开始日期的限制
+          disabledDate: (time) => {
+            if (this.starTimes != '') {
+              return time.getTime() <= this.starTimes - oneDayTime
+            }
+          }
+        },
+        reserveModal: false,
+        endTimes: new Date(new Date().setDate(new Date().getDate() + 1)),
+        starTimes: new Date(),
+        formValidate: {
+          'textbookVersionId': '', // 教材版本ID
+          'subject': '', // 科目
+          'grade': '', // 年级：1-12
+          'term': '0', // 学期
+          'stage': '', // 阶段 (预览使用)
+          'questionType': [], // 问题类型 (预览使用)
+          'title': '', // 作业名称（试卷名称）
+          'remark': '', // 试卷说明
+          'groupsId': '', // 班组Id
+          'score': 100, // 作业总分 (由totalScore改的)
+          'totalQuestions': '0', // 总题数
+          'diffLevel': '', // 预估难度
+          'startTime': '', //new Date(), // 发布时间，时间戳
+          'submitTime': '', //new Date(new Date().setDate(new Date().getDate() + 1)), // 截止时间，时间戳
+          'endTime': '',
+          'releaseTime': '',
+          'publishAnswerTime': '', // 公布答案时间，时间戳（智能组卷使用）
+          'times': '', // 答题时长
+          'cheatSetQuestionsSeqRandom': '0', // 试题顺序随机：0否、1是
+          'cheatSetOptionsSeqRandom': '0', // 选项顺序随机：0否、1是
+          'scoreType': 2, // 1 自定义个题型分值 2 使用试题库分数，并将总分折算为score (预览使用)
+          'questionsTypeScore': [], // 自定义试题类型分数(预览使用)
+          'questionsList': [
+            // {
+            //   "questionsId":"", // 试题ID
+            //   "score":"" // 试题分值
+            // },
+          ],
+          'openType': '0'
+        },
+        changeGradeOrTerm: false, // 缓存已选择的班级及学期信息（验证使用）
+        userTextbookVersionInfo: {subject: '', textbookVersionName: ''}, // 当前老师的教材信息
+
+        paperType: 'homework', // 试卷类型(homework布置作业|intelligent智能组卷)
+
+        questionsType: {}, // 题型列表
+        questionsTypeArr: [],
+        saveBtn: {title: '预览', callParEvent: 'preview'},
+        saveTempBtn: {title: '点击存为模版', callParEvent: 'openModal1', type: 'text'},
+
+        // 缓存所有章节
+        allChapter: {},
+        allknowledge: {}, // 缓存所有知识点
+        headerSelectObj: {}, // 第一步选择的所有数据
+        chapterListLen: 0,
+        knowledgeListLen: 0,
+        chapterList: [], // 章节
+        knowledgeList: [], // 知识点
+        checkAllChapter: false,
+        isIndeterminateChapter: false,
+        checkAllKnowledge: false,
+        isIndeterminateKnowledge: false,
+        chartDate: {
+          questionsTypesNameArr: null,
+          questionsTypesDataArr: null,
+          questionsKnowledgesNameArr: null,
+          questionsKnowledgesDataArr: null
+        },//作业详情图
+        questionHeader: [], // 试卷题目类型
+        questions: [], // 查询试题数量（智能组卷）
+
+        // 第二步表单
+        selectFormValidate: {
+          diffLevelCode: '', // 难度
+          openType: '0',
+          selectChapter: [], // 选中的章节
+          selectknowledge: [] // 选中的知识点
+        },
+
+        // 第三歩
+        questionsInfo: [], // 试卷基本信息
+        questionsInfoList: [],
+        questionsInfoSelectList: [],//app选择试题
+        // 接口
+        // api: {
+        //   questionsType: 'questionsType/query-all', //题型
+        //   chapter: 'textbookContent/queryChapterList',
+        //   knowledge: 'textbookContent/queryKnowledgeListByChapter',
+        //   questions: 'papers/questions/group' // 查询试题数量（智能组卷）
+        // }
+
+        templateData: {}, // 模版数据
+        isClickStart: false,
+        getPriviewDate: false,
+        getTableDate: {
+          questionsKnowledgesDataArr: [],
+          questionsKnowledgesNameArr: [],
+          questionsTypesDataArr: [],
+          questionsTypesNameArr: [],
+        },
+        questionDiffMap: [{value: '全部', key: ''}],
+      }
+    },
+    methods: {
+
+      // 上一步
+      prev () {
+        this.step--
+      },
+//      nextStep () {
+//        this.step++
+//      },
+      showSelect (type, showConfirm) {
+        this.confirmType = type
+        if (this.confirmType == 'questionType') {
+          this.questionTypeList = []
+          this.formValidate.questionType = []
+        } else if (this.confirmType == 'selectChapter') {
+          this.selectFormValidate.selectChapter = []
+          this.questionChapterList = []
+          this.selectFormValidate.selectknowledge = []
+          this.questionKnowledge = []
+        } else if (this.confirmType == 'selectknowledge') {
+          this.selectFormValidate.selectknowledge = []
+          this.questionKnowledge = []
+        }
+        this.showConfirm = true
+        // }
+      },
+      onChange (type) {
+
+        var m = this[type][0].replace(/-/g, '/') + ' ' + this[type][1] + ':' + this[type][2]
+        this.formValidate[type] = new Date(m).getTime()
+        console.log(m, this.formValidate[type])
+      },
+      onConfirm () {
+        if (this.confirmType == 'questionType') {
+          this.formValidate.questionType.map((item) => {
+            this.questionsTypeArr.map((item1) => {
+              if (item1.id == item) {
+                this.questionTypeList.push(item1.name)
+              }
+            })
+          })
+          //questionTypeList
+        } else if (this.confirmType == 'selectChapter') {
+          this.selectFormValidate.selectChapter.map((item) => {
+            this.chapterList.map((item1) => {
+              if (item1.id == item) {
+                this.questionChapterList.push(item1.name)
+              }
+            })
+          })
+
+          this.handleCheckedChapterChange(this.selectFormValidate.selectChapter)
+        } else if (this.confirmType == 'selectknowledge') {
+          this.selectFormValidate.selectknowledge.map((item) => {
+            this.knowledgeList.map((item1) => {
+              if (item1.id == item) {
+                this.questionKnowledge.push(item1.name)
+              }
+            })
+          })
+          this.getQuestions()
+          console.log(this.knowledgeList)
+        }
+      },
+      handleStartTime (d) {
+        this.starTimes = this.deformatterDate(d)
+        this.isClickStart = true
+        oneDayTime = 0
+      },
+      handleEndTime (d) {
+        if (this.isClickStart) {
+          oneDayTime = 0
+        } else {
+          oneDayTime = 1000 * 60 * 60 * 24
+        }
+        this.endTimes = this.deformatterDate(d)
+      },
+      //初始化请求列表数据
+      init () {
+        console.log(this.$store.state)
+        let questionDiffMap = _.defaultsDeep([], this.$store.state.envs.questionDiffMap)
+        for (var i in questionDiffMap) {
+          this.questionDiffMap.push({value: questionDiffMap[i], key: i})
+        }
+        this.startTimeDefault = this.conductDate(new Date(), 'yyyy-MM-dd HH mm').split(' ')
+        this.startTime = this.conductDate(new Date(), 'yyyy-MM-dd HH mm').split(' ')
+        this.submitTime = this.conductDate(new Date(new Date().setDate(new Date().getDate() + 1)), 'yyyy-MM-dd HH mm').split(' ')
+        this.publishAnswerTime = this.conductDate(new Date(new Date().setDate(new Date().getDate() + 1)), 'yyyy-MM-dd HH mm').split(' ')
+        this.onChange('startTime')
+        this.onChange('submitTime')
+        this.onChange('publishAnswerTime')
+        Util = this.$util
+        let textbookVersionList = this.$store.state.loginInfo.textbookVersionList
+        if (textbookVersionList && textbookVersionList.length) {
+          let {textbookVersionId, subject} = textbookVersionList[0]
+          this.userTextbookVersionInfo = textbookVersionList[0]
+          this.formValidate.textbookVersionId = textbookVersionId
+          this.formValidate.subject = subject
+        }
+
+        this.formValidate.groupsId = this.$route.query.groupsId
+        this.paperType = this.type
+        this.getQuestionsType()
+        let teacherGrade = null
+        let types = this.$store.state.loginInfo.types
+        console.log('mmm', textbookVersionList)
+        console.log(textbookVersionList[0].length == 0)
+        if (textbookVersionList[0].length == 0) {
+          teacherGrade = [[1, 2, 3, 4, 5, 6], [7, 8, 9], [10, 11, 12]]
+        } else {
+          teacherGrade = [[1, 2, 3, 4, 5], [6, 7, 8, 9], [10, 11, 12]]
+        }
+        this.gradeList = teacherGrade[types || 0]
+        this.gradeListSelect = []
+        console.log(this.gradeList, this.$store.state.envs.gradeList)
+        let gradeList = _.defaultsDeep([], this.$store.state.envs.gradeList)
+        this.gradeList.map((item) => {
+          gradeList.map((item1) => {
+            if (item1.code == item) {
+              item1.value = item1.name
+              item1.key = item
+              this.gradeListSelect.push(item1)
+            }
+          })
+        })
+        // this.gradeList
+      },
+      cancel () {
+        this.reserveModal = false
+      },
+      // 改变年级
+      changeGrade () {
+        this.changeGradeOrTerm = true
+        this.selectFormValidate.selectChapter = []
+        this.questionChapterList = []
+        this.selectFormValidate.selectknowledge = []
+        this.questionKnowledge = []
+        this.getChapterDataForServer()
+      },
+      // 改变学期
+      changeTerm () {
+        this.changeGradeOrTerm = true
+        this.selectFormValidate.selectChapter = []
+        this.questionChapterList = []
+        this.selectFormValidate.selectknowledge = []
+        this.questionKnowledge = []
+        this.getChapterDataForServer()
+      },
+      // 筛选
+      changeHeader (obj, select) {
+        for (let key in this.headerKey) {
+          (select[key] !== undefined) && (this.formValidate[key] = select[key])
+        }
+        this.formValidate.textbookVersionId = select.textbookVersion
+        this.headerSelectObj = obj
+      },
+      // 绑定顶部筛选
+      bindHeader () {
+        let {textbookVersionId: textbookVersion, grade, term, subject} = this.formValidate
+        return {textbookVersion, grade, term, subject}
+      },
+      // 是否全选章节
+      handleCheckAllChapterChange (all) {
+        let selArr = []
+        if (all) {
+          for (let key in this.chapterList) {
+            selArr.push(+key)
+          }
+        } else {
+          this.initKnowledge()
+        }
+        this.selectFormValidate.selectChapter = selArr
+        this.isIndeterminateChapter = false
+        all && this.getKnowledgeDataForServer()
+      },
+      // 选择章节
+      handleCheckedChapterChange (value) {
+        let checkedCount = value.length
+        this.checkAllChapter = checkedCount === this.chapterListLen
+        this.isIndeterminateChapter = checkedCount > 0 && checkedCount < this.chapterListLen
+        if (checkedCount) {
+          this.getKnowledgeDataForServer()
+        } else {
+          console.log('mm')
+          this.initKnowledge()
+        }
+      },
+
+      // 是否全选知识点
+      handleCheckAllKnowledgeChange (all) {
+        let selArr = []
+        if (all) {
+          for (let key in this.knowledgeList) {
+            selArr.push(+key)
+          }
+        }
+        this.selectFormValidate.selectknowledge = selArr
+        this.isIndeterminateKnowledge = false
+        this.getQuestions()
+      },
+      // 选择知识点
+      handleCheckedKnowledgeChange (value) {
+        let checkedCount = value.length
+        this.checkAllKnowledge = checkedCount === this.knowledgeListLen
+        this.isIndeterminateKnowledge = checkedCount > 0 && checkedCount < this.knowledgeListLen
+        console.log(this.selectFormValidate.selectknowledge)
+        this.getQuestions()
+      },
+
+      /******************************* 数据验证 **********************************/
+      // 检测第一步数据是否正确
+      checkedData0 () {
+        // for (let key in this.headerKey) {
+        //   if (this.formValidate[key] === '') {
+        //     this.errorMess('请选择' + this.headerKey[key])
+        //     return false
+        //   }
+        // }
+        console.log(Util._.defaultsDeep({}, this.formValidate))
+//        return this.submitForm('formValidate')
+      },
+      // 检测第一步数据是否正确
+      checkedData1 () {
+        let canNext = true
+        let sum = 0
+
+        for (let i = 0, item, d = this.questions, l = d.length; i < l; i++) {
+          item = d[i]
+          for (let key in item) {
+            if (/_edit$/.test(key)) { // 取到有数量的题目输入数量
+              let num = key.replace('_edit', '') // 原数量
+              if (item[key] && !/^\d+$/.test(item[key]) || (+item[key] > +item[num])) {
+//              this.errorMess('试卷结构输入的题型数量必须是有效数字且不能大于总试题数量');
+                this.show = true
+                this.message = '试卷结构输入的题型数量必须是有效数字且不能大于总试题数量'
+                canNext = false
+                break
+              } else {
+                sum += +item[key]
+              }
+            }
+          }
+        }
+
+        //let formCheck = this.submitForm('selectFormValidate')
+
+        if (canNext && !sum) {
+          this.show = true
+          this.message = '至少选择一个知识点的题型才能进行下一步'
+        }
+
+        return canNext && sum > 0
+      },
+      // 检测预览数据
+      checkPreviewData () {
+        if (this.formValidate.scoreType === 1) {
+          for (let i = 0, d = this.questionsInfo, l = d.length; i < l; i++) {
+            if (!d[i].score || !/^\d{1,2}$/.test(d[i].score)) {
+              this.message = '每个题型的分数必须填写并且是有效的两位数'
+              this.show = true
+              return false
+            }
+          }
+        }
+        return true
+      },
+      /******************************* 按钮交互 **********************************/
+      // 下一步
+      next () {
+        console.log(this.step)
+        if (!this.formValidate.title || !this.questionTypeList.length) {
+          this.show = true
+          this.message = '请填写完整信息'
+          return
+        }
+        if (this.step == 1 && !this.questionsInfo.length) {
+          // 检测第一步数据是否正确
+
+          let canNext = true
+          let sum = 0
+
+          for (let i = 0, item, d = this.questions, l = d.length; i < l; i++) {
+            item = d[i]
+            for (let key in item) {
+              if (/_edit$/.test(key)) { // 取到有数量的题目输入数量
+                let num = key.replace('_edit', '') // 原数量
+                if (item[key] && !/^\d+$/.test(item[key]) || (+item[key] > +item[num])) {
+                  this.message = '试卷结构输入的题型数量必须是有效数字且不能大于总试题数量'
+                  this.show = true
+                  return
+                  canNext = false
+                  break
+                } else {
+                  sum += +item[key]
+                }
+              }
+            }
+          }
+
+          if (canNext && !sum) {
+            this.message = '至少选择一个知识点的题型才能进行下一步'
+            this.show = true
+            return
+          }
+        }
+        if (this.step == 2 && this.$router.query.type == 'intelligent') {
+          this.message = '请输入答题时长'
+          this.show = true
+          return
+        }
+
+//        let checkData = this['checkedData' + this.step]
+//        if (typeof checkData === 'function' && !checkData()) {
+//          // 数据检测未通过
+//          return
+//        }
+        //下一步
+        this.step++
+        switch (this.step) {
+          case 1:
+            this.getQuestionHeader()
+            this.getChapterDataForServer()
+            break
+          case 2:
+            this.getQuestionsInfo()
+
+            break
+          default:
+            break
+        }
+      },
+//      preview(){
+//        let data = this.$util.getFormData(this.$store.state.papers.znPreview)
+//        let opt = {
+//          ajaxSuccess: res => {
+//            this.$store.commit('papers/updateInfo', res.data)
+//            this.$store.commit('papers/initQuestionsList', res.data.questionsList)
+//            this.$store.commit('papers/getShowQuestionTypeOrder')
+//            this.initInfo()
+//          },
+//            jsonString: true,
+//            url: api.preview.path,
+//            method: api.preview.method,
+//            data
+//        }
+//        this.ajax(opt)
+//      },
+      // 删除题目
+      removeQuestions (index) {
+        let del = this.questions[index]
+        let selectknowledge = this.selectFormValidate.selectknowledge
+        let delIndex = selectknowledge.indexOf(del.knowledgeId)
+        this.checkAllKnowledge = false
+        this.isIndeterminateKnowledge = (selectknowledge.length - 1) <= 0 ? false : true
+        this.questions.splice(index, 1)
+        !!~delIndex && selectknowledge.splice(delIndex, 1)
+      },
+      // 改变分数类型
+      changeScoreType (type) {
+        if (type === 2) {
+          this.formValidate.score = 100
+        }
+      },
+      // 预览
+      preview (status) {
+
+//        if (!this.submitForm('formValidate') || !this.checkPreviewData()) {
+//          return
+//        }
+        this.getPriviewDate = status
+        let data = this.getPreviewData()
+
+        // 缓存智能组卷数据提供下次“换一批”
+        this.$store.commit('papers/initZnPreview', data)
+        let opt = {
+          ajaxSuccess: (data, res) => {
+            if (this.getPriviewDate) {
+              this.$store.commit('papers/init')
+              this.$store.commit('papers/updateInfo', res.data)
+              this.$store.commit('papers/initQuestionsList', res.data.questionsList)
+              this.$store.commit('papers/getShowQuestionTypeOrder')
+              this.$router.push({name: 'preview', params: {type: this.$route.query.type}, query: this.$route.query})
+            } else {
+              //this.getTableDate=res.data;
+              this.getTableDate = {
+                questionsKnowledgesDataArr: [],
+                questionsKnowledgesNameArr: [],
+                questionsTypesDataArr: [],
+                questionsTypesNameArr: [],
+              }
+              res.data.questionsList.map((item) => {
+                if (item.childQuestionsList) {
+                  item.childQuestionsList.map((item1, index1) => {
+                    item1.knowledgeList.map((item2, index2) => {
+                      if (this.getTableDate.questionsKnowledgesNameArr.indexOf(item2.name) == -1) {
+                        this.getTableDate.questionsKnowledgesNameArr.push(item2.name)
+                        this.getTableDate.questionsKnowledgesDataArr.push({name: item2.name, value: 1})
+                      } else {
+                        this.getTableDate.questionsKnowledgesDataArr.map((item3) => {
+                          if (item3.name == item2.name) {
+                            item3.value++
+                          }
+                        })
+                      }
+                    })
+                    if (this.getTableDate.questionsTypesNameArr.indexOf(item1.questionsTypeName) == -1) {
+                      this.getTableDate.questionsTypesNameArr.push(item1.questionsTypeName)
+                      this.getTableDate.questionsTypesDataArr.push({
+                        name: item1.questionsTypeName,
+                        value: 1,
+                        listarr: []
+                      })
+                      //concat(item1.knowledgeList)
+                    } else {
+                      this.getTableDate.questionsTypesDataArr.map((item4) => {
+                        if (item4.name == item1.questionsTypeName) {
+                          item4.value++
+                        }
+                      })
+
+                    }
+                  })
+
+                } else {
+                  item.knowledgeList.map((item1, index) => {
+                    if (this.getTableDate.questionsKnowledgesNameArr.indexOf(item1.name) == -1) {
+                      this.getTableDate.questionsKnowledgesNameArr.push(item1.name)
+                      this.getTableDate.questionsKnowledgesDataArr.push({name: item1.name, value: 1})
+                    } else {
+                      this.getTableDate.questionsKnowledgesDataArr.map((item6) => {
+                        if (item6.name == item1.name) {
+                          item6.value++
+                        }
+                      })
+                    }
+                  })
+                  if (this.getTableDate.questionsTypesNameArr.indexOf(item.questionsTypeName) == -1) {
+                    this.getTableDate.questionsTypesNameArr.push(item.questionsTypeName)
+                    this.getTableDate.questionsTypesDataArr.push({name: item.questionsTypeName, value: 1, listarr: []})
+                  } else {
+                    this.getTableDate.questionsTypesDataArr.map((item7) => {
+                      if (item7.name == item.questionsTypeName) {
+                        item7.value++
+                      }
+                    })
+                  }
+                }
+              })
+              res.data.questionsList.map((item) => {
+                if (item.childQuestionsList) {
+                  item.childQuestionsList.map((childList) => {
+                    this.getTableDate.questionsTypesDataArr.map((tableDateList, index) => {
+                      if (childList.questionsTypeName == tableDateList.name) {
+                        tableDateList.listarr.map((itemList) => {
+                          childList.knowledgeList.map((item2, index5) => {
+                            if (item2.name == itemList.name) {
+                              itemList.value++
+                              return
+                            }
+
+                          })
+
+                        })
+                        childList.knowledgeList.map((item3) => {
+                          if (JSON.stringify(tableDateList.listarr).indexOf(item3.name) == -1) {
+                            tableDateList.listarr.push({name: item3.name, value: 1})
+                            return
+                          }
+                        })
+
+                      }
+
+                    })
+
+                  })
+                } else {
+                  this.getTableDate.questionsTypesDataArr.map((tableDateList, index) => {
+                    if (item.questionsTypeName == tableDateList.name) {
+                      tableDateList.listarr.map((itemList) => {
+                        item.knowledgeList.map((item2, index5) => {
+                          if (item2.name == itemList.name) {
+                            itemList.value++
+                            return
+                          }
+                        })
+                      })
+                      item.knowledgeList.map((item3) => {
+                        console.log(item3)
+                        console.log(tableDateList.listarr)
+                        console.log(tableDateList.listarr.toString().indexOf(item3.name))
+                        if (JSON.stringify(tableDateList.listarr).indexOf(item3.name) == -1) {
+                          tableDateList.listarr.push({name: item3.name, value: 1})
+                          return
+                        }
+                      })
+
+                    }
+
+                  })
+
+                }
+
+              })
+            }
+//            this.$store.commit('papers/setchartOption', this.getTableDate)
+
+            this.getChartDate()
+            // this.$emit('preview', true)
+          },
+
+          jsonString: true,
+          url: api.preview.path,
+          method: api.preview.method,
+          data
+
+        }
+        this.ajax(opt)
+      },
+      getChartDate () {
+        console.log('lll')
+        // 计算统计图数据
+        let chartsOptions = {
+          questionsTypes: {
+            title: {
+              text: '题型分布',
+              x: 'center'
+            },
+            tooltip: {
+              trigger: 'item',
+              formatter: '{a} <br/>{b} : {c} ({d}%)'
+            },
+            legend: {
+              orient: 'vertical',
+              left: 'left',
+              show: false,
+              data: this.getTableDate.questionsTypesNameArr
+            },
+            series: [
+              {
+                name: '题型分布',
+                type: 'pie',
+                radius: '55%',
+                center: ['50%', '60%'],
+                data: this.getTableDate.questionsTypesDataArr,
+                itemStyle: {
+                  emphasis: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                  }
+                }
+              }
+            ]
+          },
+          questionsKnowledges: {
+            title: {
+              text: '知识点分布',
+              x: 'center'
+            },
+            tooltip: {
+              trigger: 'item',
+              formatter: '{a} <br/>{b} : {c} ({d}%)'
+            },
+            legend: {
+              orient: 'vertical',
+              show: false,
+              left: 'left',
+              data: this.getTableDate.questionsKnowledgesNameArr
+            },
+            series: [
+              {
+                name: '知识点分布',
+                type: 'pie',
+                radius: '55%',
+                center: ['50%', '60%'],
+                data: this.getTableDate.questionsKnowledgesDataArr,
+                itemStyle: {
+                  emphasis: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                  }
+                }
+              }
+            ]
+          }
+        }
+
+//        this.questionsTypesNameArr = questionsTypesNameArr // 问题类型数组
+//        this.questionsTypesDataArr =questionsTypesDataArr // 问题类型对应的数量信息数组
+//        this.questionsKnowledgesNameArr =questionsKnowledgesNameArr// 知识点类型数组
+//        this.questionsKnowledgesDataArr =questionsKnowledgesDataArr// 知识点类型对应的数量信息数组
+        this.initChar(chartsOptions)
+      },
+      openModal1 () {
+        this.reserveModal = true
+      },
+      setTempTitle (val) {
+        this.formValidate.templateName = val
+        this.saveTemp()
+
+      },
+      // 保存为模版
+      saveTemp (isLoadingFun) {
+        if (!this.checkPreviewData()) {
+          return
+        }
+        let data = this.getTempData()
+//      if (!isLoadingFun) isLoadingFun = function () {
+//      }
+//      isLoadingFun(true)
+        let opt = {
+//        error: () => isLoadingFun(false),
+          ajaxSuccess: () => {
+            this.show = true
+            this.message = '保存为模版成功！'
+            this.reserveModal = false
+          },
+          ajaxParams: {
+            url: api.papersTemplateAdd.path,
+            method: api.papersTemplateAdd.method,
+            jsonString: true,
+            data
+          }
+        }
+        this.ajax(opt)
+      },
+
+      /*
+      * 点击提交按钮 监听是否验证通过
+      * @param formName string  form表单v-model数据对象名称
+      * @return flag boolean   form表单验证是否通过
+      * */
+//    submitForm (formName) {
+//      let flag = false
+//      this.$refs[formName].validate((valid) => {
+//        if (valid) {
+//          flag = true
+//        }
+//      })
+//      return flag
+//    },
+      /*
+       * 重置当前表单
+       * */
+      resetForm (formName) {
+        this.$refs[formName].resetFields()
+      },
+      /*
+       * 获取表单数据
+       * @return string  格式:id=0&name=aa
+       * */
+      getFormData (data) {
+        let myData = Util._.defaultsDeep({}, data)
+        return myData
+      },
+
+      // 初始化图表
+      initChar (obj) {
+        console.log(1)
+        let charts = ['questionsTypes', 'questionsKnowledges']
+        let myChart = {}
+        this.$nextTick(() => {
+          charts.map(item => myChart[item] = Echarts.init(document.getElementById(item)))
+          for (let key in myChart) {
+            myChart[key].setOption(obj[key])
+          }
+        })
+      },
+      // 统计试卷信息
+      getSummaries (param) {
+        const {columns, data} = param
+        const sums = []
+        columns.forEach((column, index) => {
+          if (index === 0) {
+            sums[index] = '合计'
+            return
+          }
+          if (!~[1, 3].indexOf(index)) {
+            return
+          }
+          const values = data.map(item => Number(item[column.property]))
+          if (!values.every(value => isNaN(value))) {
+            sums[index] = values.reduce((prev, curr) => {
+              const value = Number(curr)
+              if (!isNaN(value)) {
+                return prev + curr
+              } else {
+                return prev
+              }
+            }, 0)
+          } else {
+            sums[index] = '该列只允许输入数字'
+          }
+          if (index === 3) { // 计算总分
+            this.formValidate.score = sums[index]
+          }
+        })
+
+        return sums
+      },
+      // 设置该题型的总分
+      setThisTotalScore (row) {
+        let res = 0
+        if (!isNaN(row.num)) {
+          res = row.num * row.score
+        }
+        row.totalScore = res
+      },
+      /******************************* 数组转换 ***************************/
+      // 服务器数据一对一转换为一对多
+      serverToQuestions (arr) {
+        console.log(arr)
+        let temp = {} // 知识点去重
+        let res = [] // 知识点
+        let questionTypeObj = {} // 知识点动态题型初始化
+        // 初始化知识点对应的题型数量
+        this.formValidate.questionType.map(item => {
+          questionTypeObj[this.getQuestionHeaderProp(item, true)] = 0 // 原数据
+          questionTypeObj[this.getQuestionHeaderProp(item, true) + '_edit'] = 0 // 编辑数据
+        })
+
+        arr.map(item => {
+          if (!temp[item.knowledgeId]) {
+            let {knowledgeId, knowledgeName} = item
+            // 初始化知识点对应的题型
+            temp[item.knowledgeId] = this.$util.getFormData(questionTypeObj, {knowledgeId, knowledgeName})
+          }
+          // 对应知识点的题型数量赋值
+          temp[item.knowledgeId][this.getQuestionHeaderProp(item.questionsTypeId, true)] = item.total
+
+          console.log(temp[item.knowledgeId])
+          temp[item.knowledgeId].total += item.total
+        })
+
+        for (let key in temp) {
+          res.push(temp[key])
+        }
+
+        /**
+         * 知识点id        知识点        总题数 需要题数
+         * [{knowledgeId, knowledgeName,total,total_edit}]
+         */
+        return res
+      },
+      // 获取试卷信息表格数据
+      getQuestionsInfoTable () {
+        let questionTypes = {} // 所有题型
+        let table = [] // 表格数据
+        console.log(this.questions, 'ooo')
+        this.questions.map(item => {
+          /* 表格数据 */
+          for (let key in item) {
+            // 获取题型
+            if (~key.indexOf('_edit')) {
+              let res = this.getQuestionHeaderProp(key)
+              let {knowledgeId, knowledgeName} = item
+              if (!questionTypes[res[1]]) {
+                questionTypes[res[1]] = { // 表格每一行的数据
+                  questionsTypeId: res[1], // 试题类型id
+                  type: this.questionsType[res[1]].name, // 试题类型
+                  num: 0, // 试题数量
+                  score: '', // 单题分值
+                  totalScore: 0, // 总分
+                  knowledges: [] // 知识点
+                }
+              }
+              // 累加每个知识点对应的题型数量
+              questionTypes[res[1]].num += +(item[key])
+              // 该题型下的知识点(只有该知识点有数量才会加入到该题型下)
+              item[key] && questionTypes[res[1]].knowledges.push({
+                knowledgeId,
+                knowledgeName,
+                num: item[key], // 该知识点在该题型下的数量
+                total: item[key.replace('_edit', '')] // // 该知识点在该题型下的总数量
+              })
+            }
+          }
+        })
+        let totalQuestions = 0 // 统计所有试题量
+        for (let key in questionTypes) {
+          // 删除没有使用的知识点
+          let knowledges = []
+          questionTypes[key].knowledges.map(item => {
+            if (+item.num) {
+              totalQuestions += +item.num
+              knowledges.push(item)
+            }
+          })
+          questionTypes[key].knowledges = knowledges
+          // 只有试题下有题目才会加入到表格中
+          questionTypes[key].num && table.push(questionTypes[key])
+        }
+        questionTypes = null
+
+        this.formValidate.totalQuestions = totalQuestions
+        this.questionsInfo = table
+        console.log(this.questionsInfo, '22')
+//        this.questionsInfo.map()
+//        this.questionsInfoSelectList
+
+      },
+      // 获取试题类型及分数数据
+      getQuestionsTypeAndScore () {
+        let questionsTypeScore = []
+        let condition = []
+        let scoreType = this.formValidate.scoreType
+
+        this.questionsInfo.map(item => {
+          questionsTypeScore.push({
+            questionsTypeId: item.questionsTypeId,
+            score: scoreType === 1 ? item.score : '' // 自定义的分数的时候才读取分数
+          })
+          item.knowledges.map(kItem => {
+            let {knowledgeId, total, num: selectCount} = kItem
+            condition.push({
+              questionsTypeId: item.questionsTypeId,
+              knowledgeId, total, selectCount, selectNum: selectCount
+            })
+          })
+        })
+
+        return {questionsTypeScore, condition}
+      },
+      // 获取预览提交数据
+      getPreviewData () {
+        console.log(11)
+        let data = this.getFormData(this.formValidate)
+        // let questionsTypeScore = []
+        // let condition = []
+
+        // 时间转换
+        data.times = (data.times || 0) * 60 // 分钟转换为秒
+        data.startTime = this.conductDate(data.startTime, 'yyyy-MM-dd HH:mm:ss')
+        data.submitTime = this.conductDate(data.submitTime, 'yyyy-MM-dd HH:mm:ss')
+        data.publishAnswerTime = this.conductDate(data.publishAnswerTime, 'yyyy-MM-dd HH:mm:ss') || ''
+        // 阶段
+        data.stage = data.grade > 6 ? (data.grade > 9 ? 2 : 1) : '0'
+        console.log(11)
+        // 难度、知识点
+        let {diffLevelCode} = this.selectFormValidate
+        data.diffLevelCode = diffLevelCode
+
+        // let difMap = this.questionDiffMap[diffLevel]; // 获取难度区间
+        // let dif = ['', ''];
+        // if (difMap) {
+        //     dif = difMap.split(',')
+        // }
+        // data.diffLevelSmall = dif[0];
+        // data.diffLevelBig = dif[1];
+
+        // this.questionsInfo.map(item => {
+        //   questionsTypeScore.push({
+        //     questionsTypeId: item.questionsTypeId,
+        //     score: data.scoreType === 1 ? item.score : '' // 自定义的分数的时候才读取分数
+        //   })
+        //   item.knowledges.map(kItem => {
+        //     let {knowledgeId, total, num: selectCount} = kItem
+        //     condition.push({
+        //       questionsTypeId: item.questionsTypeId,
+        //       knowledgeId, total, selectCount
+        //     })
+        //   })
+        // })
+        //
+        let {questionsTypeScore, condition} = this.getQuestionsTypeAndScore()
+        data.questionsTypeScore = questionsTypeScore
+        data.condition = condition
+
+        return data
+      },
+      // 获取模版保存数据
+      getTempData () {
+        let data = this.getFormData(this.formValidate)
+        let {textbookVersionId, textbookVersionName, subject} = this.userTextbookVersionInfo
+        let {diffLevelCode} = this.selectFormValidate
+        let {title: templateName, grade, score, totalQuestions, scoreType, term} = data
+        let {questionsTypeScore: papersTemplateScoreList, condition: papersTemplateInfoList} = this.getQuestionsTypeAndScore()
+
+        return {
+          textbookVersionId,
+          textbookVersionName,
+          term,
+          subject,
+          scoreType,
+          templateName,
+          grade,
+          score,
+          totalQuestions,
+          diffLevelCode,
+          papersTemplateInfoList,
+          papersTemplateScoreList,
+        }
+      },
+      /******************************* 数据初始化 **************************/
+      initKnowledge () {
+        this.selectFormValidate.selectknowledge = []
+        this.checkAllKnowledge = false
+        this.isIndeterminateKnowledge = false
+        this.knowledgeList = []
+        this.questions = []
+      },
+      initChapter () {
+        this.selectFormValidate.selectChapter = []
+        this.checkAllChapter = false
+        this.isIndeterminateChapter = false
+        this.chapterList = null
+      },
+      /******************************* 数据获取 ****************************/
+      // 根据选择的所选的题型获取表格头部
+      getQuestionHeader () {
+        let t = []
+        this.formValidate.questionType.map(item => t.push({
+          label: this.questionsType[item].name,
+          prop: this.getQuestionHeaderProp(item, true)
+        }))
+        this.questionHeader = t
+        console.log(this.questionHeader, 'this.questionHeader')
+        this.getQuestions()
+      },
+      // 获取题型表格头部的动态字段及值
+      getQuestionHeaderProp (params, getStr) {
+        let str = '_'
+        if (getStr) {
+          // str
+          return 'total' + str + params
+        } else {
+          // []
+          return params.split(str)
+        }
+      },
+      // 获取试卷信息
+      getQuestionsInfo () {
+        // 计算试卷信息
+        this.getQuestionsInfoTable()
+        let questionsTypesNameArr = [] // 问题类型数组
+        let questionsTypesDataArr = [] // 问题类型对应的数量信息数组
+        let questionsKnowledgesNameObj = {} // 知识点类型[缓存使用]
+        let questionsKnowledgesNameArr = [] // 知识点类型数组
+        let questionsKnowledgesDataArr = [] // 知识点类型对应的数量信息数组
+        this.questionsInfo.map(item => {
+          questionsTypesNameArr.push(item.type)
+          questionsTypesDataArr.push({value: item.num, name: item.type})
+          item.knowledges.map(kItem => {
+            let {knowledgeName: name, num: value} = kItem
+            if (!questionsKnowledgesNameObj[kItem.knowledgeId]) {
+              questionsKnowledgesNameObj[kItem.knowledgeId] = {name, value: +value}
+            } else {
+              questionsKnowledgesNameObj[kItem.knowledgeId].value += +value
+            }
+          })
+        })
+        console.log(2)
+        for (let key in questionsKnowledgesNameObj) {
+          questionsKnowledgesNameArr.push(questionsKnowledgesNameObj[key].name)
+          questionsKnowledgesDataArr.push(questionsKnowledgesNameObj[key])
+        }
+        this.preview(false)
+      },
+      // 获取题型
+      getQuestionsType () {
+        // this.getDataForServer('questionsType', {type: 0}, obj => this.questionsType = obj)
+        this.getDataForServer('questionsType', {type: 0}, obj => {
+          let questionsTypeArr = [[], []]
+          this.questionsType = obj
+          Object.keys(obj).map(id => questionsTypeArr[Number(id) < 0 ? 0 : 1].push(obj[id]))
+          // 排序处理
+          questionsTypeArr[0].sort((a, b) => b.id - a.id) // 倒序
+          questionsTypeArr[1].sort((a, b) => a.id - b.id) // 正序
+          this.questionsTypeArr = [].concat(...questionsTypeArr[0], ...questionsTypeArr[1])
+          console.log(this.questionsTypeArr)
+          this.questionsTypeArr.map((item) => {
+            item.key = item.id
+            item.value = item.name
+          })
+        })
+      },
+      // 获取章节
+      getChapterDataForServer () {
+        // 初始化数据
+        if (this.changeGradeOrTerm) {
+
+          this.initChapter()
+          this.initKnowledge()
+          console.log(2)
+          this.changeGradeOrTerm = false
+        }
+
+        let {textbookVersionId, grade, term, subject} = this.formValidate
+        // 教材、年级、学期、科目缺一不可
+        if (!textbookVersionId || !grade || term === '' || !subject) {
+          return
+        }
+        console.log(2)
+        // 缓存数据
+        let cacheKey = [textbookVersionId, grade, term, subject]
+        let cacheData = this.allChapter[cacheKey.join('-')]
+        if (cacheData) {
+          console.log(this.$util.getFormData(cacheData))
+          this.chapterList = this.$util.getFormData(cacheData) // 读取缓存
+          this.chapterListLen = Object.getOwnPropertyNames(this.chapterList).length - 1
+        } else {
+          // 获取数据并缓存
+          this.getDataForServer('chapter', {textbookVersionId, grade, subject, term}, (data, res) => {
+            console.log(data)
+            console.log(res)
+            res.data.map((item) => {
+              item.key = item.id
+              item.value = item.name
+            })
+            this.chapterList = res.data
+            this.allChapter[cacheKey.join('-')] = res.data
+            this.chapterListLen = res.data.length
+          })
+        }
+        console.log(2)
+      },
+      // 获取知识点
+      getKnowledgeDataForServer () {
+        this.getDataForServer('knowledge', {chapterIds: this.selectFormValidate.selectChapter.join(',')}, (data, res) => {
+
+          res.data.map((item) => {
+            item.key = item.id
+            item.value = item.name
+
+          })
+//          let temp=[...new Set(res.data)];
+          var hash = {}
+          res.data = res.data.reduce((item, next) => {
+            hash[next.name] ? '' : hash[next.name] = true && item.push(next)
+            return item
+          }, [])
+          console.log(res.data)
+          let thisKDId = []
+          let selectknowledge = this.selectFormValidate.selectknowledge
+          let knowledgeIds = Object.keys(res.data)
+          this.knowledgeList = res.data
+          this.knowledgeListLen = knowledgeIds.length
+          if (selectknowledge.length) { // 原来是否已经选择过知识点
+            selectknowledge.map(id => {
+              // 提取出有效的知识点id
+              ((knowledgeIds || []).includes(id.toString())) && thisKDId.push(+id)
+            })
+            this.checkAllKnowledge = thisKDId.length === this.knowledgeListLen
+            this.isIndeterminateKnowledge = thisKDId.length > 0 && thisKDId.length < this.knowledgeListLen
+            this.selectFormValidate.selectknowledge = thisKDId
+            this.getQuestions()
+          }
+        })
+      },
+      // 获取试题类型组
+      getQuestions () {
+        // 版本、年级、学期、科目、题型
+        let {textbookVersionId, grade, term, subject, questionType: questionsTypeIds} = this.formValidate
+        // 难度、知识点
+        let {diffLevelCode, selectknowledge: knowledgeIds} = this.selectFormValidate
+
+        // let difMap = this.questionDiffMap[diffLevel]; // 获取难度区间
+        // let dif = ['', ''];
+        // if (difMap) {
+        //     dif = difMap.split(',')
+        // }
+
+        // subject = this.headerSelectObj.subject.code
+        questionsTypeIds = questionsTypeIds.join(',')
+        knowledgeIds = knowledgeIds.join(',')
+
+        // 没有知识点则不请求数据
+        if (!knowledgeIds) {
+          this.selectFormValidate.selectknowledge = []
+          this.questions = []
+          return
+        }
+
+        this.getDataForServer('questions', {
+          textbookVersionId,
+          grade,
+          term,
+          subject,
+          diffLevelCode, /*diffLevelSmall: dif[0], diffLevelBig: dif[1],*/
+          questionsTypeIds,
+          knowledgeIds,
+          openType: '0'
+        }, (obj, res) => {
+          console.log(res)
+          this.questions = this.serverToQuestions(res.data instanceof Array ? res.data : [])
+          console.log(this.questions, 'w1')
+        }, false)
+      },
+      // 从服务器获取选择数据
+      getDataForServer (type, params, call, isObj = true) {
+        let opt = {
+          ajaxSuccess: (data1, res) => {
+            let data = {}
+            if (isObj && res.data instanceof Array && res.data.length) {
+              res.data.map(item => data[item.id] = item)
+            } else {
+              data = null
+            }
+            call && call(data, res)
+          },
+
+          url: api[type],
+          params
+
+        }
+        this.ajax(opt)
+      },
+//    nextStep () {
+//      this.step2++
+//      console.log(this.step2)
+//      if (this.step2 === 1 && this.step2 < 3) {
+//        this.$router.push({name: 'tQuestion'})
+//      } else if (this.step2 === 2 && this.step2 < 3) {
+//        this.$router.push({name: 'tBasic'})
+//      } else if (this.step2 === 3 && this.step2 < 3) {
+//        console.log(456)
+//      } else {
+//        this.step2 = 0
+//        this.$router.push({name: 'tTextbook'})
+//      }
+//    }
+    },
+    created () {
+//      setTimeout(() => {this.init()}, 1000)
+      this.init()
+    },
+    mounted () {
+    },
+    components: {
+      XTable, Step, StepItem, Checklist, DatetimeRange,
+      HeaderTitle, Group
+    }
+  }
+</script>
+<style lang="scss">
+    @import "../../../tcss/tHomework";
+</style>

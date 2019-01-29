@@ -1,0 +1,78 @@
+<!----------------------------------
+****--@name     theClassOf_name
+****--@role     ${*}
+****--@date     2018/5/3
+****--@author   zzh
+----------------------------------->
+<template>
+    <div class="theClassOf_name">
+      <header-title>
+        <slot>群信息</slot>
+      </header-title>
+      <div class="stance"></div>
+      <ul class="tHeader">
+          <li>群名称1</li>
+          <li>创建人<span>李老师</span></li>
+          <li>群&emsp;号<span>49811548416521654</span></li>
+      </ul>
+      <div class="tName">
+        <span>我的群名片</span><span>李一天</span>
+      </div>
+      <div class="tName" style="border: 0; padding: 0.1rem 0.1rem 0.1rem 0.16rem">
+        <span>群成员</span>
+        <span>
+          <span>20人</span>
+          <span><x-icon type="ios-arrow-forward" size="0.25rem"></x-icon></span>
+        </span>
+      </div>
+      <div class="tImg">
+        <div v-for="index in 6" :key="index" @click="open('theClassOf_member')">
+          <img src="../../../../static/img/img777.png">
+          <div style="font-size: 0.12rem;color:rgba(27,27,27,1);">马冬梅</div>
+        </div>
+      </div>
+      <div class="tIntroduce">
+        <div>群介绍</div>
+        <div>三年一班群，学习帮帮哒！</div>
+      </div>
+      <div class="tInform">群通知</div>
+      <div class="tIntroduce" style="border-bottom: 0.01rem solid #EEF4F0">
+        <div>群介绍</div>
+        <div>三年一班群，学习帮帮哒！</div>
+      </div>
+      <div class="tIntroduce" style="border-bottom: 0.05rem solid #EEF4F0">
+        <div>群介绍</div>
+        <div>三年一班群，学习帮帮哒！</div>
+      </div>
+      <x-button class="tOver" type="primary">退出班组</x-button>
+    </div>
+</template>
+<script>
+/* 当前组件必要引入 */
+import HeaderTitle from '../header'
+// 当前组件引入全局的util
+let Util = null
+export default {
+  data () {
+    return {}
+  },
+  methods: {
+    // 初始化请求列表数据
+    init () {
+
+    },
+    open (type) {
+      this.$router.push({name: type})
+    }
+  },
+  created () {
+    this.init()
+  },
+  mounted () {
+  },
+  components: {HeaderTitle}
+}
+</script>
+<style lang="scss">
+  @import "../../../css/child/theClassOf_name";
+</style>

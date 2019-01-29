@@ -1,0 +1,3 @@
+onresize = onload = function () {
+  document.documentElement.style.fontSize = document.documentElement.clientWidth / 3.75 + 'px'
+}

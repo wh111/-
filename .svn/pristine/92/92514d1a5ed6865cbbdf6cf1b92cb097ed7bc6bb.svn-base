@@ -1,0 +1,159 @@
+<!----------------------------------
+****--@name     学生端首页
+****--@role     学生
+****--@date     2018/4/23
+****--@author   zzh
+----------------------------------->
+<template>
+  <div id="homeFirst">
+    <div>
+      <ul class="hello_header">
+        <li @click="skip">
+          <x-icon type="ios-arrow-back" size="0.3rem"></x-icon>
+          <div>返回</div><div>关闭</div>
+        </li>
+        <li><div>鲁教乐学</div></li>
+        <li>
+          <div></div><div></div><div></div>
+        </li>
+      </ul>
+      <div class="stance"></div>
+      <div id="homePage">
+        <div class="homePage_head">
+          <div class="headerImg">
+            <div>
+              <img src="../../../static/img/03.jpg" style="width: 0.4rem;height: 0.4rem;"/>
+              <span class="home_name">{{userInfo.name}}</span><span v-if="userInfo.vipStatus === 1" style="color: #FFA91B">V</span><span style="color: #EAEAEA" v-else>V</span>
+            </div>
+            <div style="text-align: right">
+              <img src="../../../static/img/08.jpg" style="width: 0.9rem;height: 0.25rem;" @click="open('recentPractice')"/>
+            </div>
+          </div>
+          <div class="homePage_books">
+            <div class="homePage_book" v-for="(item,index) in studyProductList" :key="index">
+              <img src="../../../static/img/1_10.jpg"/>
+              <div>{{item.title}}</div>
+              <div><span>价格</span><span>￥{{item.originalPrice}}</span></div>
+              <div><span>试卷</span><span>{{item.unit}}套</span></div>
+            </div>
+            <p style="width: 100%" class="text-center" v-if="studyProductList.length==0">
+              好久没有学习了!
+            </p>
+          </div>
+        </div>
+        <ul class="homePage_center">
+          <li v-for="(item,index) in productTypeListData" :key="index" @click="open('recentPractice_next_question')">
+            {{item.name}}
+          </li>
+        </ul>
+        <div class="homePage_head" style="box-sizing: border-box;padding: 0.16rem 0.15rem">
+          <div class="headerImg">
+            <div style="margin-bottom: 0.1rem;color: #585858">
+              <h4><strong>推荐练习</strong></h4>
+            </div>
+          </div>
+          <div style="display: flex;justify-content: space-between;width: 100%;flex-wrap: wrap">
+            <div class="homePage_book" v-for="(item,index) in assessmentRecommendData" :key="index">
+              <img src="../../../static/img/1_03.jpg"/>
+              <div class="textShowEllipsis">{{item.title}}</div>
+              <div><span>价格</span><span>￥{{item.originalPrice}}</span></div>
+              <div><span>试卷</span><span>{{item.unit}}套</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import api from './api.js'
+export default {
+  data () {
+    return {
+      show: true,
+      studyProductList: [],  // 最近练习
+      assessmentRecommendData: [], // 推荐练习
+      productTypeListData: []
+    }
+  },
+  methods: {
+    init () {
+      this.getMyCurrentStudyProductList()
+      this.getTypes()
+      this.getAssessmentRecommend()
+    },
+
+    // 获取最近练习的题库
+    getMyCurrentStudyProductList () {
+      let options = {
+        url: api.myCurrentStudyProductList.path,
+        params: {
+          curPage: 1,
+          pageSize: 3
+        },
+        /**
+         * 服务端返回的状态码检查,默认状态码检查前执行
+         * @param {*} data  服务器端返回的实际数据结构,根据不同业务格式不同
+         * @param {object} res 服务器端返回的response值 {data:'**',status:{conde:0,msg:'请求数据成功!'}}
+         */
+        ajaxSuccess: (data, res) => {
+          this.studyProductList = data['dataList']
+        }
+      }
+      this.ajax(options)
+    },
+
+    // 获取类别
+    getTypes () {
+      let options = {
+        baseURL: '/stu',
+        url: api.stuEnvs.path,
+        /**
+         * 服务端返回的状态码检查,默认状态码检查前执行
+         * @param {*} data  服务器端返回的实际数据结构,根据不同业务格式不同
+         * @param {object} res 服务器端返回的response值 {data:'**',status:{conde:0,msg:'请求数据成功!'}}
+         */
+        ajaxSuccess: (data, res) => {
+          this.productTypeListData = data['productTypeList']
+        }
+      }
+      this.ajax(options)
+    },
+
+    // 获取推荐练习
+    getAssessmentRecommend () {
+      let options = {
+        url: api.assessmentRecommend.path,
+        /**
+         * 服务端返回的状态码检查,默认状态码检查前执行
+         * @param {*} data  服务器端返回的实际数据结构,根据不同业务格式不同
+         * @param {object} res 服务器端返回的response值 {data:'**',status:{conde:0,msg:'请求数据成功!'}}
+         */
+        ajaxSuccess: (data, res) => {
+          this.assessmentRecommendData = data['dataList']
+        }
+      }
+      this.ajax(options)
+    },
+    open (type) {
+      this.$router.push({name: type})
+    },
+    skip () {
+      this.$router.push({name: 'login'})
+    }
+  },
+  created () {
+    this.init()
+  },
+  computed: {
+    userInfo () {
+      return this.$store.state.loginInfo || {}
+    }
+  },
+  components: {}
+}
+</script>
+<style lang="scss">
+  @import '../../css/home';
+</style>

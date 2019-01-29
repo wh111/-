@@ -1,0 +1,123 @@
+<!----------------------------------
+****--@name     topicAlert
+****--@role
+****--@date     2018/5/6/006
+****--@author   zzh
+----------------------------------->
+<template>
+  <div class="topicAlert">
+    <div class="tab_click">
+      <div @click="change(1)">题版
+        <div v-transfer-dom class="persistent">
+          <confirm v-model="show1" title="题版" @on-cancel="onCancel" @on-confirm="onConfirm" @on-show="onShow" @on-hide="onHide">
+            <div v-for="(item,index) in data" :key="index">
+              <div class="recentPractice_last_title">{{item.name}}</div>
+              <grid class="recentPractice_last_grid" :cols="6" :show-lr-borders="false">
+                <grid-item v-for="(index) in item.number" :key="index">
+                  <div class="grid-center" @click="open(item.id)">
+                    <span>{{index}}</span>
+                  </div>
+                </grid-item>
+              </grid>
+            </div>
+          </confirm>
+        </div>
+      </div>
+      <div @click="change(2)">
+        笔记
+        <div v-transfer-dom class="recentPractice_last_note">
+          <confirm v-model="show" title="添加笔记" @on-cancel="onCancel" @on-confirm="onConfirm" @on-show="onShow" @on-hide="onHide">
+            <textarea style="height: 1.2rem;width: 90%;border: 1px solid #C2C2C2;"></textarea>
+          </confirm>
+        </div>
+      </div>
+      <div>收藏</div>
+    </div>
+    <!--<div class="tab_content">-->
+      <!--<div v-if="type==1">-->
+        <!--<recent-practice-last></recent-practice-last>-->
+      <!--</div>-->
+      <!--<div v-if="type==2">笔记</div>-->
+      <!--<div v-if="type==3">收藏</div>-->
+    <!--</div>-->
+  </div>
+</template>
+<script>
+/* 当前组件必要引入 */
+import RecentPracticeLast from '../home/recentPractice_last_question'
+// 当前组件引入全局的util
+let Util = null
+export default {
+  data () {
+    return {
+      type: 1,
+      show: false,
+      show1: false,
+      data: [
+        {name: '单选题', number: 9, id: 1},
+        {name: '填空题', number: 10, id: 2},
+        {name: '问答题', number: 8, id: 3}
+      ],
+      skip: ''
+    }
+  },
+  methods: {
+    // 初始化请求列表数据
+    init () {
+
+    },
+    plan (type) {
+      this.$router.push({name: type})
+    },
+    open (type) {
+      this.skip = type
+      // console.log(123)
+    },
+    change (type) {
+      this.type = type
+      if (type === 2) {
+        this.show = true
+      } else if (type === 1) {
+        this.show1 = true
+      }
+    },
+    onCancel () {
+      console.log('on cancel')
+    },
+    onConfirm (msg) {
+      // console.log('on confirm')
+      if (msg) {
+        alert(msg)
+      }
+    },
+    onHide (type) {
+      type = this.skip
+      // console.log('on hide13232')
+      console.log(type)
+      if (type === 1) {
+        this.$router.push({name: 'recentPractice_next_question'})
+      } else if (type === 2) {
+        this.$router.push({name: 'sCompletion'})
+      } else if (type === 3) {
+        this.$router.push({name: 'sAsked'})
+      }
+    },
+    onShow () {
+      console.log('on show')
+    },
+    onItemClick () {
+      console.log('on item click')
+    }
+  },
+  created () {
+    this.init()
+  },
+  mounted () {},
+  components: {
+    RecentPracticeLast
+  }
+}
+</script>
+<style lang="scss">
+  @import '../../../css/home/recentPractice_last';
+</style>

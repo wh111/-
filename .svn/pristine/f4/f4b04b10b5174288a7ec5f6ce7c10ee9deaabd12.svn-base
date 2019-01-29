@@ -1,0 +1,97 @@
+<!----------------------------------
+****--@name     message
+****--@role     ${*}
+****--@date     2018/5/2
+****--@author   zzh
+----------------------------------->
+<template>
+    <div class="message">
+        <header-title>
+            <slot>消息</slot>
+        </header-title>
+        <div class="stance"></div>
+        <div class="myErrors_header" @click="open('message_content')">
+            <flexbox v-for="(item,index) in data" :key="index">
+                <flexbox-item :span="6">
+                    <div style="font-size: 0.12rem;">{{item.title}}</div>
+                </flexbox-item>
+                <div style="display: flex;align-items: center;">
+                    <span style="color: #737373;font-size: 0.12rem;">{{item.createTime | formatDate('yyyy-MM-dd HH:mm')}}</span>
+                </div>
+                <div class="badge-value">
+                    <badge></badge>
+                </div>
+            </flexbox>
+        </div>
+    </div>
+</template>
+<script>
+  /* 当前组件必要引入 */
+  import HeaderTitle from '../header'
+  import { Badge, Group, Cell } from 'vux'
+  import api from './api'
+  // 当前组件引入全局的util
+  let Util = null
+  export default {
+    data () {
+      return {
+        num: 1,
+        data: [
+          {name: '老师催你交作业了', title: '2017-08-09  10:00'},
+          {name: '假装这是一条平台消息通知', title: '2017-08-09  10:00'},
+          {name: '假装这是一条平台消息通知', title: '2017-08-09  10:00'},
+          {name: '假装这是一条平台消息通知', title: '2017-08-09  10:00'}
+        ]
+      }
+    },
+    methods: {
+      // 初始化请求列表数据
+      init () {
+        this.messageList()
+      },
+      messageList () {
+        let options = {
+          url: api.sysMsgList.path,
+          params: {
+            curPage: this.num,
+            pageSize: 10,
+          },
+          /**
+           * 服务端返回的状态码检查,默认状态码检查前执行
+           * @param {*} data  服务器端返回的实际数据结构,根据不同业务格式不同
+           * @param {object} res 服务器端返回的response值 {data:'**',status:{conde:0,msg:'请求数据成功!'}}
+           */
+          ajaxSuccess: (data, res) => {
+            this.data = data['dataList']
+          }
+        }
+        this.ajax(options)
+      },
+      open (type) {
+        this.$router.push({name: type})
+      }
+    },
+    created () {
+      this.init()
+    },
+    mounted () {
+    },
+    components: {HeaderTitle, Badge, Group, Cell}
+  }
+</script>
+<style lang="scss">
+    .message {
+        .myErrors_header {
+            font-weight: bold;
+            color: #363636;
+            .vux-flexbox {
+                box-sizing: border-box;
+                padding: 0.18rem 0.1rem 0.18rem 0.16rem;
+                border-bottom: 1px solid #EDF3EE;
+                justify-content: space-between;
+                align-items: center;
+                font-size: 0.12rem;
+            }
+        }
+    }
+</style>

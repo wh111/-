@@ -1,0 +1,194 @@
+<!----------------------------------
+****--@name     ${*}
+****--@role     ${*}
+****--@date     2018/4/24
+****--@author   zzh
+----------------------------------->
+<template>
+    <div class="appraisal_math">
+        <scroller lock-y :scrollbar-x=false>
+            <div class="box1" :style="{width:(subjectList.length+1)*0.75+ 'rem' }">
+                <div>科目： </div>
+                <div class="box1-item" @click="change(index,item)" :class="active==index ? 'active' : ''"
+                     v-for="(item,index) in subjectList">{{item.subject | subject}}
+                </div>
+            </div>
+        </scroller>
+        <div class="content">
+            <flexbox class="content_flexbox">
+                <flexbox-item :span="4">
+                    <div class="flex-demo">{{select.subject | subject}}</div>
+                </flexbox-item>
+                <flexbox-item :span="4" align="right" @click.native="openTest">进入测评
+                    <!--<img @click="open" src="../../../../static/img/08.jpg"-->
+                                                                <!--style="width: 0.9rem;height: 0.25rem;" alt="">-->
+                </flexbox-item>
+            </flexbox>
+            <flexbox class="content_flexbox">
+                <flexbox-item :span="3">
+                    <div class="flex-demo">学习进度</div>
+                </flexbox-item>
+                <x-progress class="content_progress" :percent="studyProgress" :show-cancel="false"
+                            style="width: 100%;"></x-progress>
+                <flexbox-item :span="2" align="right">{{studyProgress}}%</flexbox-item>
+            </flexbox>
+            <flexbox class="content_flexbox">
+                <flexbox-item :span="3">
+                    <div class="flex-demo">能力值</div>
+                </flexbox-item>
+                <x-progress class="content_progress" :percent="percentageAbility" :show-cancel="false"
+                            style="width: 100%;"></x-progress>
+                <flexbox-item :span="2" align="right">{{percentageAbility}}%</flexbox-item>
+            </flexbox>
+        </div>
+        <div class="aside">
+            当前章节掌握情况
+        </div>
+        <div>
+            <flexbox class="footer" v-for="(item,index) in chapterList" :key="index">
+                <flexbox-item :span="5">
+                    <div>{{item.name}}：{{item.chapterText}}</div>
+                </flexbox-item>
+                <flexbox-item :span="3" align="right">
+                    <div @click="accessTest(item)" style="display: flex;align-items: center">
+                        <span> {{item.level}}%</span>
+                        <span><x-icon type="ios-arrow-forward" size="0.3rem"></x-icon></span>
+                    </div>
+                </flexbox-item>
+            </flexbox>
+            <flexbox v-if="studyProgress<=0">
+                <x-button style="margin-top: 0.1rem;width: 80%" type="primary" @click.native="firstJoin">进入首次测评</x-button>
+            </flexbox>
+        </div>
+    </div>
+</template>
+<script>
+/* 当前组件必要引入 */
+// 当前组件引入全局的util
+
+import api from './api'
+let Util = null
+
+export default {
+  data () {
+    return {
+      subjectList: [],
+      chapterList: [],
+      active: '',
+      percent2: 30,
+      percent3: 20,
+      studyProgress: 0,
+      percentageAbility: 0,
+      data: [],
+      select: {
+        subject: '',
+        textbookVersionId: '',
+        grade: this.grade
+      }
+    }
+  },
+  methods: {
+    // 初始化请求列表数据
+    init () {
+      this.subjectList = this.$store.state.loginInfo.textbookVersionList
+      this.change(0, this.subjectList[0])
+      this.grade = this.$store.state.loginInfo.grade
+      this.select.grade = this.$store.state.loginInfo.grade
+      console.log(this.$store.state.loginInfo)
+    },
+    open () {
+      this.$router.push({name: 'appraisal_math_open'})
+    },
+    getFirstAssessmentState () {
+      let options = {
+        url: api.isFirstAssessment.path,
+        params: this.select,
+        /**
+           * 服务端返回的状态码检查,默认状态码检查前执行
+           * @param {*} data  服务器端返回的实际数据结构,根据不同业务格式不同
+           * @param {object} res 服务器端返回的response值 {data:'**',status:{conde:0,msg:'请求数据成功!'}}
+           */
+        ajaxSuccess: (data, res) => {
+          console.log(data)
+          if (data) {
+            this.getStudentAbility()
+          } else {
+            this.studyProgress = 0
+            this.chapterList = []
+            this.percentageAbility = 0
+          }
+        }
+      }
+      this.ajax(options)
+    },
+    openTest () {
+      this.$router.push({name: 'choiceEvaluation', params: {grade: this.select.grade, subject: this.select.subject, textbookVersionId: this.select.textbookVersionId, isFirstAssessment: 2}})
+    },
+    accessTest (item) {
+      this.$router.push({name: 'choiceEvaluation', params: {grade: this.select.grade, subject: this.select.subject, textbookVersionId: this.select.textbookVersionId, isFirstAssessment: 2}, query: {chapterId: item.chapterId}})
+    },
+    firstJoin () {
+      let options = {
+        url: api.addFirstAssessment.path,
+        method: api.addFirstAssessment.method,
+        params: this.select,
+        /**
+           * 服务端返回的状态码检查,默认状态码检查前执行
+           * @param {*} data  服务器端返回的实际数据结构,根据不同业务格式不同
+           * @param {object} res 服务器端返回的response值 {data:'**',status:{conde:0,msg:'请求数据成功!'}}
+           */
+        ajaxSuccess: (data, res) => {
+          this.$router.push({name: 'choiceEvaluation', params: {grade: this.select.grade, subject: this.select.subject, textbookVersionId: this.select.textbookVersionId, isFirstAssessment: 1}})
+        }
+      }
+      this.ajax(options)
+    },
+    change (index, val) {
+      this.active = index
+      this.select.subject = val.subject
+      this.select.textbookVersionId = val.textbookVersionId
+      this.getFirstAssessmentState()
+      console.log(this.active)
+      //      this.$router.push({name: index})
+    },
+    /*
+          * 获取当前学生学习进度/能力值
+          * */
+    getStudentAbility () {
+      this.chapterList = []
+      this.ajax({
+        ajaxSuccess: (data, res) => {
+          if (res.data && res.data instanceof Object) {
+            let data = res.data.chapterList
+            data.sort((a, b) => a.chapterId > b.chapterId)
+            this.chapterList = data
+            this.studyProgress = res.data.studyProgress || 0
+            this.percentageAbility = res.data.percentageAbility || 0
+          } else {
+            this.studyProgress = 0
+            this.percentageAbility = 0
+          }
+        },
+
+        url: api.getStudentAbility.path,
+        params: {
+          grade: this.select.grade,
+          subject: this.select.subject
+        }
+
+      })
+    }
+
+  },
+  created () {
+    this.init()
+  },
+  mounted () {
+  },
+  components: {
+  }
+}
+</script>
+<style lang="scss">
+    @import '../../../css/appraisal/appraisal_math';
+</style>

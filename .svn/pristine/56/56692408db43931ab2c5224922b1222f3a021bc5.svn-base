@@ -1,0 +1,334 @@
+<!----------------------------------
+****--@name     ${*}
+****--@role     ${*}
+****--@date     2018/4/26
+****--@author   zzh
+----------------------------------->
+<template>
+    <div class="theClassOf_content">
+        <header-title>
+            <slot>{{$route.query.title}}</slot>
+        </header-title>
+        <div class="stance"></div>
+        <button class="theClassOf_btn"
+                style="background: #DEEAE1;z-index: 10;float: right;margin-right: 0.1rem;margin-top: 0.1rem"
+                @click="open('theClassOf_name')">群信息
+        </button>
+        <scroller lock-y :scrollbar-x=false style="width:3.05rem;">
+            <flexbox justify="space-between" class="header" style="position:relative;width: 3.45rem"
+                     :style="{width:width}">
+                <flexbox-item style="width: 3rem;overflow: hidden">
+                    <div class="theClassOf_title" ref="messageItem">
+
+                        群通知：
+                        <span v-if="data.groupsNoticeList.length">
+                             <span style="margin-right: 0.1rem" v-for="(item,index) in data.groupsNoticeList">
+                             <span>  {{index + 1}}：{{item.title}} {{item.content}}</span>
+                             <span>发布时间：{{item.createTime | formatDate('yyyy-MM-dd HH:mm')}}</span>
+                             </span>
+                     </span>
+                        <span v-else>
+                        暂无群通知
+                    </span>
+                    </div>
+                </flexbox-item>
+
+            </flexbox>
+        </scroller>
+        <div>
+            <tab v-model="selectTab">
+                <tab-item selected @on-item-click="onItemClick('getMyWorkList')">作业</tab-item>
+                <tab-item @on-item-click="onItemClick('getMytestList')">测评</tab-item>
+            </tab>
+            <selector ref="defaultValueRef" title="状态" :options="list" v-model="isFinished"
+                      @on-change="onChange"></selector>
+        </div>
+        <div ref="scroller">
+        <scroller :height="top"  lock-x  @on-scroll-bottom="onScrollBottom" ref="scrollerBottom"
+                  :scroll-bottom-offst="200">
+            <div  >
+                <p class="message" v-if="!workData.length">暂无数据</p>
+                <div class="thisWeek" v-for="(item,index) in  workData" :key="index">
+                    <div>
+                        布置时间：{{(item.startTime || item.publishAnswerTime) | formatDate('yyyy-MM-dd HH:mm')}}
+                    </div>
+                    <ul>
+                        <li>
+                            <div><span v-if="selectTab">测评</span><span v-else>测评</span>名称:{{item.title||item.name}}</div>
+                            <div>
+                                上交时间：{{(item.submitTime  || item.endTime) | formatDate('yyyy-MM-dd HH:mm')
+                                }}
+                            </div>
+                            <div>共{{item.questionsNums || item.totalQuestions}}小题 {{item.submitNum || item.finishedNums}}人提交
+                            </div>
+                        </li>
+                        <li style='width:1.1rem;height:0.6rem;'>
+                            <div v-if="isFinished==0">
+                                <x-circle v-if="item.submitTime > now||item.endTime > now && selectTab==0"
+                                          @click.native="startAnswer(item)"
+                                          style="width: 0.6rem;margin-left: 0.2rem"
+                                          :percent=Number(100)
+                                          :stroke-width="6"
+                                          :trail-width="6"
+                                          :stroke-color="['#F8443E', '#F8443E']"
+                                          trail-color="#e9e9e9">
+                                    <p  style="color:#1b1b1b;font-size: 0.1rem;line-height: 0.2rem">
+                                      未完成
+                                    </p>
+                                </x-circle>
+
+                                <x-circle v-else-if="item.submitTime > now||item.endTime > now && selectTab==1"
+                                          @click.native="startAnswer(item)"
+                                          style="width: 0.6rem;margin-left: 0.2rem"
+                                          :percent=Number(100)
+                                          :stroke-width="6"
+                                          :trail-width="6"
+                                          :stroke-color="['#F8443E', '#F8443E']"
+                                          trail-color="#e9e9e9">
+                                <p  style="color:#1b1b1b;font-size: 0.1rem;line-height: 0.2rem">
+                                       未完成
+                                </p>
+                                </x-circle>
+                                <x-circle v-else
+                                          style="width: 0.6rem;margin-left: 0.2rem"
+                                          :percent=Number(0)
+                                          :stroke-width="6"
+                                          :trail-width="6"
+                                          :stroke-color="['#ff8c08', '#ff8c08']"
+                                          trail-color="#e9e9e9">
+                                    <p  style="color:#1b1b1b;font-size: 0.1rem;line-height: 0.2rem">已截止</p>
+                                </x-circle>
+                                <!--<x-button v-if="item.submitTime > now||item.endTime > now " type="primary"-->
+                                          <!--style="background-color: #fd7416 !important;color: white;min-width: 1rem"-->
+                                          <!--@click.native="startAnswer(item)"> 开始答题-->
+                                <!--</x-button>-->
+                                <!--<x-button v-else style="color: #ccc;min-width: 1rem">开始答题 </x-button>-->
+                            </div>
+                            <!--<x-button  style="background-color: #fd7416 !important;color: white"  v-else>-->
+                            <!--查看详情homeworkRes-->
+                            <!--</x-button>-->
+                            <div v-else>
+                                <x-circle v-if="type=='getMyWorkList'||item.publishAnswerTime < now"
+                                          @click.native="seeResult(item)"
+                                          style="width: 0.6rem;margin-left: 0.2rem"
+                                          :percent="item.correctRate"
+                                          :stroke-width="6"
+                                          :trail-width="6"
+                                          :stroke-color="['#11a640', '#11a640']"
+                                          trail-color="#e9e9e9">
+                       <p style="color:rgba(27,27,27,1);font-size: 0.1rem">
+                       {{item.correctRate}}%
+                       </p>
+                                </x-circle>
+                                <x-circle v-else
+                                          style="width: 0.6rem;margin-left: 0.2rem"
+                                          :percent=Number(0)
+                                          :stroke-width="6"
+                                          :trail-width="6"
+                                          :stroke-color="['#ff8c08', '#ff8c08']"
+                                          trail-color="#e9e9e9">
+                                    <p  style="color:#1b1b1b;font-size: 0.1rem;line-height: 0.2rem">待公布</p>
+                                </x-circle>
+
+                            </div>
+                        </li>
+                    </ul>
+
+                </div>
+                <load-more tip="加载更多" :show-loading="false" v-if="this.num*10<this.totalCount"></load-more>
+            </div>
+        </scroller>
+        </div>
+    </div>
+</template>
+<script>
+  /* 当前组件必要引入 */
+  import HeaderTitle from '../header'
+  import { Tab, TabItem, Badge, Group, Cell, Scroller, Divider, Spinner, XButton, LoadMore } from 'vux'
+  import api from './api'
+  // 当前组件引入全局的util
+  let Util = null
+  export default {
+    data () {
+      return {
+        selectTab:0,
+        now: new Date().getTime(),
+        percent: 0,
+        data: {groupsNoticeList: []},
+        num: 1,
+        totalCount: 0,
+        workData: [],
+        width: '',
+        isFinished: 0,
+        list: [{key: '0', value: '未完成'}, {key: '1', value: '已完成'}],
+        type: 'getMyWorkList',
+        dataList: [],
+        onFetching: false,
+        temp: false,
+        top:'0'
+      }
+    },
+    methods: {
+      onScrollBottom () {
+        if (this.onFetching) {
+          if (this.num * 10 < this.totalCount) {
+            if (this.temp) {
+              this.num++
+              this.temp = false
+              let type = this.type
+              this[type]()
+            }
+          } else {
+
+          }
+
+        } else {
+          this.onFetching = true
+          setTimeout(() => {
+            this.$nextTick(() => {
+              this.$refs.scrollerBottom.reset()
+            })
+            this.onFetching = false
+          }, 2000)
+        }
+      },
+      startAnswer (item) {
+        if (this.type == 'getMyWorkList') {
+          this.$router.push({
+            name: 'questions',
+            params: {type: 'homework', papersId: item.id},
+            query: {groupsId: item.groupsId, type: 5,allowBack:false}
+          })
+        } else {
+          this.$router.push({name: 'questions', params: {type: 'test', papersId: item.id}, query: {type: 4,allowBack:false}})
+        }
+      },
+      seeResult (item) {
+        let type = 'test'
+        if (this.type == 'getMyWorkList') {
+          type = 'homework'
+        }
+        this.$router.push({name: 'homeworkRes', params: {type: type, id: item.id}, query: {groupsId: item.groupsId}})
+      },
+      onItemClick (type) {
+        this.num = 1
+        this.type = type
+        this.workData = []
+        this[type]()
+      },
+      onChange () {
+        let type = this.type
+        this.workData = []
+        this.num = 1
+        console.log(this.type)
+        this[type]()
+      },
+      getGroups () {//获取群通知
+        let options = {
+          url: api.groupsList.path,
+          params: {
+            types: ''
+          },
+          /**
+           * 服务端返回的状态码检查,默认状态码检查前执行
+           * @param {*} data  服务器端返回的实际数据结构,根据不同业务格式不同
+           * @param {object} res 服务器端返回的response值 {data:'**',status:{conde:0,msg:'请求数据成功!'}}
+           */
+          ajaxSuccess: (data, res) => {
+            data.map((item) => {
+              if (item.no == this.$route.query.no) {
+                this.data = item
+                this.getMyWorkList()
+              }
+            })
+            this.data.groupsNoticeList.map((item)=>{
+              item.content=item.content.replace(/\*/g,'')
+            })
+          },
+        }
+        this.ajax(options)
+      },
+      // 初始化请求列表数据
+      init () {
+        this.getGroups()
+      },
+      getMyWorkList () {
+        let options = {
+          url: api.getWorkList.path,
+          params: {
+            isFinished: this.isFinished,
+            curPage: this.num,
+            pageSize: 10,
+            groupsId: this.data.id
+          },
+          /**
+           * 服务端返回的状态码检查,默认状态码检查前执行
+           * @param {*} data  服务器端返回的实际数据结构,根据不同业务格式不同
+           * @param {object} res 服务器端返回的response值 {data:'**',status:{conde:0,msg:'请求数据成功!'}}
+           */
+          ajaxSuccess: (data, res) => {
+            console.log(data)
+            this.workData = this.workData.concat(data['dataList']);
+            console.log(this.workData ,'258')
+            this.totalCount = data.totalCount
+            this.temp = true
+          },
+        }
+        if (this.data.id) {
+          this.ajax(options)
+        }
+      },
+      getMytestList () {
+        let options = {
+          url: api.getTestList.path,
+          params: {
+            answerStatus: this.isFinished,
+            isFinished: this.isFinished,
+            curPage: this.num,
+            pageSize: 10,
+            releaseTo: this.data.id
+          },
+          /**
+           * 服务端返回的状态码检查,默认状态码检查前执行
+           * @param {*} data  服务器端返回的实际数据结构,根据不同业务格式不同
+           * @param {object} res 服务器端返回的response值 {data:'**',status:{conde:0,msg:'请求数据成功!'}}
+           */
+          ajaxSuccess: (data, res) => {
+            this.workData = this.workData.concat(data['dataList'])
+            this.totalCount = data.totalCount
+            this.temp = true
+          },
+        }
+        if (this.data.id) {
+          this.ajax(options)
+        }
+      },
+      open (type) {
+        this.$router.push({name: type, query: {no: this.data.no}})
+      }
+    },
+    created () {
+      this.init()
+    },
+    mounted () {
+      this.$nextTick(() => {
+        setTimeout(() => {
+          if(this.data.groupsNoticeList.length){
+            this.width = window.getComputedStyle(this.$refs.messageItem).width;
+          }else {
+            this.width='3.45rem';
+          }
+
+
+        }, 1000)
+
+      })
+      this.top=-this.$refs.scroller.offsetTop+''
+
+    },
+    components: {HeaderTitle, Badge, Group, Cell, Scroller, Divider, Spinner, XButton, LoadMore, Tab, TabItem}
+  }
+</script>
+<style lang="scss">
+    @import '../../../css/child/theClassOf_content';
+</style>

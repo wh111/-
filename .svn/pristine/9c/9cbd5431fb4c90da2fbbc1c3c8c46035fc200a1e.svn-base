@@ -1,0 +1,71 @@
+.topicAlert {
+    .tab_click {
+        display: flex;
+        justify-content: center;
+        >div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+            padding: 0.13rem 0.15rem;
+            width: 0.65rem;
+            height: 0.25rem;
+            font-size: 0.13rem;
+            border-radius: 0.05rem;
+            margin: 0.1rem 0.1rem 0.1rem 0;
+        }
+        >div:nth-of-type(1) {
+            color: #91B1DD;
+            border: 0.02rem solid #91B1DD;
+        }
+        >div:nth-of-type(2) {
+            color: #37C0BD;
+            border: 0.02rem solid #37C0BD;
+        }
+        >div:nth-of-type(3) {
+            color: #F5AE79;
+            border: 0.02rem solid #F5AE79;
+        }
+        >:last-child {
+            margin-right: 0;
+        }
+    }
+    .txt {
+        width: 1rem;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+}
+.persistent {
+    .weui-dialog__bd {
+        width: 3.05rem;
+        height: 3.1rem;
+        box-sizing: border-box;
+        overflow: auto;
+        .weui-grid {
+          padding: 0.1rem;
+          border: 1px solid #E4E4E4;
+          text-decoration: none !important;
+        }
+      .weui-grid:hover{
+        border: 1px solid #0BB20C;
+      }
+        .weui-grids {
+            background-color: #fff;
+        }
+        .grid-center {
+            display: block;
+            text-align: center;
+            color: #666;
+        }
+        .recentPractice_last_title {
+            width: 100%;
+            text-align: left;
+            margin-bottom: 0.1rem;
+        }
+        .recentPractice_last_grid {
+            margin-bottom: 0.1rem;
+        }
+    }
+}

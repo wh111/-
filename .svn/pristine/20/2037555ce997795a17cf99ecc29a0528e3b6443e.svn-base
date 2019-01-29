@@ -1,0 +1,114 @@
+<!----------------------------------
+****--@name     ${*}
+****--@role     ${*}
+****--@date     2018/4/24
+****--@author   zzh
+----------------------------------->
+<template>
+    <div class="buy">
+      <header-title>
+        <slot>商品详情</slot>
+      </header-title>
+      <div class="stance"></div>
+      <div class="content" v-for="(item,index) in data.productList" :key="index"  style="border: 0">
+        <div>
+          <img onerror="this.src='../../../../static/img/1_07.jpg'" :src="item.icon"/>
+        </div>
+        <div class="homePage_book">
+          <div>{{item.title}}</div>
+          <div><span> 价格：</span><span v-if="item.productTypes == 0"
+                                      class="price">{{item.currentPrice | money}}</span>
+            <span v-else class="price">{{item.currentPrice == null ? '0' : item.currentPrice
+              }}积分</span>
+          </div>
+          <div><span>试卷：</span><span>{{item.spec}}{{item.unit | unit }} </span></div>
+          <div><span>订单号</span><span>{{item.no}}</span></div>
+        </div>
+      </div>
+      <input type="submit" @click="toPay" value="去支付"/>
+    </div>
+</template>
+<script>
+/* 当前组件必要引入 */
+import HeaderTitle from '../header'
+import api from './api'
+// 当前组件引入全局的util
+// let Util = null
+export default {
+  data () {
+    return {
+      data: [
+        {url: '../../../static/img/1_07.jpg', title: '三年高考五年模拟练习', price: '价格', number: '￥99.00', paper: '试卷', numbers: '50套', content: '马赛就死哦啊少见欧萨破解名称马茶食品安交警'}
+      ],
+      commonList: [ 'China', 'Japan', 'America' ]
+    }
+  },
+  methods: {
+    // 初始化请求列表数据
+    init () {
+      this.getOrder()
+    },
+    getOrder () {
+      let options = {
+        url: api.getOrder.path,
+        params: {
+          id: this.$route.query.productIds
+        },
+        /**
+         * 服务端返回的状态码检查,默认状态码检查前执行
+         * @param {*} data  服务器端返回的实际数据结构,根据不同业务格式不同
+         * @param {object} res 服务器端返回的response值 {data:'**',status:{conde:0,msg:'请求数据成功!'}}
+         */
+        ajaxSuccess: (data, res) => {
+          data.productList.map((item) => {
+            item.icon = this.getStaticPath(item.icon)
+          })
+          this.data = data
+        }
+      }
+      this.ajax(options)
+    },
+    getUserIp () {
+      $cip = 'unknown'
+      if ($_SERVER['REMOYE_ADDR']) {
+        $cip = $_SERVER['REMOYE_ADDR']
+      } else if (getenv('REMOYE_ADDR')) {
+        $cip = getenv('REMOYE_ADDR')
+      }
+      return $ip
+    },
+    pay (val) {
+      Vue.http.get('https://api.mch.weixin.qq.com/pay/unifiedorder', ({data}) => {
+        Vue.wechat.config({
+          appid: '',
+          mch_id: '',
+          nonce_str: '',
+          sign: '',
+          body: '会员充值',
+          out_trade_no: val,
+          total_fee: '',
+          spbill_create_ip: '',
+          notify_url: '',
+          trade_type: 'MWEB'
+
+        })
+      })
+    },
+    change (val, label) {
+      console.log('change', val, label)
+    },
+    toPay () {
+
+    }
+  },
+  created () {
+    this.init()
+  },
+  mounted () {
+  },
+  components: {HeaderTitle}
+}
+</script>
+<style lang="scss">
+  @import '../../../css/question_child/buy';
+</style>

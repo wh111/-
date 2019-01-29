@@ -1,0 +1,52 @@
+<!----------------------------------
+****--@name     tBook
+****--@role     ${*}
+****--@date     2018/5/7
+****--@author   zzh
+----------------------------------->
+<template>
+    <div class="tBook">
+      <ul class="tBookHeader" v-for="index in 6" :key="index">
+        <li class="tElement">
+          <div>第一单元作业</div>
+          <p>布置时间3月2日 12:00 | 上交时间12月29日 12:00</p>
+        </li>
+        <li class="tCorrect">
+          <ul v-for="index in 3" :key="index" @click="open('tResponses')">
+            <li class="tCorrectNumber">999</li>
+            <li class="tCorrectWord">已批改</li>
+          </ul>
+        </li>
+      </ul>
+      <div class="tBookAdd" @click="open('tHomework')">+</div>
+    </div>
+</template>
+<script>
+/* 当前组件必要引入 */
+
+// 当前组件引入全局的util
+// let Util = null
+export default {
+  data () {
+    return {}
+  },
+  methods: {
+    // 初始化请求列表数据
+    init () {
+
+    },
+    open (type) {
+      this.$router.push({name: type})
+    }
+  },
+  created () {
+    this.init()
+  },
+  mounted () {
+  },
+  components: {}
+}
+</script>
+<style lang="scss">
+  @import "../../../tcss/tBook";
+</style>

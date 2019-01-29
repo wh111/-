@@ -1,0 +1,71 @@
+<!----------------------------------
+****--@name     tHomework
+****--@role     ${*}
+****--@date     2018/5/8
+****--@author   zzh
+----------------------------------->
+<template>
+    <div class="tHomework">
+      <header-title>布置作业</header-title>
+      <div class="stance"></div>
+      <div>
+        <step v-model="step2" background-color='#fbf9fe' gutter="0"  class="tHomeworkStep">
+          <step-item></step-item>
+          <step-item></step-item>
+          <step-item></step-item>
+        </step>
+        <ul class="tHomeworkSteps">
+          <li>第一步</li>
+          <li>第二步</li>
+          <li>完成</li>
+        </ul>
+      </div>
+      <router-view/>
+      <div class="btn_wrap">
+        <x-button v-if="step2 === 2" type="primary" @click.native="nextStep">发布作业</x-button>
+        <x-button v-else type="primary" @click.native="nextStep">下一步</x-button>
+      </div>
+    </div>
+</template>
+<script>
+/* 当前组件必要引入 */
+import HeaderTitle from '../header'
+// 当前组件引入全局的util
+// let Util = null
+export default {
+  data () {
+    return {
+      step2: 0
+    }
+  },
+  methods: {
+    // 初始化请求列表数据
+    init () {
+
+    },
+    nextStep () {
+      this.step2++
+      console.log(this.step2)
+      if (this.step2 === 1 && this.step2 < 3) {
+        this.$router.push({name: 'tQuestion'})
+      } else if (this.step2 === 2 && this.step2 < 3) {
+        this.$router.push({name: 'tBasic'})
+      } else if (this.step2 === 3 && this.step2 < 3) {
+        console.log(456)
+      } else {
+        this.step2 = 0
+        this.$router.push({name: 'tTextbook'})
+      }
+    }
+  },
+  created () {
+    this.init()
+  },
+  mounted () {
+  },
+  components: {HeaderTitle}
+}
+</script>
+<style lang="scss">
+  @import "../../../tcss/tHomework";
+</style>

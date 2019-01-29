@@ -1,0 +1,8 @@
+const urlPrefix = '/product/' // 当前模块api前缀
+const api = {
+  myCurrentStudyProductList: { // 最近练习
+    path: urlPrefix + 'myCurrentStudyProductList',
+    method: 'post'
+  }
+}
+export default api

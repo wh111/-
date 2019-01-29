@@ -1,0 +1,332 @@
+<!----------------------------------
+****--@name     ${*}
+****--@role     ${*}
+****--@date     2018/4/24
+****--@author   zzh
+----------------------------------->
+<template>
+    <div class="recentPractice_next_question">
+        <topic-alert v-if="questionList.length>0"  :questionList="questionList" :questionsId="questionData.id" @next="setSeq"></topic-alert>
+        <div class="question_header">
+            <h3>第{{seq}}题  <span style="float: right">还有<span>{{surplusQuestion ()}}</span>题</span></h3>
+
+        </div>
+        <!--<div class="recentPractice_next_question" style="display: block">-->
+        <scroller lock-y :scrollbar-x=false @on-scroll="getNext"  >
+        <questionShow :showData="questionData" :showInput="true" @answer="setAnswer"></questionShow>
+
+        <!--<swiper height="5.5rem" class="agag">-->
+        <!--<swiper-item class="black" v-for="(item,index) in showQuestion" :key="index">-->
+        <!--&lt;!&ndash;<div class="last_question">&ndash;&gt;-->
+
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="question_sidebar">&ndash;&gt;-->
+        <!--&lt;!&ndash;<span>题型</span><span>单选题</span>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="question_content">&ndash;&gt;-->
+        <!--&lt;!&ndash;李大伯有一片果林，共80棵果树，某日，李大伯&ndash;&gt;-->
+        <!--&lt;!&ndash;开始采摘今年第一批成熟的果子，他随机选 取2&ndash;&gt;-->
+        <!--&lt;!&ndash;棵果树共摘得果子，质量分别为（单位：kg）：&ndash;&gt;-->
+        <!--&lt;!&ndash;0.28，0.26，0.24，0.23，0.25，0.24，0.26，&ndash;&gt;-->
+        <!--&lt;!&ndash;0.26，0.25，0.23，以此计算，李大伯收获的这&ndash;&gt;-->
+        <!--&lt;!&ndash;批果子的单个质量和总质量分别约为（ ）&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;<div>&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="option" v-for="(item,index) in data" :key="index" @click="change(index)"&ndash;&gt;-->
+        <!--&lt;!&ndash;:class="index==show ? 'active' : ''">&ndash;&gt;-->
+        <!--&lt;!&ndash;<span>{{item.name}}</span>&ndash;&gt;-->
+        <!--&lt;!&ndash;<span>{{item.number}}</span>&ndash;&gt;-->
+        <!--&lt;!&ndash;<span>{{item.title}}</span>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;<x-button style="height: 0.4rem;font-size: 0.18rem" @click.native="open"&ndash;&gt;-->
+        <!--&lt;!&ndash;:gradients="['#FF5E3A', '#FF9500']">确定&ndash;&gt;-->
+        <!--&lt;!&ndash;</x-button>&ndash;&gt;-->
+        <!--&lt;!&ndash;&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--</swiper-item>-->
+        <!--</swiper>-->
+        <!--</div>-->
+        <div class="con-btn" align="right">
+            <!--<x-button @click="submit">提交</x-button>-->
+            <template v-if="surplusQuestion()||allQuestion==seq">
+                <!--<x-button v-if="questionList[seq].isAnswer"  @click="next">下一题-->
+                <!--</x-button>-->
+                <x-button class="submit-active"  @click.native="confirm">确定</x-button>
+            </template>
+        </div>
+        </scroller>
+        <div v-transfer-dom>
+            <confirm v-model="show1"
+                     title="确认退出？"
+                     @on-cancel="onCancel"
+                     @on-confirm="onConfirm"
+                     @on-show="onShow"
+                     @on-hide="onHide" class="sAskedAlert">
+                <p style="text-align:center;">题库里还有未完成的题目，是否确认
+                    退出做题？</p>
+            </confirm>
+        </div>
+        <alert v-model="msgShow" title="提示"> {{message}}</alert>
+    </div>
+</template>
+<script>
+  /* 当前组件必要引入 */
+  import TopicAlert from '../../commonality/topicAlert'
+  import questionShow from '../../../../components/questionShow/show'
+  import api from '../api'
+  // 当前组件引入全局的util
+  let Util = null
+  export default {
+    data: function () {
+      return {
+        msgShow:false,
+        message:'',
+        show: 0,
+        show1: false,
+        questionData: {},
+        answerArr: [], // 已经答题的索引
+        allQuestion: 0, // 总题数
+        data: [
+          {name: 'A', number: '0.25kg,', title: '200kg'},
+          {name: 'B', number: '2.5kg,', title: '100kg'},
+          {name: 'C', number: '0.25kg,', title: '100kg'},
+          {name: 'D', number: '2.5kg', title: '200kg'}
+        ],
+        showQuestion: ['第一题', '第二题', '第三题'],
+        questionList: [],
+        answer: '',
+        seq: '',
+        questionsId: '',
+        poition:0,
+        timer:null,
+      }
+    },
+    methods: {
+      getNext(val){
+        if(val.left>0){
+          this.poition=1
+        }else if(val.left<0) {
+          this.poition=-1
+        }else {
+          clearTimeout(this.timer)
+          this.timer=setTimeout(()=>{
+            let value=Number(this.questionsSeq)+this.poition;
+            if(value<1||value==this.allQuestion ){
+              return
+            }
+            this.jumpQuestionById(value)
+          },500)
+
+        }
+
+      },
+      setSeq(val){
+        this.seq=val
+        console.log(val,this.questionList)
+        this.questionList.map((item)=>{
+          if(item.seq==val){
+            this.jumpQuestionById(item.id)
+          }
+        })
+      },
+      // 初始化请求列表数据
+      init () {
+        this.queryQuestionList()
+      },
+      // 还剩余几道题
+      surplusQuestion () {
+        return this.allQuestion - this.answerArr.length - (!!~this.answerArr.indexOf(this.seq) ? 0 : 1)
+      },
+      next () {
+        this.getNextQuestions((data) => {
+          console.log(data)
+          if (data instanceof Object) {
+            this.questionData = data
+            // 分题型记录数据
+            if (data.childQuestionsList instanceof Array && data.childQuestionsList.length) {
+              this.seq = data.childQuestionsList[0].seq
+              this.questionsId = data.childQuestionsList[0].id
+            } else {
+              this.seq = data.seq
+              this.questionsId = data.id
+            }
+            this.answer = ''
+          } else {
+           this.msgShow=true;
+            this.message='您已完成练习，即将跳转到我的题库！'
+//            this.successMess('您已完成练习，即将跳转到我的题库！')
+          }
+        })
+      },
+      getNextQuestions (call) {
+        let opt = {
+          ajaxSuccess:(data, res) => {
+            call(data)
+          },
+          url: api.getNextQuestions.path,
+          method: api.getNextQuestions.method,
+          params: {
+            papersId:this.$route.query.papersId,
+            seq: this.seq,
+            productId:this.$route.query.productId
+          }
+
+        }
+        this.ajax(opt)
+      },
+      queryQuestionList () {//获取题号
+        let options = {
+          url: api.queryQuestionList.path,
+          params: {
+            papersId: this.$route.query.papersId,
+            productId: this.$route.query.productId
+          },
+          /**
+           * 服务端返回的状态码检查,默认状态码检查前执行
+           * @param {*} data  服务器端返回的实际数据结构,根据不同业务格式不同
+           * @param {object} res 服务器端返回的response值 {data:'**',status:{conde:0,msg:'请求数据成功!'}}
+           */
+          ajaxSuccess: (data, res) => {
+            this.questionList = data;
+            console.log(this.questionList)
+            if (this.questionList.length != 0) {
+              this.getQuestionsById(this.questionList[0].id)
+            }
+            let temp = {}
+            let defIndex = '' // 试题索引
+            let doSomeOne = false // 已经做过试题
+            if (data instanceof Array && data.length) {
+              // 是否已经做过
+              doSomeOne = data.some(item => item.isAnswer)
+              console.log( doSomeOne)
+              this.allQuestion = data.length
+              data.map(item => {
+                if (doSomeOne && item.isAnswer) { // 记录最后一次做题的索引
+                  defIndex = item.seq
+                  this.answerArr.push(item.seq)
+                } else { // 默认第一题
+                  !defIndex && (defIndex = item.seq)
+                }
+                temp[item.seq] = item
+              })
+            }
+//            this.questionList = temp;
+            console.log(this.questionList )
+            if (doSomeOne) { // 已经做过题
+              this.seq = defIndex
+
+              this.next()
+            } else { // 没有做过题
+              defIndex && this.jumpQuestionById(defIndex)
+            }
+
+          }
+        }
+        this.ajax(options)
+      },
+      setAnswer (d) {
+        console.log(d)
+        this.answer = d
+      },
+      /**
+       * 提交答题（提交答案，获取正确情况）
+       * **/
+      confirm () {
+        console.log(999)
+        if(this.answer === '') {
+          this.msgShow=true;
+          this.message='请先选择或填写答案！'
+          return false
+        }
+
+
+        let opt = {
+          ajaxSuccess: res => {
+//            this.questionList[this.seq].isAnswer = true
+            this.answerArr.push(this.seq)
+            this.answer = ''
+            this.getQuestionsById(this.seq)
+          },
+          jsonString:true,
+          url: api.submitAnswer.path,
+          method: api.submitAnswer.method,
+          data: {
+            papersId: this.$route.query.papersId,
+            seq: this.seq,
+            productId:Number(this.$route.query.productId),
+            myAnswer: this.answer,
+            questionsId: this.questionsId
+          }
+
+        }
+        this.ajax(opt)
+      },
+      /**
+       * 跳题
+       * **/
+      jumpQuestionById (seq) {
+        console.log('mmma')
+        this.seq = seq
+        this.getQuestionsById(seq)
+      },
+      getQuestionsById (val) {
+        this.questionsId = val
+        let options = {
+          url: api.getQuestionsById.path,
+          params: {
+            papersId: this.$route.query.papersId,
+            productId: this.$route.query.productId,
+            questionsId: val
+          },
+          /**
+           * 服务端返回的状态码检查,默认状态码检查前执行
+           * @param {*} data  服务器端返回的实际数据结构,根据不同业务格式不同
+           * @param {object} res 服务器端返回的response值 {data:'**',status:{conde:0,msg:'请求数据成功!'}}
+           */
+          ajaxSuccess: (data, res) => {
+            this.questionData = data
+          }
+        }
+        this.ajax(options)
+      },
+//      getQuestionDetail(){
+//
+//      },
+      open () {
+        this.show1 = true
+      },
+      onCancel () {
+        console.log('on cancel')
+      },
+      onConfirm (msg) {
+        console.log('on confirm')
+        if (msg) {
+          alert(msg)
+        }
+      },
+      onHide () {
+        console.log('on hide')
+      },
+      onShow () {
+        console.log('on show')
+      },
+      change (index) {
+        this.show = index
+      }
+    },
+    created () {
+      this.init()
+    },
+    mounted () {
+    },
+    components: {TopicAlert, questionShow}
+  }
+</script>
+<style lang="scss">
+    @import '../../../../css/home/recentPractice_next/recentPractice_next_question';
+
+    .agag > div.vux-indicator.vux-indicator-right > a > i {
+        display: none;
+    }
+</style>

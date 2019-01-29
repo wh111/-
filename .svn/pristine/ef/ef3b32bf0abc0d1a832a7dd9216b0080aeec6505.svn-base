@@ -1,0 +1,91 @@
+<!----------------------------------
+****--@name     personal
+****--@role     ${*}
+****--@date     2018/5/2
+****--@author   zzh
+----------------------------------->
+<template>
+  <div class="personal">
+    <header-title>
+      <slot>个人资料</slot>
+    </header-title>
+    <div class="stance"></div>
+    <div class="myErrors_header">
+      <flexbox>
+        <flexbox-item :span="6">头像</flexbox-item>
+        <div style="display: flex;align-items: center">
+        <span style="color: #737373"><img :src="getStaticPath(userInfo.icon)" onerror="javascript:this.src='../../../../static/img/03.jpg'"  id="personal_img"/></span>
+        </div>
+          <!--<div style="display: flex;align-items: center">-->
+          <!--<span style="color: #737373">{{item.title}}</span>-->
+          <!--<x-icon type="ios-arrow-forward" size="0.3rem"></x-icon>-->
+        <!--</div>-->
+      </flexbox>
+      <flexbox>
+        <flexbox-item :span="6">昵称</flexbox-item>
+        <div>{{userInfo.nickname}} </div>
+      </flexbox>
+      <flexbox>
+        <flexbox-item :span="6">真实姓名</flexbox-item>
+        <div>{{userInfo.name}} </div>
+      </flexbox>
+      <flexbox>
+        <flexbox-item :span="6">年级</flexbox-item>
+        <div>{{userInfo.grade| grade(self)}} </div>
+      </flexbox>
+      <flexbox>
+        <flexbox-item :span="6">学校</flexbox-item>
+        <div>{{userInfo.school}} </div>
+      </flexbox>
+      <flexbox>
+        <flexbox-item :span="6">市区</flexbox-item>
+        <div>{{userInfo.province}}{{userInfo.city}}{{userInfo.area}} </div>
+      </flexbox>
+    </div>
+  </div>
+</template>
+<script>
+/* 当前组件必要引入 */
+import HeaderTitle from '../header'
+import FlexboxItem from '../../../../node_modules/vux/src/components/flexbox/flexbox-item.vue'
+// 当前组件引入全局的util
+let Util = null
+export default {
+  data () {
+    return {
+      self: this,
+      data: [
+        {name: '头像', title: ''},
+        {name: '昵称', title: '大司马'},
+        {name: '真实姓名', title: '小一闪'},
+        {name: '年级', title: '初二'},
+        {name: '学校', title: '北京市海淀一中'},
+        {name: '市区', title: '北京 北京市 海淀区'}
+      ],
+      userInfo: {nickname: '', icon: '', name: '', grade: '' }
+    }
+  },
+  methods: {
+    // 初始化请求列表数据
+    init () {
+      // console.log(this.$store.state)
+
+      console.log(this.$store.state)
+      // console.log(this.$store.state.loginInfo)
+    }
+
+  },
+  created () {
+    this.init()
+  },
+  mounted () {
+    this.userInfo = this.$store.state.loginInfo
+  },
+  components: {
+    FlexboxItem,
+    HeaderTitle}
+}
+</script>
+<style lang="scss">
+  @import '../../../css/child/personal';
+</style>

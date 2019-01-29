@@ -1,0 +1,412 @@
+<template>
+    <div class="patriarch">
+        <ul class="hello_header">
+            <li @click="skip">
+                <x-icon type="ios-arrow-back" size="0.3rem"></x-icon>
+                <div>返回</div>
+                <div>关闭</div>
+            </li>
+            <li>
+                <div>鲁教乐学</div>
+            </li>
+            <li>
+                <div></div>
+                <div></div>
+                <div></div>
+            </li>
+        </ul>
+        <div class="stance"></div>
+        <div v-if="step!=1">
+            <div class="hello_img">
+                <img style="width: 0.7rem;height: 0.7rem"  :src="getStaticPath(info.icon)" onerror="this.src='../../../../sasmobile/img/03.jpg'" alt="">
+                <div>{{info.name}}</div>
+                <div class="school">
+                    <span>{{info.school || '暂无'}}</span> |
+                    <span>{{info.grade | grade(self)}}</span>
+                </div>
+                <img class="pSwitch" src="../../../../sasmobile/img/img99.png" @click="openShow"/>
+                <div v-transfer-dom>
+                    <confirm v-model="show1"  @on-confirm="change">
+                        <ul>
+                            <li>
+                                <checklist :options="commonList" title="切换学生" v-model="radioValue" :max="1" id="change1"></checklist>
+                            </li>
+                            <li></li>
+                        </ul>
+                    </confirm>
+                </div>
+            </div>
+            <div class="hello_dynamic">
+                <div @click="changes('pDynamic')">学习动态</div>
+                <div @click="showConfirm=true">绑定更多学生</div>
+            </div>
+            <div class="homework" v-for="(item,index) in data" :key="index" @click="open('tAppraisal')">
+                <div v-if="item.title" :class="item.title !== '' ? 'active' : ''">{{item.title}}</div>
+                <div>
+                    <div>{{item.mouth}}</div>
+                    <div class="element">
+                        <ul>
+                            <li>{{item.concent}}</li>
+                            <li>
+                                <span>{{item.total}}</span>
+                                <span>{{item.day}}<span>{{item.time}}</span>{{item.hand}}</span>
+                                <span>{{item.overhand}}</span>
+                            </li>
+                        </ul>
+                        <ul>
+                            <li>
+                                <span>{{item.promulgator}}</span>
+                                <span>{{item.teacher}}</span>
+                            </li>
+                            <li>
+                                <span>{{item.retime}}</span>
+                                <span>{{item.times}}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <p v-if="item.name" class="btn">
+                    <button @click="open(item.id)">{{item.name}}</button>
+                    <x-icon type="ios-arrow-forward" size="0.25rem"></x-icon>
+                </p>
+            </div>
+            <div class="homework ">
+                <div class="active">
+                    Ta的作业
+                </div>
+                <div v-for="(item,index) in dataWorkList" :key='item.index'>
+                    <div class="month topMonth" >
+                        {{item[0].num}}月
+                    </div>
+                    <div class="list-content" v-for='(item1,index1) in item' :key='item1.index1'>
+                        <button  v-if="item.isFinished" @click="openWork('homework',item1)" class="green" mini>已完成</button><button @click="openWork('homework',item1)" v-else class="red" mini>未完成</button>
+                      <ul class="ul">
+                          <li class="hTitle" style="margin-top: 0.16rem">{{item1.title}}  </li>
+                          <li class="month">
+                              <span>共 {{item1.totalQuestions}}小题 |</span>
+                              <span>上交时间：{{item1.submitTime | formatDate('MM-dd HH:mm')}} |</span>
+                              <span>{{item1.finishedNums}}人已上交 </span>
+                          </li>
+                          <li class="hTitle"><span class="month">发布者：</span><span class="name">{{item1.teacherName}}</span> </li>
+                          <li><span class="month">发布时间：</span><span class="name">{{item1.startTime}}</span></li>
+                      </ul>
+                    </div>
+                </div>
+                <p class="btn">
+                    <button @click="open('pHerwork','homework')">查看更多</button>
+                    <x-icon type="ios-arrow-forward" size="0.25rem"></x-icon>
+                </p>
+            </div>
+            <div class="homework ">
+                <div class="active">
+                    Ta的测评
+                </div>
+                <div v-for="(item,index) in dataTestList" :key='item.index'>
+                    <div class="month topMonth" >
+                        {{item[0].num}}月
+                    </div>
+                    <div class="list-content" v-for='(item1,index1) in item' :key='item1.index1'>
+                        <button @click="openWork('homework',item1)" v-if="item.answerStatus" class="green" mini>已完成</button><button @click="openWork('homework',item1)" v-else class="red" mini>未完成</button>
+                        <ul class="ul">
+                            <li class="hTitle" style="margin-top: 0.16rem">{{item1.name}}  </li>
+                            <li class="month">
+                                <span>共 {{item1.questionsNums}}小题 |</span>
+                                <span>上交时间：{{item1.endTime | formatDate('MM-dd HH:mm')}} |</span>
+                                <span>{{item1.submitNum}}人已上交 </span>
+                            </li>
+                            <li class="hTitle"><span class="month">发布者：</span><span class="name">{{item1.operatorName}}</span> </li>
+                            <li><span class="month">发布时间：</span><span class="name">{{item1.releaseTime}}</span></li>
+                        </ul>
+                    </div>
+                </div>
+                <p class="btn">
+                    <button @click="open('pHerwork','test')">查看更多</button>
+                    <x-icon type="ios-arrow-forward" size="0.25rem"></x-icon>
+                </p>
+            </div>
+            <div class="homework">
+                <div class="active">
+                    Ta的题库
+                </div>
+                <div class="content" style="" v-for="(item,index) in productList" :key="index">
+                    <div class="img" style="" @click="open(item.id)">
+                        <img style="" :src="getStaticPath(item.icon)"
+                             onerror="this.src='../../../../sasmobile/img/1_07.jpg'"/>
+                    </div>
+                    <div class="homePage_book">
+                        <div class="title">{{item.title}}
+                            <div @click="openTo('recentPractice_content',item.id) "><span style="top: -0.04rem;position: relative">查看进度</span>
+                                <x-icon type="ios-arrow-right" style="fill: #c7c7cc;" size="20"></x-icon>
+                            </div>
+                        </div>
+                        <div class="remark">{{item.remark}}</div>
+                        <!--<button class="btns">开始</button>-->
+                    </div>
+
+                </div>
+                <p class="btn">
+                    <button @click="openProjectLibrary('projectLibrary')">查看更多</button>
+                    <x-icon type="ios-arrow-forward" size="0.25rem"></x-icon>
+                </p>
+            </div>
+
+
+
+
+        </div>
+        <div v-else style="text-align: center">
+            <p style="margin-top: 2rem">请先绑定您的学生，以便查看学生信息</p>
+            <x-button mini style="margin-top: 0.2rem" @click.native="connect">点击绑定</x-button>
+        </div>
+        <confirm v-model="showConfirm"
+                 title="绑定学生"
+                 @on-confirm="add">
+            <!--<selector ref="defaultValueRef" title="省份" :options="list" v-model="studentIds"></selector>-->
+            <x-input v-model="studentIds" placeholder="请输入学生账号"></x-input>
+        </confirm>
+        <alert v-model="alertShow">{{message}}</alert>
+    </div>
+</template>
+<script>
+  import api from './api'
+
+  export default {
+    data () {
+      return {
+
+        alertShow:false,
+        message:'',
+        self: this,
+        info: {},
+        workNum: 1,
+        workTotalCount: 0,
+        testNum: 1,
+        testTotalCount: 0,
+        showConfirm: false,
+        studentIds: '',
+        step: 0,
+        articles: [],
+        show: '',
+        studentList: [],
+        dataTestList: [],
+        dataWorkList: [],
+        radioValue: [],
+        commonList: [],
+        show1: false,
+        data: [],
+        productList:[],
+      }
+    },
+    methods: {
+      openTotAppraisal(){
+
+      },
+      openWork(type,item){
+        this.$router.push({name:'homeworkRes',params: {id: item.id, type: type},query:{groupsId:item.groupsId,seeType:'parents'}})
+      },
+      connect () {
+        this.showConfirm = true
+
+      },
+      init () {
+        this.queryGuardianStudent()
+        console.log(this.$store.state)
+      },
+      getData () {
+        this.setWorkData()
+        this.setTestDate()
+        this.getMyProductList()
+      },
+      getMyProductList () {
+        this.ajax({
+          ajaxSuccess: (data, res) => {this.productList = data.dataList},
+          url: api.myProductList.path,
+          method: api.myProductList.method,
+          params: {
+            studentId: this.info.id,
+            title: '',
+            textbookVersionId: '',
+            subject: '',
+            grade: '',
+            productTypes: '',
+            types: '',
+            curPage: 1,
+            pageSize: 3
+          },
+
+        })
+      },
+
+      setWorkData () {//获取作业
+        this.ajax({
+          ajaxSuccess: (data, res) => {this.getHistorySuccess(res)},
+          url: api.historyWorkList.path,
+          method: api.historyWorkList.method,
+          params: {
+            studentId: this.info.id,
+            curPage: 1,
+            pageSize: 3
+          },
+
+        })
+      },
+      getHistorySuccess (res) {
+        this.workTotalCount = res.data.totalCount
+        if (res.data) {
+
+          res.data.dataList.reduce((obj, item, index) => {
+            let month = this.conductDate(item.startTime, 'MM')
+            item.num = month
+            return obj
+
+          }, {})
+        }
+        let datalist = {}
+        res.data.dataList.map(item => {
+          if (datalist[item.num]) {
+            datalist[item.num].push(item)
+          } else {
+            datalist[item.num] = [item]
+          }
+        })
+        this.dataWorkList = datalist
+        console.log(this.dataWorkList)
+      },
+      setTestDate () {
+        this.ajax({
+          ajaxSuccess: (data, res) => {this.getHistoryTestSuccess(res)},
+          url: api.historyTestList.path,
+          method: api.historyTestList.method,
+          params: {
+            studentId: this.info.id,
+            curPage: 1,
+            pageSize: 3
+          },
+
+        })
+      },
+      getHistoryTestSuccess (res) {
+        this.testTotalCount = res.data.totalCount
+        if (res.data) {
+
+          res.data.dataList.reduce((obj, item, index) => {
+            let month = this.conductDate(item.releaseTime, 'MM')
+            item.num = month
+            return obj
+
+          }, {})
+        }
+        let datalist = {}
+        res.data.dataList.map(item => {
+          if (datalist[item.num]) {
+            datalist[item.num].push(item)
+          } else {
+            datalist[item.num] = [item]
+          }
+        })
+        this.dataTestList = datalist
+        console.log(this.dataTestList)
+      },
+      skip () {
+//        this.$router.push({name: 'login'})
+      },
+      onHide () {
+        console.log('on hide')
+      },
+      onShow () {
+        console.log('on show')
+      },
+      change (val, label) {//切换学生
+        console.log(this.radioValue)
+        if(!this.radioValue.length){
+          this.alertShow=true;
+          this.message='请选择学生';
+          return
+        }
+          this.commonList.map((item)=>{
+             if(item.account==this.radioValue[0]){
+               this.$store.commit('setLoginInfo', item)
+               this.info=item;
+               this. getData ()
+             }
+          })
+      },
+      openShow () {
+        this.show1 = true
+      },
+      changes (type) {
+        this.$router.push({name: type})
+      },
+      add () {
+        this.ajax({
+          ajaxSuccess: (data, res) => {
+              if(res.status.code!=0){
+                this.alertShow=true;
+                this.message=res.status.msg;
+                return
+              }else {
+                this.alertShow=true;
+                this.message='已成功绑定该学生';
+              }
+            this.queryGuardianStudent()
+          },
+          url: api.addStudent.path,
+          method: api.addStudent.method,
+          data: {
+            studentIds: this.studentIds,
+          }
+        })
+      },
+      open (type,types) {
+        this.$router.push({name: type,query:{type:types}})
+//        if (type === 1) {
+//          this.$router.push({name: 'pHerwork'})
+//          console.log(type)
+//        } else if (type === 2) {
+//          this.$router.push({name: 'pHerappraisal'})
+//        } else if (type === 3) {
+//          this.$router.push({name: 'pHerquestion'})
+//        } else {
+//          this.$router.push({name: type})
+//        }
+      },
+      openProjectLibrary(type){
+        this.$router.push({name: type,query:{studentId:this.info.id,seeType:'parents'}})
+      },
+      openTo(type,id){
+        this.$router.push({name:type,query:{id:id,seeType:'parents',studentId:this.info.id}})
+      },
+      queryGuardianStudent () {//查询家长学生关系
+        this.ajax({
+          ajaxSuccess: (data, res) => {
+            this.studentList = res.data.studentList;
+            if (this.studentList.length == 0) {
+              this.step = 1
+              return
+            }
+            res.data.studentList.map((item)=>{
+              item.value=item.name;
+              item.key=item.account
+            })
+            this.commonList=res.data.studentList;
+
+            this.$store.commit('setLoginInfo', res.data.studentList[0])
+            this.info = res.data.studentList[0];
+            console.log(this.info)
+            this.getData()
+          },
+          url: api.queryGuardianStudent.path,
+          method: api.queryGuardianStudent.method,
+        })
+      }
+    },
+    created () {
+      this.init()
+    },
+    components: {}
+  }
+</script>
+<style lang="scss">
+    @import '../../../pcss/patriarch/home';
+    @import "../../../pcss/header";
+</style>

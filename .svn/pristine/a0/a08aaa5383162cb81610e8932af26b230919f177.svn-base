@@ -1,0 +1,151 @@
+<!----------------------------------
+****--@name     pDynamic
+****--@role     ${*}
+****--@date     2018/5/2
+****--@author   zzh
+----------------------------------->
+<template>
+  <div class="pDynamic">
+    <header-title>
+      <slot>学习动态</slot>
+    </header-title>
+    <div class="stance"></div>
+    <div class="hello_img">
+      <img src="../../../../static/img/03.jpg" alt="">
+      <div>李明</div>
+      <div>
+        <span>北京市四中</span>
+        <span>七年级一班</span>
+      </div>
+    </div>
+    <div class="homework">
+      <div>学习动态</div>
+    </div>
+    <flexbox wrap="wrap" :gutter="0" class="pDynamic_content">
+      <flexbox-item :span="12">
+        <span></span>
+        <span>完成了</span>
+        <span>《初三数学·第三章力学》的测评</span>
+      </flexbox-item>
+      <flexbox-item :span="12">
+        <span></span>
+        <span>提问了</span>
+        <span>3个疑难问题</span>
+      </flexbox-item>
+      <flexbox-item :span="12">
+        <span></span>
+        <span>解答了</span>
+        <span>2个疑难问题</span>
+      </flexbox-item>
+      <flexbox-item :span="12">
+        <span></span>
+        <span>练习了</span>
+        <span>《三年高考五年模拟》专题库</span>
+      </flexbox-item>
+    </flexbox>
+    <p class="btn">
+      <button @click="open('pDynamic_content')">查看更多</button>
+      <x-icon type="ios-arrow-forward" size="0.25rem"></x-icon>
+    </p>
+    <div class="myChart" style="width: 300px;height: 300px;margin: 0.2rem auto"></div>
+    {{list}}
+  </div>
+</template>
+<script>
+import HeaderTitle from '../header'
+// import api from './api'
+export default{
+  data () {
+    return {
+      groupList: '',
+      list: []
+    }
+  },
+  mounted () {
+    this.drawLine()
+  },
+  methods: {
+    init () {
+    },
+
+    // this.ajax({
+    //       ajaxSuccess: res => {
+    //         this.groupList = res.data.dataList
+    //       },
+    //       ajaxParams: {
+    //         url: api.queryVersionList.path,
+    //         method: api.queryVersionList.method,
+    //         params: {
+    //           types: 0
+    //         },
+    //       },
+    //     })
+    open (type) {
+      this.$router.push({name: type})
+    },
+    drawLine () {
+      // 引入 ECharts 主模块
+      let echarts = require('echarts/lib/echarts')
+      // 引入柱状图
+      require('echarts/lib/chart/bar')
+      require('echarts/lib/chart/line')
+      // 引入提示框和标题组件
+      require('echarts/lib/component/tooltip')
+      require('echarts/lib/component/title')
+      // 基于准备好的dom，初始化echarts实例
+      var myChart = echarts.init(document.querySelector('.myChart'))
+      // 绘制图表
+      myChart.setOption({
+        title: { text: '班级排名' },
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          data: ['8月6日', '8月7日', '8月9日', '8月10日', '8月12日']
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: [{
+          data: [19, 79, 60, 79, 90],
+          type: 'line',
+          areaStyle: {
+
+          },
+          itemStyle: {
+            normal: {
+              color: new echarts.graphic.LinearGradient(
+                0, 0, 0, 1,
+                [
+                  {offset: 0, color: '#D3F7D4'},
+                  {offset: 0.3, color: '#D2F6D3'},
+                  {offset: 0.5, color: '#E5F5EA'},
+                  {offset: 1, color: '#F9FBFD'}
+                ]
+              ),
+              lineStyle: {
+                color: '#2FB42E'
+              }
+            }
+          }
+
+        }]
+      })
+    }
+
+  },
+  created () {
+    this.init()
+    // const self = this;
+    // axios.get("http://apiv4.yangkeduo.com/operations?pdduid=0").then(function(data){
+    //   self.list = data.data.opt_name
+    //   console.log(self.list)
+    // })
+  },
+  components: {
+    HeaderTitle
+  }
+}
+</script>
+<style lang="scss">
+  @import '../../../pcss/patriarch/pDynamic';
+</style>

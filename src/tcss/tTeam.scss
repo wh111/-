@@ -1,0 +1,24 @@
+.tTeam{
+  .tTeamHeader{
+    display: flex;
+    margin: 0;
+    border-bottom: 0.1rem solid #DEEAE1;
+    >li{
+      border: 1px solid transparent;
+      font-weight: bolder;
+      border-radius: 0.2rem;
+      font-size: 0.13rem;
+      color: #1b1b1b;
+      box-sizing: border-box;
+      padding: 0.05rem 0.1rem;
+      margin: 0.075rem 0.275rem;
+
+    }
+    .active{
+      border: 1px solid #11A640;
+      border-radius: 0.2rem;
+      color: #11A640;
+    }
+  }
+
+}

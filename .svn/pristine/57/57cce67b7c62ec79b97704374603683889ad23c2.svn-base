@@ -1,0 +1,21 @@
+.tResponses{
+  .tResponsesHeader{
+    display: flex;
+    justify-content: space-between;
+    box-sizing: border-box;
+    padding: 0 0.36rem;
+    border-bottom: 0.15rem solid #DEEAE1;
+    >li{
+      box-sizing: border-box;
+      padding: 0.1rem 0;
+      color: #808080;
+      font-size: 0.13rem;
+      font-weight: bold;
+      border-bottom: 0.02rem solid transparent;
+    }
+  }
+  .active{
+    color: rgba(116,204,116,0.8) !important;
+    border-bottom: 0.02rem solid #78CE77 !important;
+  }
+}

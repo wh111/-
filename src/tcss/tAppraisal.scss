@@ -1,0 +1,95 @@
+.tAppraisal {
+    .p {
+        text-align: center;
+        font-size: 0.12rem;
+        color: rgb(195, 196, 196);
+    }
+    .circleButton {
+        width: 0.51rem;
+        height: 0.21rem;
+        background: linear-gradient(136deg, rgba(255, 94, 56, 1), rgba(255, 148, 0, 1));
+        border-radius: 0.2rem;
+        padding: 0;
+        line-height: 0.21rem;
+        font-size: 0.11rem;
+    }
+    .tAppraisalHeader {
+        width: 3.35rem;
+        height: 2.4rem;
+        margin: 0 auto;
+        box-sizing: border-box;
+        padding: 0.2rem;
+        box-shadow: 0 0.1rem 0.15rem 0.03rem #EFEFEF;
+        margin-top: 0.2rem;
+        border-radius: 0.1rem;
+        > p {
+            margin-bottom: 0.275rem;
+            color: #222;
+            font-weight: bold;
+            font-size: 0.22rem;
+        }
+    }
+    .vux-circle-demo {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .tAppraisalTime {
+        margin-right: 0.12rem;
+        > div {
+            color: rgba(34, 34, 34, 0.9);
+            font-size: 0.12rem;
+            font-weight: bold;
+        }
+        > p {
+            color: rgba(153, 153, 153, 1);
+            font-size: 0.12rem;
+        }
+    }
+    .tAppraisalFooter {
+        box-sizing: border-box;
+        padding: 0.2rem;
+        > div {
+            color: #222;
+            font-size: 0.17rem;
+        }
+    }
+    .tAppraisalTopic {
+        margin-top: 0.03rem;
+        display: flex;
+        > li {
+            font-size: 0.12rem;
+            margin-right: 0.04rem;
+            font-weight: bold;
+        }
+        > li:nth-of-type(1) {
+            color: rgba(26, 173, 25, 1);
+        }
+        > li:nth-of-type(2) {
+            color: rgba(255, 144, 4, 1);
+        }
+        > li:nth-of-type(3) {
+            color: rgba(255, 94, 56, 1);
+        }
+        > li:nth-of-type(4) {
+            color: rgba(182, 182, 182, 1);
+        }
+    }
+    .tAppraisalCircle {
+        box-sizing: border-box;
+        padding: 0 0 0.2rem 0.2rem;
+        display: flex;
+        flex-wrap: wrap;
+        > li > div {
+            width: 0.33rem;
+            height: 0.33rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 0.2rem;
+            margin-bottom: 0.2rem;
+            border-radius: 50%;
+            color: #fff;
+        }
+    }
+}

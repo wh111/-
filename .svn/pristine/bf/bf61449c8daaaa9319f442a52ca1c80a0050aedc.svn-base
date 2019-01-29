@@ -1,0 +1,19 @@
+.pSubmit{
+    background: #F1F5F4;
+    height: 6.67rem;
+    .header{
+        width: 3.44rem;
+        height: 1.45rem;
+        margin: 0.2rem auto;
+        background: #E9ECED;
+        font-size: 0.15rem;
+        color:rgba(27,27,27,0.7);
+        font-weight: bold;
+        box-sizing: border-box;
+        padding: 0.1rem;
+    }
+    .pPrimary{
+        width: 3.35rem;
+        height: 0.47rem;
+    }
+}

@@ -1,0 +1,7 @@
+const api = {
+  queryVersionList: {// 作答分析详情
+    path: '/app/guardian/queryStudentNews',
+    method: 'get'
+  }
+}
+export default api

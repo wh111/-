@@ -1,0 +1,141 @@
+// 试卷问题及选项
+.questionBox {
+    border-radius: 5px;
+    background-color: #DEEAE1;
+    font-size: 0.15rem;
+    img {
+        max-width: 3.25rem !important;
+    }
+    .qHeader {
+    }
+    .qContent {
+        width: 3.45rem !important;
+        background: #DEEAE1;
+    }
+
+    .qFooter {
+        padding: 0 0.2rem;
+        border-radius: 0.05rem;
+        margin-top: 0.1rem;
+        width: 3.45rem !important;
+        line-height: 0.5rem;
+        background: #fff;
+    }
+
+    // 标题部分
+    .qcTitle {
+        position: relative;
+        background: #fff;
+        padding: 0.15rem;
+        border-radius: 0.05rem;
+        font-size: 0.15rem;
+        color: #1B1B1B;
+    }
+    .qctTextBox {
+    }
+    .qctIndex {
+        width: 0.26rem;
+        position: absolute;
+        //left: 10px;
+        //top: 10px;
+        & ~ .qctTextBox {
+            padding-left: 0.26rem
+        }
+    }
+    .qctTodoBox {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+    .qcMain {
+        font-size: 0.15rem;
+    }
+    .qcmSel {
+        position: relative;
+        margin-bottom: 0.05rem;
+        min-height: 0.45rem;
+        border-radius: 0.05rem;
+        margin: 0.1rem 0;
+        background: #fff;
+        line-height: 0.45rem;
+        padding: 0 0.1rem;
+    }
+    .qcmSelItem {
+        width: 0.25rem;
+        height: 0.25rem;
+        background: #e5e5e5;
+        border-radius: 50%;
+        color: #626262;
+        text-align: center;
+        position: absolute;
+        top: 0.1rem;
+        left: 0.1rem;
+        line-height: 0.25rem;
+    }
+    .qcmSelText {
+        text-indent: 0.4rem;
+    }
+
+    .qcFooter {
+        min-height: 0.32rem;
+        margin-top: 0.1rem;
+        padding: 0 0.1rem;
+        border-radius: 0.05rem;
+        background-color: #fff;
+        .showAnswerRight{
+            line-height: 0.46rem;
+            border-bottom: 1px solid #DEEAE1;
+        }
+
+    }
+    .qcfItem {
+        display: inline-block;
+        span{
+            font-size: 0.15rem;
+            color: #1B1B1B;
+        }
+        &.error {
+            color: red;
+        }
+        &.success {
+            color: green;
+        }
+    }
+    .qcfiAnswer {
+        color: #fd7416;
+    }
+    .qcfShowExp {
+        color: #fc4341;
+    }
+    .qcfExpCon {
+        padding:0.1rem 0;
+        font-size: 0.11rem;
+        .analysis{
+            color: #EC6941;
+            font-size: 0.11rem;
+        }
+        .detail{
+            color: #707070;
+            font-size: 0.11rem;
+        }
+
+    }
+    .active{
+        background: rgb(253, 116, 22) !important;
+        color: rgb(255, 255, 255);
+    }
+}
+
+.qAnswerBox {
+    padding: 20px 0;
+    button {
+        border-radius: 30px;
+        background-color: #DEDEDE;
+        color: rgb(49, 49, 49);
+        &.active {
+            background: rgb(253, 116, 22) !important;
+            color: rgb(255, 255, 255);
+            border: 1px solid rgb(253, 116, 22);
+        }
+    }
+}

@@ -1,0 +1,88 @@
+const file = '/'//当前模块api前缀
+const api = {
+  sysMsgList: {//
+    path: 'sysMsg/list',
+    method: 'get'
+  },
+  myWrongListNum:{//我的错题数
+    path: 'questionsWrong/num',
+    method: 'get'
+  },
+  myquestionsFavoriteNum:{//我的收藏数
+    path: 'questionsFavorite/num',
+    method: 'get'
+  },
+  questionsNotesNum:{//我的笔记数
+    path: 'questionsNotes/num',
+    method: 'get'
+  },
+  myWrongListList:{//我的错题列表
+    path: 'questionsWrong/myWrongList',
+    method: 'get'
+  },
+  myquestionsFavoriteList:{//我的收藏列表
+    path: 'questionsFavorite/get',
+    method: 'get'
+  },
+  questionsNotesList:{//我的笔记列表
+    path: 'questionsNotes/myNotesList',
+    method: 'get'
+  },
+  sysMsgGet: {
+    path: 'sysMsg/get',
+    method: 'get'
+  },
+  myProductList:{
+    path: 'product/myProductList',
+    method: 'get'
+  },
+  myWrongList:{//我的错题
+    path: 'questionsWrong/myWrongList',
+    method: 'get'
+  },
+  groupsList: {//我的群组（学生查询自己的全部群）
+    path: 'groups/list',
+    method: 'get'
+  },
+  orderList: {//获取订单
+    path: 'order/list',
+    method: 'get'
+  },
+  cancelOrder: {//订单取消
+    path: 'order/cancel',
+    method: 'put'
+  },
+  queryStudents: {
+    path: 'groups/queryStudents',
+    method: 'get'
+  },
+  getByNo: {//获取群
+    path: 'groups/getByNo',
+    method: 'get'
+  },
+  joinGroup: {//申请加入群组
+    path: '/groups/join',
+    method: 'post'
+  },
+  getWorkList:{
+    path: 'work/myList',
+    method: 'get'
+  },
+  getTestList:{
+    path: 'evaluation/myList',
+    method: 'get'
+  },
+  get: {//
+    path: file + '/get?id=',
+    method: 'get'
+  },
+  modify: {//
+    path: file + '/modify',
+    method: 'put'
+  },
+  delete: {//
+    path: file + '/remove?ids=',
+    method: 'delete'
+  }
+}
+export default api 

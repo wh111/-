@@ -1,0 +1,84 @@
+<template>
+  <div class="firstChild">
+    <header-title>
+      <slot>个人中心</slot>
+    </header-title>
+    <div class="stance"></div>
+    <div class="hello_img">
+      <img :src="getStaticPath(userInfo.icon)"  onerror="javascript:this.src='../../../../static/img/03.jpg'" @click="open('personal')" alt="">
+      <div style="margin-left: -0.05rem">
+        <span style="color: #4E4E4E;">{{userInfo.name}}</span>
+        <span style="color: #FFA613;" @click="open('member')" v-if="userInfo.vipStatus === 1">V</span>
+        <span v-else style="color: #ccc" @click="open('member')">V</span>
+      </div>
+      <div>
+        <span>我的积分</span>
+        <span style="color: #FB5A57">{{userInfo.integral||0}}分</span>
+      </div>
+      <img class="firstChild_news" @click="open('message')" src="../../../static/img/img0927.png"/>
+    </div>
+    <div class="hello_dynamic">
+      <div @click="open('projectLibrary')">
+        <span>10</span>
+        <div>专题库</div>
+      </div>
+      <div @click="open('myErrors','wrong')">
+        <span>59</span>
+        <div>我的错题</div>
+      </div>
+      <div @click="open('myErrors','enjoy')">
+        <span>31</span>
+        <div>我的收藏</div>
+      </div>
+      <div @click="open('myErrors','notes')">
+        <span>28</span>
+        <div>我的笔记</div>
+      </div>
+    </div>
+    <div class="hello_tab">
+      <div>
+        <div class="Tabs" @click="open('theClassOf')">我的班组</div>
+        <div class="tIcon"> <x-icon type="ios-arrow-forward" size="0.3rem"></x-icon></div>
+      </div>
+      <div>
+        <div class="Tabs" @click="open('myOrder')">我的订单</div>
+        <div class="tIcon"> <x-icon type="ios-arrow-forward" size="0.3rem"></x-icon></div>
+      </div>
+      <div>
+        <div class="Tabs">我的收藏</div>
+        <div class="tIcon"> <x-icon type="ios-arrow-forward" size="0.3rem"></x-icon></div>
+      </div>
+    </div>
+    <router-view/>
+    <plan></plan>
+  </div>
+</template>
+<script>
+import HeaderTitle from './header'
+import plan from './plan'
+export default{
+  data () {
+    return {
+      type: 1
+    }
+  },
+  methods: {
+    open (type,select) {
+      this.$router.push({name: type,query:{type:select}})
+    }
+  },
+  created () {
+  },
+  computed: {
+    userInfo () {
+      console.log(this.$store.state)
+      return this.$store.state.loginInfo || {}
+    }
+  },
+  components: {HeaderTitle, plan}
+}
+</script>
+<style lang="scss">
+  @import '../../css/firstchild';
+
+</style>

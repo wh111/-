@@ -1,0 +1,119 @@
+*{
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.projectLibrary{
+  .homePage_book{
+
+    width: 2.4rem;
+    float: right;
+    margin-top: 0.2rem;
+    margin-left: 0.1rem;
+    display: inline-block;
+    overflow: hidden;
+    >div{
+      font-size: 0.15rem;
+      color: #1B1B1B;
+      margin-bottom: 0.03rem;
+    }
+    >div:not(:first-child){
+      display: inline-block;
+      margin-right: 0.2rem;
+      margin-bottom: 0.03rem;
+      span{
+        font-size: 0.12rem;
+      }
+      >span:nth-of-type(1){
+        color: #707070;
+        margin-right: 0.05rem;
+      }
+      >span:nth-of-type(2){
+        color: #EC6941;
+      }
+    }
+    button{
+      width: 0.5rem;
+      height: 0.2rem;
+      line-height: 0.2rem;
+      background: #EC6941;
+      color: #fff;
+      font-size: 0.11rem;
+      border-radius: 0.02rem;
+      border: none;
+      position: relative;
+      top: -0.03rem;
+    }
+    .contentShop{
+      color: #626262;
+      font-size: 0.1rem;
+      line-height: 0.2rem;
+      overflow: hidden;
+      height: 0.4rem;
+      display: inline-block;
+      margin: 0;
+      width: 2.4rem;
+    }
+    p{
+      font-size: 0.14rem;
+      color: #909090;
+    }
+  }
+  .content{
+    display: flex;
+    align-items: center;
+    border-bottom: 0.02rem solid #E9E9E9;
+    box-sizing: border-box;
+    padding-right: 0.15rem;
+    >:first-child{
+      border: 1px solid #E9E9E9;
+      border-radius: 0.05rem;
+      width: 0.9rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0.08rem 0.1rem;
+      margin: 0.2rem 0.15rem;
+      >img{
+        //width: 0.675rem;
+        height: 0.9rem;
+      }
+    }
+  }
+  .homePage_book{
+    >div:not(:first-child){
+      display: inline-block;
+      margin-right: 0.2rem;
+      margin-bottom: 0.03rem;
+      span{
+        font-size: 0.12rem;
+      }
+      >span:nth-of-type(1){
+        color: #909090;
+        margin-right: 0.05rem;
+      }
+
+    }
+    p{
+      font-size: 0.12rem;
+      color: #909090;
+      font-weight: bold;
+      margin-bottom: 0.1rem;
+    }
+    >p:nth-of-type(2){
+      color: #EF7E5D;
+      font-size: 0.14rem;
+    }
+
+  }
+  .btns{
+    border: 0;
+    width: 0.5rem;
+    height: 0.25rem;
+    font-size: 0.11rem;
+    background: #EC6941;
+    color: #FBE5DE;
+    font-weight: bold;
+    border-radius: 0.05rem;
+  }
+}

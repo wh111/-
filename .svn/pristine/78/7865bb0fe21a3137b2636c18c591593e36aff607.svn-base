@@ -1,0 +1,89 @@
+<!----------------------------------
+****--@name     member
+****--@role     ${*}
+****--@date     2018/5/2
+****--@author   zzh
+----------------------------------->
+<template>
+    <div class="member">
+      <header-title>
+        <slot>会员</slot>
+      </header-title>
+      <div class="stance"></div>
+      <ul class="member_header">
+        <li>会员权益</li>
+        <li>开通会员后可免费使用平台所有专题库</li>
+      </ul>
+      <ul class="member_content">
+        <li>100元/月</li>
+        <li>500元/半年</li>
+        <li>800元/一年</li>
+      </ul>
+    </div>
+</template>
+<script>
+/* 当前组件必要引入 */
+import HeaderTitle from '../header'
+// 当前组件引入全局的util
+let Util = null
+export default {
+  data () {
+    return {}
+  },
+  methods: {
+    // 初始化请求列表数据
+    init () {
+
+    }
+
+  },
+  created () {
+    this.init()
+  },
+  mounted () {
+  },
+  components: {HeaderTitle}
+}
+</script>
+<style lang="scss">
+  .member{
+    .member_header{
+      text-align: center;
+      box-sizing: border-box;
+      padding: 0.56rem 0 0.85rem 0;
+      font-weight: bold;
+      >li:nth-of-type(1){
+        font-size: 0.17rem;
+        color:rgba(0,0,0,0.8);
+        margin-bottom: 0.13rem;
+      }
+      >li:nth-of-type(2){
+        font-size: 0.12rem;
+        color:rgba(98,98,98,0.7);
+      }
+    }
+    .member_content{
+      display: flex;
+      justify-content: space-between;
+      box-sizing: border-box;
+      padding: 0 0.15rem;
+      >li{
+        border: 1px solid #11A640;
+        border-radius: 0.05rem;
+        width: 1.05rem;
+        height: 0.6rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 0.15rem;
+        color: #11A640;
+        font-weight: bold;
+      }
+      >li:hover{
+        background: #11A640;
+        color: #D8EDDD;
+      }
+    }
+  }
+
+</style>

@@ -1,0 +1,76 @@
+.myTeam{
+  .myTeam_header{
+    box-sizing: border-box;
+    padding: 0.15rem;
+    border-bottom: 0.05rem solid #DEEAE1;
+    .vux-flexbox-item:nth-of-type(1){
+      font-weight: bold;
+      font-size: 0.18rem;
+      color:#3E3E3E;
+      margin-bottom: 0.1rem;
+    }
+    .vux-flexbox-item:not(:nth-of-type(1)){
+      >span{
+        font-size: 0.12rem;
+      }
+      >span:nth-of-type(1){
+        color: #898989;
+        margin-right: 0.1rem;
+      }
+      >span:nth-of-type(2){
+        color: #F5B09E;
+      }
+    }
+    .vux-flexbox-item>div{
+      font-size: 0.12rem;
+      color: #898989
+    }
+  }
+  .myTeam_group{
+    box-sizing: border-box;
+    padding: 0.1rem 0 0.05rem 0.16rem;
+    background: #DEEAE1;
+    font-size:0.12rem;
+    color:#3E3E3E;
+    font-weight: bold;
+  }
+  .myTeam_footer{
+    box-sizing: border-box;
+    padding: 0.25rem 0.16rem;
+    border-bottom: 0.05rem solid #DEEAE1;
+    .vux-flexbox-item{
+      margin: 0.16rem 0;
+      font-weight: 600;
+      >div:nth-of-type(1){
+        font-size: 0.16rem;
+        color:#3E3E3E;
+      }
+      >div:nth-of-type(2){
+        box-sizing: border-box;
+        padding: 0.09rem 0 0.2rem 0;
+        font-size:0.11rem;
+        color:rgba(149,149,149,1);
+        border-bottom: 0.01rem solid #F1F6F3;
+      }
+    }
+  }
+  .myTeam_button{
+    margin: 0.3rem auto;
+    width: 3.45rem;
+    height: 0.4rem;
+    button{
+      border: 0;
+      width: 100%;
+      height: 100%;
+      background: #1AAD19;
+      color: #FFFFFF;
+      border-radius: 0.05rem;
+    }
+  }
+  #myTeam_inp{
+    >input{
+      background: black;
+      border-radius: 0.05rem;
+    }
+  }
+}

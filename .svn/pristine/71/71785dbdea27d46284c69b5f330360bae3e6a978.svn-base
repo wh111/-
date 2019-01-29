@@ -1,0 +1,79 @@
+<!----------------------------------
+****--@name     ${*}
+****--@role     ${*}
+****--@date     2018/4/24
+****--@author   zzh
+----------------------------------->
+<template>
+  <div class="appraisal_math">
+    <div class="content">
+      <flexbox class="content_flexbox">
+        <flexbox-item :span="4"><div class="flex-demo">数学</div></flexbox-item>
+        <flexbox-item :span="4" align="right"><img @click="open" src="../../../../static/img/08.jpg" style="width: 0.9rem;height: 0.25rem;" alt=""></flexbox-item>
+      </flexbox>
+      <flexbox class="content_flexbox">
+        <flexbox-item :span="3"><div class="flex-demo">学习进度</div></flexbox-item>
+        <x-progress class="content_progress" :percent="percent2" :show-cancel="false" style="width: 100%;"></x-progress>
+        <flexbox-item :span="2" align="right">{{percent2}}%</flexbox-item>
+      </flexbox>
+      <flexbox class="content_flexbox">
+        <flexbox-item :span="3"><div class="flex-demo">能力值</div></flexbox-item>
+        <x-progress class="content_progress" :percent="percent3" :show-cancel="false" style="width: 100%;"></x-progress>
+        <flexbox-item :span="2" align="right">{{percent3}}%</flexbox-item>
+      </flexbox>
+    </div>
+    <div class="aside">
+      当前章节掌握情况
+    </div>
+    <div>
+      <flexbox class="footer" v-for="(item,index) in data" :key="index">
+        <flexbox-item :span="5"><div>{{item.name}}</div></flexbox-item>
+        <flexbox-item :span="3" align="right">
+          <div style="display: flex;align-items: center">
+            <span>{{item.title}}</span>
+            <span><x-icon type="ios-arrow-forward" size="0.3rem"></x-icon></span>
+          </div>
+        </flexbox-item>
+      </flexbox>
+    </div>
+  </div>
+</template>
+<script>
+/* 当前组件必要引入 */
+// 当前组件引入全局的util
+let Util = null
+export default {
+  data () {
+    return {
+      percent2: 30,
+      percent3: 20,
+      data: [
+        {name: '第一章：二次根式', title: '100%', arrows: '>'},
+        {name: '第二章：二次根式', title: '100%', arrows: '>'},
+        {name: '第三章：二次根式', title: '100%', arrows: '>'},
+        {name: '第四章：二次根式', title: '100%', arrows: '>'},
+        {name: '第五章：二次根式', title: '100%', arrows: '>'}
+      ]
+    }
+  },
+  methods: {
+    // 初始化请求列表数据
+    init () {
+
+    },
+    open () {
+      this.$router.push({name: 'appraisal_math_open'})
+    }
+
+  },
+  created () {
+    this.init()
+  },
+  mounted () {
+  },
+  components: {}
+}
+</script>
+<style lang="scss">
+  @import '../../../css/appraisal/appraisal_math';
+</style>

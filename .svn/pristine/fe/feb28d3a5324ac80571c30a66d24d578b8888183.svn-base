@@ -1,0 +1,53 @@
+.mistakes{
+  .mistakes_content{
+    .mistakes_content_header{
+      background: #F1F5F4;
+      box-sizing: border-box;
+      padding: 0.15rem 0.15rem 0.08rem 0.15rem;
+
+
+      span{
+        color: #888;
+        font-size: 0.14rem;
+      }
+    }
+    .mistakes_content_topic{
+      box-sizing: border-box;
+      .mistakes_content_topic_content{
+        border-bottom: 1px solid #F0F0F0;
+        box-sizing: border-box;
+        margin: 0.15rem;
+        margin-bottom: 0;
+        overflow: hidden;
+        height: 0.88rem;
+        overflow: hidden;
+        line-height: 0.22rem;
+        width: 3.45rem;
+        font-size: 0.16rem;
+        color: #000;
+        span{
+          width: 3.45rem;
+        }
+        >div:nth-of-type(1){
+          margin-bottom: 0.1rem;
+        }
+      }
+      >li:nth-of-type(1){
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-sizing: border-box;
+        padding: 0 0.15rem;
+        height: 0.53rem;
+        line-height: 0.43rem;
+        border-bottom: 0.1rem solid #F1F5F4;
+        >div:nth-of-type(1){
+          color:#000;
+        }
+        .vux-x-icon {
+          fill: #DBDBDB;
+        }
+      }
+    }
+  }
+}

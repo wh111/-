@@ -1,0 +1,67 @@
+.recentPractice_over{
+  .border{
+    border-bottom: 0.1rem solid #deeae1;
+    padding-bottom: 0.2rem;
+  }
+  .recentPractice_last_grid{
+    width: 3.3rem;
+    margin-left: 0.3rem;
+    section{
+      width: 0.55rem;
+      float: left;
+    }
+  }
+  .weui-grid:before{
+    border: none;
+  }
+  .weui-grids:before{
+    border: none;
+  }
+  .txt{
+    width:1.5rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .singleChoice{
+    border-bottom: 0.05rem solid #DEEAE1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    box-sizing: border-box;
+    padding: 0 0.08rem 0.15rem 0.08rem;
+
+  }
+  .recentPractice_last_title{
+    height: 0.5rem;
+    color: #1b1b1b;
+    font-size: 0.17rem;
+    margin-left: 0.15rem;
+    line-height: 0.5rem;
+  }
+  .grid-center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 0.35rem;
+    height: 0.35rem;
+    border-radius: 0.03rem;
+    margin: 0.1rem;
+    color: #fff;
+    background: #00BD71;
+    span{
+      font-size: 0.15rem;
+    }
+  }
+  .red{
+    background: #FB4440;
+  }
+  .over_footer{
+    margin: 0.18rem 0.15rem 0.05rem 0.15rem;
+    font-weight: bold;
+    color:#4B4B4B;
+  }
+
+}

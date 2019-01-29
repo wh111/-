@@ -1,0 +1,109 @@
+<!----------------------------------
+****--@name     tAppraisal
+****--@role     ${*}
+****--@date     2018/5/7
+****--@author   zzh
+----------------------------------->
+<template>
+    <div class="tAppraisal">
+      <header-title>测评结果</header-title>
+      <div class="stance"></div>
+      <div class="tAppraisalHeader">
+        <p>{{$route.query.title}}</p>
+        <ul>
+          <li class="vux-circle-demo">
+            <div style='width:1.36rem;height:1.36rem;'>
+              <x-circle
+                :percent="data.correctRate"
+                :stroke-width="6"
+                :trail-width="6"
+                :stroke-color="['#FF9500', '#FF5E3A']"
+                trail-color="#ececec">
+                <div style="color:rgba(40,44,55,1);font-size: 0.36rem">{{ (data.correctRate||0).toFixed(0)||0 }}%</div>
+                <x-button type="primary" mini class="circleButton">正确率</x-button>
+              </x-circle>
+              <p class="p">
+                用时：{{(data.usedTime/ 60 || 0).toFixed(0)}}分钟|分数：{{data.score}}分
+              </p>
+            </div>
+            <ul>
+              <li class="tAppraisalTime">
+                <div>布置时间</div>
+                <p>{{data.startTime|formatDate('yyyy-MM-dd HH:mm')}}</p>
+              </li>
+              <li class="tAppraisalTime">
+                <div>上交时间</div>
+                <p>{{data.finishedTime|formatDate('yyyy-MM-dd HH:mm')||'暂无'}}</p>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <div class="tAppraisalFooter">
+        <div>答案详情</div>
+        <ul class="tAppraisalTopic">
+          <!--<li>待批改的题目</li>-->
+          <!--<li></li>-->
+          <!--<li>做错的题目</li>-->
+          <!--<li>做对的题目</li>-->
+        </ul>
+      </div>
+      <ul class="tAppraisalCircle">
+        <li v-for="(item,index) in data.answerInfoList" :key="index"  >
+          <div v-if="!item.isCorrecting" style="background: rgba(26,173,25,1)" @click="open('tAppraisalContent',index+1)">
+            {{index+1}}
+          </div>
+          <!--<div v-if="!item.isCorrecting" style="background: rgba(255,144,4,1)" @click="open('tMistakes')">-->
+            <!--{{index+1}}-->
+          <!--</div>-->
+          <div v-if="item.isCorrecting&&!item.answerResult" style="background: rgba(255,94,56,1)" @click="open('tAppraisalContent',index+1)" >
+            {{index+1}}
+          </div>
+          <div v-if="item.answerResult" style="background: rgba(182,182,182,1)" @click="open('tAppraisalContent',index+1)">
+            {{index+1}}
+          </div>
+        </li>
+      </ul>
+    </div>
+</template>
+<script>
+/* 当前组件必要引入 */
+import HeaderTitle from '../header'
+import api from './api'
+// 当前组件引入全局的util
+// let Util = null
+export default {
+  data () {
+    return {
+      percent: 80,
+      data:{},
+    }
+  },
+  methods: {
+    // 初始化请求列表数据
+    init () {
+       this.getDetail();
+    },
+    getDetail(){
+      this.ajax({
+        ajaxSuccess: (data, res) => {this.data = data},
+        url: this.$route.query.type=='homework'?api.getUserWorkInfo.path:api.getUserEvaluationInfo.path,
+        params:this.$route.query.type=='homework'?{workId:this.$route.query.id,groupsId:this.$route.query.groupsId,studentId:this.$route.query.studentId }:{},
+      })
+    },
+    open (type,index) {
+      let query=Object.assign(this.$route.query,{seq:index})
+      this.$router.push({name: type,query:query})
+    }
+  },
+  created () {
+    this.init()
+  },
+  mounted () {
+  },
+  components: {HeaderTitle}
+}
+</script>
+<style lang="scss">
+  @import "../../../tcss/tAppraisal";
+</style>

@@ -1,0 +1,64 @@
+.tBook{
+  background: #DEEAE1;
+  //height: 100%;
+  .tBookHeader{
+    margin-bottom: 0.15rem;
+    border-bottom: 0.01rem solid #F7F7F7;
+  }
+   .tElement{
+     box-sizing: border-box;
+     padding: 0.15rem;
+     padding-bottom: 0;
+     background: #FFFFFF;
+     border-bottom: 0.01rem solid #F7F7F7;
+     >div{
+       color:#222;
+       font-weight: bold;
+       font-size: 0.18rem;
+       margin-bottom: 0rem;
+     }
+     >p{
+       font-size: 0.13rem;
+       color:#999;
+       height: 0.3rem;
+       line-height: 0.2rem;
+       //border-bottom: 1px solid #E5E5E5;
+
+     }
+   }
+  .tCorrect{
+    background: #FFFFFF;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    >ul{
+      text-align: center;
+      box-sizing: border-box;
+      padding: 0.15rem 0.175rem;
+    }
+    .tCorrectNumber{
+      color: #1AAD19;
+      font-weight: bold;
+      font-size: 0.19rem;
+    }
+    .tCorrectWord{
+      //font-weight: bold;
+      color:#222;
+      font-size: 0.13rem;
+    }
+  }
+  .tBookAdd{
+    position: fixed;
+    right: 0.27rem;
+    top: 6rem;
+    z-index: 9999;
+    width: 0.45rem;
+    height: 0.45rem;
+    line-height: 0.38rem;
+    background:#1AAD19;
+    border-radius: 50%;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 0.4rem;
+  }
+}

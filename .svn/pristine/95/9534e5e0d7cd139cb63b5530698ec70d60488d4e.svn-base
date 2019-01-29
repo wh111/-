@@ -1,0 +1,61 @@
+<!----------------------------------
+****--@name     plan
+****--@role
+****--@date     2018/5/8/008
+****--@author   zzh
+----------------------------------->
+<template>
+  <div>
+    <group>
+      <x-switch title="Toggle" v-model="show"></x-switch>
+    </group>
+    <div v-transfer-dom>
+      <confirm v-model="show"
+               title="Confirm deleting the item"
+               @on-cancel="onCancel"
+               @on-confirm="onConfirm"
+               @on-show="onShow"
+               @on-hide="onHide">
+        <p style="text-align:center;">Are you sure?</p>
+      </confirm>
+    </div>
+    <br>
+  </div>
+</template>
+
+<script>
+export default {
+  data () {
+    return {
+      show: false,
+      stulist: []
+    }
+  },
+  methods: {
+    init () {
+    },
+    onCancel () {
+      console.log('on cancel')
+    },
+    onConfirm (msg) {
+      console.log('on confirm')
+      if (msg) {
+        alert(msg)
+      }
+    },
+    onHide () {
+      console.log('on hide')
+    },
+    onShow () {
+      console.log('on show')
+    }
+
+  },
+  created () {
+    this.init()
+  },
+  mounted () {
+
+  }
+}
+</script>

@@ -1,0 +1,197 @@
+<!----------------------------------
+****--@name     ${*}
+****--@role     ${*}
+****--@date     2018/4/24
+****--@author   zzh
+----------------------------------->
+<template>
+    <div id="allBook">
+        <div class="stance"></div>
+        <div class="content" v-for="(item,index) in data" :key="index">
+            <!--<div>-->
+            <!--<img :src="item.icon"  src="../../../../static/img/1_07.jpg" />-->
+            <!--</div>-->
+            <div class="shopList">
+                <p class="title">
+                    订单编号:{{item.no}} </b>
+                    <span><el-button v-if="item.status ==0 && item.restTime > 0"
+                                     @click="removeOrder(item.id)">取消订单</el-button></span>
+                    <span v-if="item.status == 0 && item.restTime > 0">剩余付款时间： <span></span> {{ timeArr[index] | formatHours
+                        }} </span>
+                </p>
+                <div class="shop" v-for="(child,ind) in item.productList" :key="ind" style="height: 1.5rem">
+                    <div><img class="img" :src="getStaticPath(child.icon)"
+                              onerror="javascript:this.src='../../../../static/img/1_07.jpg'"/>
+                        <ul class="ul">
+                            <li class="tag">{{child.title}}</li>
+                            <li>{{child.content}}</li>
+                            <li><span> 价格：</span><span v-if="child.productTypes == 0"
+                                                       class="price">{{child.currentPrice | money}}</span>
+                                <span v-else class="price">{{child.currentPrice == null ? '0' : child.currentPrice
+                                    }}积分</span> 试卷<span>{{child.spec}}{{child.unit | unit}}</span></li>
+                        </ul>
+                        <div style="float: left">
+                            <dl style="margin-top: 20px" v-if="item.status ==0 && item.restTime > 0">
+                                <dt>{{child.currentPrice | money}}</dt>
+                                <dd>
+                                    <router-link style="color: #fff"
+                                                 :to="{path:'/selfcenter/shopcar',query:{id:item.id}}">
+                                        <button>立即付款</button>
+                                    </router-link>
+                                </dd>
+                                <!--<dd style="color: #434343;line-height: 44px;cursor: pointer" >-->
+                                <!---->
+                                <!--</dd>-->
+                            </dl>
+                            <dl v-if="item.status ==1 && item.orderTypes == 0">
+                                <dt><span class="close">{{child.currentPrice | money}}</span></dt>
+                                <dd style="color: #fd7416;">支付成功</dd>
+                            </dl>
+                            <dl v-else-if="item.status == 2 || item.restTime < 0">
+                                <dt><span class="close">{{child.currentPrice | money}}</span></dt>
+                                <dd><span style="color: #b5b5b5">交易关闭</span></dd>
+                            </dl>
+                            <dl v-else-if="item.orderTypes == 1">
+                                <dt><span class="close">{{child.currentPrice}}积分</span></dt>
+                                <dd>兑换成功</dd>
+                            </dl>
+                        </div>
+                        　
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+        <confirm v-model="showCancel"
+                 show-input
+                 title="提示"
+                 @on-confirm="onConfirm">
+            确认取消订单吗？
+        </confirm>
+        <alert title="成功" v-model="showSuccess">取消成功</alert>
+    </div>
+</template>
+<script>
+  /* 当前组件必要引入 */
+
+  // 当前组件引入全局的util
+  import Alert from '../../../../node_modules/vux/src/components/alert/index.vue'
+
+  let Util = null
+  import api from './api'
+
+  export default {
+    data () {
+      return {
+        data: [],
+        resourceHttp: '',
+        showCancel:false,
+        showSuccess:false,
+      }
+    },
+    methods: {
+      // 初始化请求列表数据
+      onConfirm(){
+        let options = {
+          url: api.cancelOrder.path,
+          method:api.cancelOrder.method,
+          data: {
+            orderId:this.orderId
+          },
+          /**
+           * 服务端返回的状态码检查,默认状态码检查前执行
+           * @param {*} data  服务器端返回的实际数据结构,根据不同业务格式不同
+           * @param {object} res 服务器端返回的response值 {data:'**',status:{conde:0,msg:'请求数据成功!'}}
+           */
+          ajaxSuccess: (data, res) => {
+            this.showSuccess=true
+          },
+        }
+        this.ajax(options)
+      },
+      removeOrder(val){
+        this.showCancel=true;
+        this.orderId=val
+      },
+      init () {
+        this.getOrderList()
+      },
+      settimeFn (langtime) {//改变时间
+        let that = this
+        let arr = []
+        this.data.map(item => {
+          let ordertime = item.createTime + 1000 * 60 * 60 * 24
+          let nowTime = new Date().getTime()
+          let restTime = ordertime - nowTime
+          if (restTime > 1000 * 60 * 60 * 24) {
+            item.restTime = (1000 * 60 * 60 * 24 - langtime)
+            if (item.restTime > 0) {
+              arr.push(item.restTime)
+            }
+          } else {
+            item.restTime = (restTime - langtime)
+            if (item.restTime > 0) {
+              arr.push(item.restTime)
+            }
+          }
+        })
+        this.timeArr = arr
+      },
+      countDown () {//倒计时
+        let that = this
+        this.settimeFn(1000)
+        this.times = setInterval(function () {
+          if (that.timeArr.length > 0) {
+            let arr = []
+            that.timeArr.map(item => {
+              arr.push(item - 1000)
+            })
+            that.timeArr = arr
+          } else {
+            clearInterval(that.times)
+          }
+        }, 1000)
+      },
+      open () {
+        this.$router.push({name: 'allBook_content'})
+      },
+      getOrderList () {
+        let options = {
+          url: api.orderList.path,
+          params: {
+            orderTypes: this.$route.query.orderTypes    ,
+            status: this.$route.query.status,
+            curPage: this.num,
+            pageSize: 10
+          },
+          /**
+           * 服务端返回的状态码检查,默认状态码检查前执行
+           * @param {*} data  服务器端返回的实际数据结构,根据不同业务格式不同
+           * @param {object} res 服务器端返回的response值 {data:'**',status:{conde:0,msg:'请求数据成功!'}}
+           */
+          ajaxSuccess: (data, res) => {
+            this.data = data.dataList
+            this.countDown(this.data)
+          },
+        }
+        this.ajax(options)
+
+      },
+    },
+    created () {
+      this.init()
+    },
+    mounted () {
+    },
+    watch: {
+      $route (to, from) {
+        this.getOrderList()
+      }
+    },
+    components: {Alert}
+  }
+</script>
+<style lang="scss">
+    @import '../../../css/child/allBook';
+</style>

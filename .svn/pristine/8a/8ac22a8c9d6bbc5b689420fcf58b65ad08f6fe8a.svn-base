@@ -1,0 +1,21 @@
+.tBasic{
+  .tBasicHeader{
+    box-sizing: border-box;
+    padding: 0.1rem 0.15rem 0 0.15rem;
+    .vux-flexbox-item{
+      box-sizing: border-box;
+      padding: 0.1rem 0;
+      border-bottom: 1px solid #F8F8F8;
+      font-weight: bold;
+    }
+  }
+  .tBlack{
+    color:rgba(0,0,0,0.8);
+  }
+  .tGreen{
+    color:rgba(26,173,25,0.8);
+  }
+  .tGray{
+    color:rgba(136,136,136,0.8);
+  }
+}

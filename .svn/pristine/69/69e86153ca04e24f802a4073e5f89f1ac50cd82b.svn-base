@@ -1,0 +1,302 @@
+* {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-decoration: none;
+}
+.changeStudent{
+    .weui-dialog__bd:first-child{
+        padding:0;
+
+
+    }
+    .weui-cells__title{
+        font-size: 0.18rem;
+        color: #000;
+        padding:0.15rem 0;
+        margin: 0;
+    }
+    .weui-dialog{
+        width: 2.8rem;
+    }
+    .weui-cell{
+        height: 0.75rem;
+    }
+}
+.patriarch {
+
+    .btnWarn{
+        text-align: center;
+    }
+    .stuName {
+        font-size: 0.15rem;
+        color: #1B1B1B;
+    }
+    .ul {
+        width: 2.74rem;
+        color: #222;
+    }
+    .school {
+
+        font-size: 0.14rem;
+        color: #c7c7cc;
+        .middle {
+            color: #EBEBEB;
+            position: relative;
+            font-size: 0.11rem;
+            line-height: 0.2rem;
+        }
+        .left {
+            position: absolute;
+            right: 0.1rem;
+            width: 1.5rem;
+            text-align: right;
+            color: #707070;
+            font-size: 0.11rem
+        }
+        .right {
+            position: absolute;
+            left: 0.1rem;
+            text-align: left;
+            width: 1.5rem;
+            color: #707070;
+            font-size: 0.11rem
+        }
+    }
+    .content {
+
+        height: 0.9rem;
+        margin: 0 0 0 0.15rem;
+        border-bottom: 0.01rem solid #E5E5E5;
+        .img {
+            width: 0.7rem;
+            float: left;
+            text-align: center;
+            img {
+                margin-top: 0.21rem;
+                width: 0.4rem;
+                height: 0.48rem;
+            }
+        }
+        .homePage_book {
+            float: left;
+            margin-top: 0.16rem;
+            width: 2.75rem;
+            .remark {
+                color: #c7c7cc;
+                font-size: 0.12rem;
+                line-height: 0.2rem;
+                float: left;
+                max-height: 0.4rem;
+                overflow: hidden;
+                margin-top: -0.05rem;
+            }
+            .title {
+                line-height: 0.3rem;
+                font-size: 0.17rem;
+                color: #222;
+
+                div {
+                    font-size: 0.12rem;
+                    color: #c7c7cc;
+                    display: inline-block;
+                    float: right;
+                    line-height: 0.3rem;
+                }
+            }
+        }
+    }
+    .topMonth {
+        line-height: 0.35rem;
+        margin: 0 0 0 0.15rem;
+        border-bottom: 0.01rem solid #E5E5E5;
+        font-size: 0.13rem;
+        color: #626262;
+    }
+    .list-content {
+        .green {
+            background: #1aad19;
+            color: white;
+            height: 0.16rem;
+            font-size: 0.12rem;
+            border: none;
+            line-height: 0.16rem;
+            padding: 0 0.04rem;
+            border-radius: 0.02rem;
+            float: right;
+            margin-top: 0.04rem;
+            margin-right: 0.25rem;
+        }
+        .red {
+            background: #fb4440;
+            color: white;
+            height: 0.16rem;
+            font-size: 0.12rem;
+            border: none;
+            line-height: 0.16rem;
+            padding: 0 0.04rem;
+            border-radius: 0.02rem;
+            float: right;
+            margin-top: 0.04rem;
+            margin-right: 0.25rem;
+        }
+        margin: 0 0 0 0.15rem;
+        border-bottom: 0.01rem solid #E5E5E5;
+        height: 1.26rem;
+
+        .hTitle {
+            margin-top: 0.17rem;
+            font-size: 0.17rem;
+        }
+        .month {
+            font-size: 0.12rem;
+            color: #999;
+            span {
+                font-size: 0.12rem;
+            }
+        }
+        .name {
+            font-size: 0.14rem;
+        }
+    }
+    .hello_img {
+        position: relative;
+        width: 100%;
+        text-align: center;
+        margin-bottom: 0.16rem;
+        > img {
+            margin-top: 0.23rem;
+        }
+        //>div:nth-of-type(1) {
+        //    font-weight: 600;
+        //    margin-bottom: 0.06rem;
+        //}
+        //>div:nth-of-type(2) {
+        //    span {
+        //        color: rgba(112, 112, 112, 0.8);
+        //        font-size: 0.11rem;
+        //        font-weight: bold;
+        //    }
+        //}
+        .pSwitch {
+            position: absolute;
+            left: 3.3rem;
+            top: 0;
+        }
+    }
+    .hello_dynamic {
+        border-top: 0.02rem solid #F3F3F3;
+        box-sizing: border-box;
+        padding: 0.08rem 0;
+        display: flex;
+        align-items: center;
+        > div {
+            text-align: center;
+            width: 50%;
+            color: #707070;
+            font-size: 0.13rem;
+        }
+        > div:nth-of-type(1) {
+            border-right: 0.01rem solid #F3F3F3;
+        }
+    }
+    .homework {
+        .active {
+            box-sizing: border-box;
+            padding: 0.15rem 0 0.08rem 0.15rem;
+            width: 100%;
+            background: #DEEAE1;
+            color: rgba(136, 136, 136, 1);
+        }
+        //>div {
+        //    border-bottom: 1px solid #F4F4F4;
+        //    box-sizing: border-box;
+        //    padding: 0.08rem 0.15rem 0 0.15rem;
+        //    >div:nth-of-type(1) {
+        //        margin: 0.08rem 0;
+        //        color: rgba(153, 153, 153, 1);
+        //        font-size: 0.13rem;
+        //        width: 100%;
+        //        border-bottom: 1px solid #F4F4F4;
+        //        padding-bottom: 0.08rem;
+        //    }
+        //
+        //}
+        .element {
+            > ul:nth-of-type(1) {
+                margin-bottom: 0.16rem;
+                > li:nth-of-type(1) {
+                    height: 0.24rem;
+                    font-size: 0.17rem;
+                    color: rgba(34, 34, 34, 1);
+                    font-weight: normal;
+                    line-height: 0.24rem;
+                    margin-top: 0.2rem;
+                }
+                > li:nth-of-type(2) {
+                    margin-top: 0.05rem;
+                    height: 0.17rem;
+                    color: rgba(153, 153, 153, 1);
+                    line-height: 0.17rem;
+                    span {
+                        margin: 0 0.08rem;
+                        font-size: 0.13rem;
+                        font-weight: bold;
+                        opacity: 0.8;
+                    }
+                    span:nth-of-type(1) {
+                        margin: 0;
+                    }
+                }
+            }
+            > ul:nth-of-type(2) {
+                li > span:nth-of-type(2) {
+                    color: rgba(34, 34, 34, 1);
+                }
+                > li:nth-of-type(1),
+                > li:nth-of-type(2) {
+                    > span:nth-of-type(1) {
+                        height: 0.19rem;
+                        font-size: 0.13rem;
+                        color: rgba(153, 153, 153, 1);
+                        line-height: 0.19rem;
+                        margin-right: 0.08rem;
+                    }
+                    > span:nth-of-type(2) {
+                        height: 0.19rem;
+                        font-size: 0.13rem;
+                        color: rgba(34, 34, 34, 1);
+                        font-weight: normal;
+                        line-height: 0.19rem;
+                    }
+                }
+            }
+        }
+        .btn {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-content: center;
+            box-sizing: border-box;
+            padding: 0.12rem 0;
+            button {
+                border: 0;
+                color: rgba(26, 173, 25, 1);
+                background: #FFFFFF;
+                font-size: 0.14rem;
+            }
+            .vux-x-icon {
+                fill: #DBDBDB;
+            }
+        }
+    }
+}
+
+#change1 > div.weui-cells.weui-cells_checkbox > label > div.weui-cell__bd {
+    text-align: left;
+    p {
+        margin: 0;
+        padding: 0;
+    }
+
+}

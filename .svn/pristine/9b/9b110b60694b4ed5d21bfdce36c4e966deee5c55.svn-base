@@ -1,0 +1,154 @@
+<template>
+	<div class="pQuestion" style="position: relative">
+    <header-title>
+      <slot>题库</slot>
+    </header-title>
+    <div class="stance"></div>
+    <div class="header">
+			<span>为您推荐</span>
+			<span>根据您的孩子的学习情况，推荐以下题库</span>
+		</div>
+		<div class="contents">
+			<div class="content" v-for="index in 6" :key="index">
+				<img src="../../../../static/img/img66.png" alt="" />
+				<div>五年高考三年模拟</div>
+				<div>试卷50套</div>
+				<li>￥100</li>
+			</div>
+		</div>
+    <div id="searchBar">
+        <div class="searchBar">
+          <div class="header">
+            <span>选题中心</span>
+          </div>
+          <div class="pSearch">
+            <div>
+              <icon type="search"></icon>
+              <input type="text"/>
+            </div>
+            <input type="button" value="搜索"/>
+          </div>
+          <search-view></search-view>
+        </div>
+    </div>
+    <div style="height: 0.3rem;" v-if="show1 === true"></div>
+    <div class="pFooter">
+      <div @click="open('pQuestion_content')">
+        <div class="content" v-for="(item,index) in data" :key="index">
+          <div>
+            <img src="../../../../static/img/1_07.jpg"/>
+          </div>
+          <div class="homePage_book">
+            <div>{{item.title}}</div>
+            <div><span>{{item.price}}</span><span>{{item.number}}</span></div>
+            <div><span>{{item.paper}}</span><span>{{item.numbers}}</span></div>
+            <p>{{item.content}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+	</div>
+
+</template>
+
+<script>
+import HeaderTitle from '../header'
+import SearchView from '../../../pages/student/commonality/search'
+export default {
+  data () {
+    return {
+      type: '',
+      flag: false,
+      data: [
+        {url: '../../../static/img/1_07.jpg', title: '三年高考五年模拟练习', price: '价格', number: '￥99.00', paper: '试卷', numbers: '50套', content: '整个青年期青年的身心迅猛发展，心理问题层 出不穷，如果对所出现的心理问题不加以...'},
+        {url: '../../../static/img/1_07.jpg', title: '三年高考五年模拟练习', price: '价格', number: '￥99.00', paper: '试卷', numbers: '50套', content: '整个青年期青年的身心迅猛发展，心理问题层 出不穷，如果对所出现的心理问题不加以...'},
+        {url: '../../../static/img/1_07.jpg', title: '三年高考五年模拟练习', price: '价格', number: '￥99.00', paper: '试卷', numbers: '50套', content: '整个青年期青年的身心迅猛发展，心理问题层 出不穷，如果对所出现的心理问题不加以...'},
+        {url: '../../../static/img/1_07.jpg', title: '三年高考五年模拟练习', price: '价格', number: '￥99.00', paper: '试卷', numbers: '50套', content: '整个青年期青年的身心迅猛发展，心理问题层 出不穷，如果对所出现的心理问题不加以...'},
+        {url: '../../../static/img/1_07.jpg', title: '三年高考五年模拟练习', price: '价格', number: '￥99.00', paper: '试卷', numbers: '50套', content: '整个青年期青年的身心迅猛发展，心理问题层 出不穷，如果对所出现的心理问题不加以...'},
+        {url: '../../../static/img/1_07.jpg', title: '三年高考五年模拟练习', price: '价格', number: '￥99.00', paper: '试卷', numbers: '50套', content: '整个青年期青年的身心迅猛发展，心理问题层 出不穷，如果对所出现的心理问题不加以...'}
+      ],
+      titleTop: '',
+      show1: false,
+      subject: ['全部', '语文', '数学', '英语'],
+      subjects: ['科目', '年级', '教材', '类别']
+    }
+  },
+  methods: {
+    open (type) {
+      this.$router.push({
+        name: type
+      })
+    },
+    show () {
+      this.flag = !this.flag
+      if (this.flag === true) {
+        $('.screen_content').stop().slideUp(500)
+      } else if (this.flag === false) {
+        $('.screen_content').stop().slideDown(400)
+      }
+    },
+    debounce (method, delay) {
+      let timer = null
+      return function () {
+        let context = this,
+          args = arguments
+        clearTimeout(timer)
+        timer = setTimeout(function () {
+          method.apply(context, args)
+        }, delay)
+      }
+    },
+    handleScroll () {
+      let tit = document.querySelector('.searchBar')
+      // 占位符的位置
+      // let rect = tit.getBoundingClientRect();//获得页面中导航条相对于浏览器视窗的位置
+      // // console.log(rect)
+      // let inser = document.createElement("div");
+      // tit.parentNode.replaceChild(inser,tit);
+      // inser.appendChild(tit);
+      // inser.style.height = rect.height + "px";
+      let titleTop = tit.offsetTop
+      // 滚动事件
+      // 获取当前滚动的距离
+      let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+      // 如果滚动距离大于导航条据顶部的距离
+      console.log(titleTop)
+      if (scrollTop > titleTop) {
+        tit.className = 'searchBar isFixed'
+        // console.log(scrollTop)
+      }
+      if (scrollTop < titleTop) {
+        tit.className = 'searchBar'
+        this.show1 = true
+        $('.screen_content').stop().slideUp(500)
+      }
+    }
+  },
+  created () {
+		  $('.screen_content').hide()
+  },
+  mounted () {
+    window.addEventListener('scroll', this.handleScroll)
+    window.onresize = this.debounce(this.handleScroll, 500)
+  },
+  watch: {
+
+  },
+  destroyed () {
+    window.removeEventListener('scroll', this.handleScroll)
+  },
+  components: {
+    HeaderTitle, SearchView
+  }
+}
+</script>
+<style lang="scss">
+	@import "../../../pcss/pQuestion";
+  .isFixed{
+    width: 100%;
+    position:fixed;
+    border: 1px solid #F5F5F5;
+    top:0.49rem;
+    z-index: 9999;
+  }
+</style>

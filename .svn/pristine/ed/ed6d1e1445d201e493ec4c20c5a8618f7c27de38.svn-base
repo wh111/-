@@ -1,0 +1,62 @@
+<!----------------------------------
+****--@name     ${*}
+****--@role     ${*}
+****--@date     2018/4/23
+****--@author   zzh
+----------------------------------->
+<template>
+  <div class="questionBank">
+    <header-title>
+      <slot>题库</slot>
+    </header-title>
+    <div class="stance"></div>
+    <div class="questionBankHeader">
+      <ul class="questionBank_nav">
+        <li @click="change('question_grade')" :class="changes === 'question_grade' ? 'active' : ''">年级</li>
+        <li @click="change('question_subject')" :class="changes=== 'question_subject' ? 'active' : ''">科目</li>
+        <li @click="change('question_category')" :class="changes== 'question_category' ? 'active' : ''">类别</li>
+        <li @click="change('question_textbook')" :class="changes== 'question_textbook' ? 'active' : ''">教材</li>
+      </ul>
+    </div>
+    <div class="stance"></div>
+    <router-view/>
+  </div>
+</template>
+<script>
+/* 当前组件必要引入 */
+import HeaderTitle from './header'
+// 当前组件引入全局的util
+// let Util = null;
+export default {
+  data () {
+    return {
+      changes: 'question_grade'
+    }
+  },
+  methods: {
+    // 初始化请求列表数据
+    init () {
+
+    },
+    change (index) {
+      	// this.changes = index
+      this.$router.push({name: index})
+    }
+  },
+  created () {
+    this.init()
+  },
+  mounted () {
+  },
+  components: {HeaderTitle},
+  watch: {
+    $route (to, from) {
+      //				console.log(to.name)
+      this.changes = to.name
+    }
+  }
+}
+</script>
+<style lang="scss">
+  @import "../../css/questionbank";
+</style>

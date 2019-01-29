@@ -1,0 +1,52 @@
+.tClassCreated{
+  .tName{
+    box-sizing: border-box;
+    padding-bottom: 0.2rem;
+    border-bottom: 0.01rem solid #EBEBEB;
+    >p{
+      box-sizing: border-box;
+      padding: 0.15rem;
+      color:#222222;
+      line-height: 0.24rem;
+      font-size: 0.17rem;
+
+    }
+    >div{
+      text-align: center;
+      >input{
+        width: 3.45rem;
+        height: 0.285rem;
+        outline: 0;
+        border: 0;
+        box-sizing: border-box;
+        padding: 0.15rem 0;
+        background: #EBEBEB;
+        text-indent:0.06rem;
+        border-radius: 0.01rem;
+        font-size: 0.13rem;
+      }
+      textarea{
+        width: 3.45rem;
+        height: 0.57rem;
+        border: none;
+        line-height: 0.285rem;
+        background: #EBEBEB;
+        border-radius: 0.01rem;
+        font-size: 0.13rem;
+      }
+    }
+  }
+  .tClassSubmit{
+    background: #DEEAE1;
+    box-sizing: border-box;
+    height: 4.11rem;
+    width: 100%;
+    padding:0.3rem 0.15rem 0;
+    //.weui-btn{
+    //  width: 3.35rem;
+    //  height: 0.47rem;
+    //  margin: 0 auto;
+    //}
+
+  }
+}

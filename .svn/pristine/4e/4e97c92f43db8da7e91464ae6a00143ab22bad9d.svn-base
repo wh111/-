@@ -1,0 +1,54 @@
+<template>
+  <div class="pMine">
+    <header-title>
+      <slot>个人中心</slot>
+    </header-title>
+    <div class="stance"></div>
+    <div class="hello_img" style="position: relative">
+      <img class="firstChild_news" style="position: absolute;right:0.15rem;" @click="open('message')" src="../../../../sasmobile/img/img0927.png"/>
+      <img src="../../../../sasmobile/img/03.jpg" alt="">
+      <div style="margin-left: -0.05rem">
+        <span style="color: #4E4E4E;">{{$store.state.loginInfo.name}}</span>
+      </div>
+    </div>
+    <div class="hello_tab">
+      <div>
+        <div @click="open('allBook')">我的订单</div>
+        <div> <x-icon type="ios-arrow-forward" size="0.3rem"></x-icon></div>
+      </div>
+      <div>
+        <div @click="open('pMyfavorite')">我的收藏</div>
+
+        <div> <x-icon type="ios-arrow-forward" size="0.3rem"></x-icon></div>
+      </div>
+      <div>
+        <div @click="open('pSubmit')">留言反馈</div>
+        <div> <x-icon type="ios-arrow-forward" size="0.3rem"></x-icon></div>
+      </div>
+    </div>
+    <router-view/>
+    <plan></plan>
+  </div>
+</template>
+<script>
+import HeaderTitle from '../header'
+import plan from '../../student/plan.vue'
+export default{
+  data () {
+    return {
+      type: ''
+    }
+  },
+  methods: {
+    open (type) {
+      this.$router.push({name: type})
+    }
+  },
+  created () {
+  },
+  components: {HeaderTitle,plan}
+}
+</script>
+<style lang="scss">
+  @import '../../../pcss/pMine';
+</style>

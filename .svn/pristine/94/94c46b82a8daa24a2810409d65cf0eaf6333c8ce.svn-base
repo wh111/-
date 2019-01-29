@@ -1,0 +1,50 @@
+.personal {
+    .myErrors_header {
+        .widthInner {
+            width: 2.2rem;
+            text-align: right
+        }
+        .vux-cell-box:not(:first-child):before {
+            border: none;
+        }
+        .vux-popup-picker-value{
+            margin-right: 0.2rem;
+            color: #363636;
+        }
+        .address .weui-cell_access .weui-cell__ft:after{
+            height: 0.14rem !important;
+            width: 0.14rem !important;
+        }
+        //font-weight: bold;
+        color: #363636;
+        .vux-flexbox {
+            box-sizing: border-box;
+            padding: 0.16rem 0.15rem;
+            height: 0.66rem;
+            border-bottom: 1px solid #EDF3EE;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .address {
+            height: 0.66rem;
+            border-bottom: 1px solid #EDF3EE;
+            line-height: 0.66rem;
+            .weui-cell {
+                padding: 0 0.15rem;
+            }
+            label {
+                margin: 0;
+            }
+        }
+    }
+    .vux-x-icon {
+        fill: #DBDBDB;
+    }
+    #personal_img {
+        width: 0.33rem;
+        height: 0.33rem;
+    }
+    .bolder {
+        font-weight: bold;
+    }
+}

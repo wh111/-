@@ -1,0 +1,135 @@
+<!----------------------------------
+****--@name     theClassOf_name
+****--@role     ${*}
+****--@date     2018/5/3
+****--@author   zzh
+----------------------------------->
+<template>
+    <div class="theClassOf_name">
+      <header-title>
+        <slot>群信息</slot>
+      </header-title>
+      <div class="stance"></div>
+      <ul class="tHeader">
+          <li>群名称:{{data.title}}</li>
+          <li>创建人<span>{{data.managerName}}</span></li>
+          <li>群&emsp;号<span>{{data.no}}</span></li>
+      </ul>
+      <div class="tName">
+        <span>我的群名片</span><span>{{$store.state.loginInfo.name}}</span>
+      </div>
+      <div class="tName" style="border: 0; padding: 0.1rem 0.1rem 0.1rem 0.16rem">
+        <span>群成员</span>
+        <span>
+          <span>{{dataList.length}}人</span>
+          <span @click="open('theClassOf_member')"><x-icon type="ios-arrow-forward" size="0.25rem"></x-icon></span>
+        </span>
+      </div>
+      <div class="tImg">
+        <div style="width:0.75rem;overflow: hidden;height: 1.02rem" v-for="(item,index) in dataList" :key="index" >
+          <img :src="item .icon" onerror="this.src='../../../../static/img/img777.png'">
+          <div style="font-size: 0.12rem;color:rgba(27,27,27,1);">{{item.name}}</div>
+        </div>
+        <!--<div style="clear: both"></div>-->
+      </div>
+      <div class="tIntroduce">
+        <div>群介绍</div>
+        <div>{{data.remark}}</div>
+      </div>
+      <div class="tInform">群通知</div>
+      <div class="tIntroduce" style="border-bottom: 0.01rem solid #EEF4F0">
+        <flexbox wrap="wrap" :gutter="0" class="myTeam_footer">
+          <div v-if="data.groupsNoticeList==null" style="font-size: 0.12rem">暂无群通知</div>
+          <flexbox-item :span="12" v-for="(item,index) in data.groupsNoticeList" :key="item.id">
+            <div>  {{index1 + 1}}：{{item.content}}</div>
+            <div>发布时间：{{item.createTime | formatDate('yyyy-MM-dd HH:mm')}}</div>
+          </flexbox-item>
+          <!--<flexbox-item :span="12">-->
+          <!--<div>1、最新作业已经发布请同学们尽快查收</div>-->
+          <!--<div>发布时间：2017-03-06</div>-->
+          <!--</flexbox-item>-->
+        </flexbox>
+      </div>
+      <!--<x-button class="tOver" type="primary">退出班组</x-button>-->
+    </div>
+</template>
+<script>
+/* 当前组件必要引入 */
+import HeaderTitle from '../header'
+import api from './api'
+// 当前组件引入全局的util
+let Util = null
+export default {
+  data () {
+    return {
+      data: {title: ''},
+      dataList: [],
+      id: ''
+    }
+  },
+  methods: {
+    // 初始化请求列表数据
+    init () {
+      this.getGroups()
+    },
+    open (type) {
+      this.$router.push({name: type, query: {id: this.id}})
+    },
+    getGroups () { // 获取群信息
+      let options = {
+        url: api.groupsList.path,
+        params: {
+          types: ''
+        },
+        /**
+         * 服务端返回的状态码检查,默认状态码检查前执行
+         * @param {*} data  服务器端返回的实际数据结构,根据不同业务格式不同
+         * @param {object} res 服务器端返回的response值 {data:'**',status:{conde:0,msg:'请求数据成功!'}}
+         */
+        ajaxSuccess: (data, res) => {
+          console.log(data)
+          data.map((item) => {
+            if (item.no == this.$route.query.no) {
+              this.data = item
+            }
+          })
+          // this.data = data;
+          this.id = this.data.id
+          this.getPeople(this.data.id)
+        }
+      }
+      this.ajax(options)
+    },
+    getPeople (id) {
+      let options = {
+        url: api.queryStudents.path,
+        params: {
+          id: id
+        },
+        /**
+         * 服务端返回的状态码检查,默认状态码检查前执行
+         * @param {*} data  服务器端返回的实际数据结构,根据不同业务格式不同
+         * @param {object} res 服务器端返回的response值 {data:'**',status:{conde:0,msg:'请求数据成功!'}}
+         */
+        ajaxSuccess: (data, res) => {
+          data.map((item) => {
+            item.icon = this.getStaticPath(item.icon)
+          })
+          this.dataList = data
+        }
+      }
+      this.ajax(options)
+    }
+  },
+  created () {
+    this.init()
+  },
+  mounted () {
+  },
+  components: {HeaderTitle}
+}
+</script>
+<style lang="scss">
+  @import "../../../css/child/theClassOf_name";
+  @import '../../../css/child/allBook';
+</style>

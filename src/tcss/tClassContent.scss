@@ -1,0 +1,63 @@
+.tClassContent{
+  .tBookAdd{
+    position: fixed;
+    right: 0.27rem;
+    bottom: 0.3rem;
+    z-index: 9999;
+    width: 0.45rem;
+    height: 0.45rem;
+    line-height: 0.45rem;
+    background:#1AAD19;
+    border-radius: 50%;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 0.4rem;
+  }
+  .green{
+    color: #1cc03b !important;
+    border-bottom: 0.01rem solid #1cc03b;
+    padding-bottom: 0.12rem;
+  }
+  .header{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    color: #717171;
+    box-sizing: border-box;
+    padding: 0.11rem 0 0.11rem 0.36rem;
+    border-bottom: 0.15rem solid #DEEAE1;
+    >li{
+      font-size: 0.13rem;
+      color: #434343;
+      b{
+        font-weight: inherit;
+        font-size: 0.13rem;
+        color: #434343;
+      }
+    }
+    >li:nth-of-type(2){
+      box-sizing: border-box;
+      padding: 0 0.85rem;
+      border-right: 0.01rem solid gray;
+    }
+    >li:nth-of-type(3){
+      margin-left: 0.255rem;
+      display: flex;
+      align-items: center;
+    }
+    span{
+      display: inline-block;
+      width: 0.16rem;
+      height: 0.16rem;
+      border-radius: 50%;
+      color: #09BB07;
+      text-align: center;
+      line-height: 0.16rem;
+      border: 0.01rem solid #09BB07;
+      box-sizing: border-box;
+      font-size: 0.1rem;
+      margin-right: 0.05rem;
+    }
+
+  }
+}

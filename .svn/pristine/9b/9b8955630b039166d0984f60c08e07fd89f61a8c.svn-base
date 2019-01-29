@@ -1,0 +1,167 @@
+<!----------------------------------
+****--@name     ${*}
+****--@role     ${*}
+****--@date     2018/4/24
+****--@author   gx
+----------------------------------->
+<template>
+    <div class="recentPractice_content">
+        <header-title>
+            <slot>题库详情</slot>
+        </header-title>
+        <div class="stance"></div>
+        <div>
+            <div class="contents">
+                <div class="img">
+                    <img onerror="javascript:this.src='../../../../sasmobile/img/1_07.jpg'" :src="data.icon||'sa'"/>
+                </div>
+                <div class="homePage_book">
+                    <div>{{data.title}}</div>
+                    <div><span> 价格：</span><span v-if="data.productTypes == 0"
+                                                class="price">{{data.currentPrice | money}}</span>
+                        <span v-else class="price">{{data.currentPrice == null ? '0' : data.currentPrice
+                            }}积分</span></div>
+                    <div><span>试卷：</span><span>{{data.spec}}{{data.unit | unit }} </span></div>
+                    <section class="contentShop">
+                        {{data.content}}</section>
+                    <button>已购买</button>
+                </div>
+            </div>
+        </div>
+        <ul class="recentContent" v-for="(item,index) in paperList" :key="index">
+            <li >
+                <div>
+                    <p>{{item.name}}</p>
+                    <div>
+                        <span class="one">卷号</span><span class="two">{{item.no}}</span>
+                        <span class="one">总分</span><span class="two">{{item.paperScore}}分</span>
+                        <span class="one">题数</span><span class="two">{{item.questionNums}}道题</span>
+                    </div>
+                </div>
+                <div class="progress1">
+                    <div>进度</div>
+                    <x-progress id="progress1_x" :percent="parseInt(item.answerNums/item.questionNums)*100"
+                                :show-cancel="false"></x-progress>
+                    <div>{{parseInt(item.answerNums/item.questionNums*100)+ '%'}}</div>
+                </div>
+            </li>
+            <li @click="open(item.id,item.name)" v-if="parseInt(item.answerNums/item.questionNums)*100>=100||$route.query.seeType=='parents'">
+                <x-icon type="ios-arrow-forward" size="0.3rem"></x-icon>
+            </li>
+            <li v-else @click="show('myQuestion',item.id,$route.query.id,item.name)">
+                <x-icon type="ios-arrow-forward" size="0.3rem"></x-icon>
+            </li>
+        </ul>
+    </div>
+</template>
+<script>
+  /* 当前组件必要引入 */
+  import HeaderTitle from '../header'
+  import api from './api'
+  // 当前组件引入全局的util
+  let Util = null
+  export default {
+    data () {
+      return {
+        data: {},
+        examination: [
+          {percent2: 23}, {percent2: 0}, {percent2: 70}, {percent2: 100}, {percent2: 23}
+        ],
+        num: 1,
+        paperList: []
+
+      }
+    },
+    methods: {
+      // 初始化请求列表数据
+      init () {
+        // this.open()
+        this.getStudyProductDetail()
+        this.QueryPaperList()
+      },
+      getStudyProductDetail()  {
+        this.ajax({
+          ajaxSuccess: (data, res) => {this.data = data},
+          url: api.productGet.path,
+          method: api.productGet.method,
+          params: {
+            id:this.$route.query.id
+          },
+
+        })
+      },
+      QueryPaperList () {
+        let options = {
+          url: api.queryPaperList.path,
+          params: {
+            studentId:this.$route.query.studentId,
+            curPage: this.num,
+            pageSize: 10,
+            productId: this.$route.query.id,
+          },
+          /**
+           * 服务端返回的状态码检查,默认状态码检查前执行
+           * @param {*} data  服务器端返回的实际数据结构,根据不同业务格式不同
+           * @param {object} res 服务器端返回的response值 {data:'**',status:{conde:0,msg:'请求数据成功!'}}
+           */
+          ajaxSuccess: (data, res) => {
+            this.paperList = data['dataList']
+
+          }
+        }
+        this.ajax(options)
+      },
+      // 获取最近练习的题库
+      getMyCurrentStudyProductList () {
+        let options = {
+          url: api.myCurrentStudyProductList.path,
+          params: {
+            curPage: 1,
+            pageSize: '',
+          },
+          /**
+           * 服务端返回的状态码检查,默认状态码检查前执行
+           * @param {*} data  服务器端返回的实际数据结构,根据不同业务格式不同
+           * @param {object} res 服务器端返回的response值 {data:'**',status:{conde:0,msg:'请求数据成功!'}}
+           */
+          ajaxSuccess: (data, res) => {
+            data['dataList'].map((item) => {
+              if (item.id == this.$route.query.id) {
+                item.icon = this.getStaticPath(item.icon)
+                this.data[0] = item
+              }
+            })
+
+//          this.data.map((item)=>{
+//
+//          })
+          }
+        }
+        this.ajax(options)
+      },
+      open (id,name) {
+        this.$router.push({
+          name: 'recentPractice_over', query: {
+            papersId: id,
+            productId: this.$route.query.id,
+            name:name,
+            seeType:this.$route.query.seeType,
+            studentId:this.$route.query.studentId
+          }
+        })
+      },
+      show (type,papersId,productId,title) {
+        this.$router.push({name: 'recentPractice_next',query:{papersId:papersId,productId:productId,title:title,type:1}})
+      }
+    },
+    created () {
+      this.init()
+    },
+    mounted () {
+    },
+    components: {HeaderTitle}
+  }
+</script>
+<style lang="scss">
+    @import '../../../css/home/recentPractice_content';
+</style>

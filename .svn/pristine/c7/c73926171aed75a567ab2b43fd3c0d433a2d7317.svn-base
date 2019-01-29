@@ -1,0 +1,333 @@
+<!--
+****--@file     workAndTestDetail
+****--@date     2018/5/28 11:57
+****--@author   ${王恒}
+****--@describe   作业测评详情
+-->
+<template>
+    <div class="workAndTestDetail-root">
+        <header-title>
+            <slot>答题详情</slot>
+        </header-title>
+        <div class="stance"></div>
+        <div class="content">
+        <h1>{{myEvaluationInfoMessage.name}}</h1>
+        <p>上交时间：{{myEvaluationInfoMessage.endTime | formatDate('yyyy-MM-dd HH:mm')||'未上交'}}</p>
+        </div>
+        <div style="height: 0.05rem;background-color: #dfebe1"></div>
+        <button-tab button-tab-border-color="#ccc" button-tab-active-background-color="#ccc" v-model="buttonTab" style="margin:0 0.16rem;margin-top: 0.2rem" >
+            <button-tab-item   @button-tab-border-radius="0" @on-item-click="getTab('self')">个人详情</button-tab-item>
+            <button-tab-item  @button-tab-border-radius="0" @on-item-click="getTab('class')">班级详情</button-tab-item>
+        </button-tab>
+
+        <div class="border" v-if="selectTab=='self'" style="margin-top: -0.01rem">
+            <!--<ul class="ul">-->
+                <!--<li>布置时间</li>-->
+                <!--<li class="li">{{myEvaluationInfoMessage.releaseTime | formatDate('yyyy-MM-dd HH:mm')}}</li>-->
+                <!--<li>上交时间</li>-->
+                <!--<li class="li">{{myEvaluationInfoMessage.endTime | formatDate('yyyy-MM-dd HH:mm')}}</li>-->
+            <!--</ul>-->
+            <div style="text-align: center">
+            <div style="width: 1.4rem;margin-top: 0.28rem;margin-left: 0.95rem">
+                <x-circle
+                          :percent="UserEvaluationInfo.correctRate||0"
+                          :stroke-width="6"
+                          :trail-width="6"
+                          :stroke-color="['#ff8c08', '#ff8c08']"
+                          trail-color="#e9e9e9">
+                       <div style="color:rgba(27,27,27,1);font-size: 0.28rem">
+                       {{UserEvaluationInfo.correctRate}}%
+                       </div>
+                    <div style="font-size: 0.10rem">正确率</div>
+                </x-circle>
+
+            </div>
+                <p style="text-align: center;font-size: 0.12rem;color: #c3c4c4;">
+                    用时：{{(UserEvaluationInfo.usedTime / 60 || 0).toFixed(0)}}分钟{{(UserEvaluationInfo.usedTime % 60 || 0)}}秒 |  成绩：{{UserEvaluationInfo.score}}分
+
+                </p>
+            </div>
+            <div style="margin:0 0.12rem;margin-right: 0">
+                <h2 style="font-size: 0.17rem;font-weight: normal">答题详情</h2>
+                <p class="detial">
+                                <span v-for="(item,index) in UserEvaluationInfo.answerInfoList">
+                                 <span @click="startAnswer(item)" v-if="!item.isCorrecting" :class="[item.studentAnswer? 'red ':'defaultColor']">
+                                      <span style="color: #fff">{{item.questionsSeq}}</span>
+                                </span>
+                                <span class="defaultColor" v-if="item.isCorrecting"
+                                      :class="[item.answerResult? 'green':'red']">
+                                          <span @click="startAnswer(item)" style="color: #fff">{{item.questionsSeq}}</span>
+                                </span>
+                                </span>
+                </p>
+            </div>
+        </div>
+        <div class="border" v-else>
+            <x-table style="width: 3.25rem;margin: 0.1rem">
+                <thead style="background: #deeae1;color: #1cc03b">
+                <tr>
+                    <th>排名</th>
+                    <th>姓名</th>
+                    <th>成绩</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="item in classDetail.studentList">
+                    <td>{{item.rank||'--'}}</td>
+                    <td>{{item.name}}</td>
+                    <td>{{item.score}}</td>
+                </tr>
+                </tbody>
+            </x-table>
+        </div>
+
+    </div>
+</template>
+<script>
+import { ButtonTab, ButtonTabItem, Divider, XTable } from 'vux'
+import api from './api'
+import headerTitle from '../header.vue'
+/* 当前组件必要引入 */
+let Util = null
+export default {
+  data () {
+    return {
+      params: {},
+      activeName: 'first',
+      LastTableData: [],
+      selectbefore: 1,
+      id: 'showId',
+      title: '',
+      showId: {
+        id: 'showId',
+        title: '查看试卷'
+      },
+      loading: false,
+      showModal: false,
+      tableDate: [],
+      classDetail: {},
+      myEvaluationInfoMessage: {},
+      UserEvaluationInfo: {correctRate: 0},
+      assessmentId: null,
+      params: {},
+      typeId: 1, // 占位使用
+      types: '',
+      type: '',
+      selectTab: 'self',
+      buttonTab:0
+    }
+  },
+  methods: {
+    getTab (val) {
+      this.selectTab = val
+      if (val = 'class') {
+        this.getClass()
+      }
+    },
+    // 初始化请求列表数据
+    init () {
+      Util = this.$util
+      this.typeId = this.$route.params.id
+      this.type = this.$route.params.type
+      if (this.$route.params.type != 'homework') {
+        this.params = {papersId: this.$route.params.id,studentId:this.$store.state.loginInfo.id}
+        this.assessmentId = this.$route.params.id
+        this.types = 4
+      } else {
+        this.params = {workId: this.$route.params.id, groupsId: this.$route.query.groupsId,studentId:this.$store.state.loginInfo.id}
+        this.assessmentId = 1
+        this.types = 5
+      }
+      this.getDetail()// 获取试卷详情
+      // this.getClass()//班级详情
+      this.getUserEvaluationInfo()// 获取个人详情（试卷)
+    },
+    getClass () { // 班级详情
+      this.ajax({
+        ajaxSuccess: (data, res) => {
+          this.classDetail = res.data
+        },
+        // baseURL:'PUBLIC',
+        url: this.$route.params.type != 'homework' ? api.getGroupsInfo.path : api.getWorkGroupsInfo.path,
+        method: this.$route.params.type != 'homework' ? api.getGroupsInfo.method : api.getWorkGroupsInfo.method,
+        params: this.params
+      })
+    },
+    startAnswer (item) {
+      console.log(this.$route.params)
+      if (this.type == 'homework') {
+        this.$router.push({name: 'questions', params: {type: 'homework', papersId: this.$route.params.id}, query: {groupsId: this.$route.query.groupsId, type: 5, questionsSeq: item.questionsSeq,seeType:this.$route.query.seeType,noRes:true}})
+      } else {
+        this.$router.push({name: 'questions', params: {type: 'test', papersId: this.$route.params.id}, query: {type: 4,questionsSeq: item.questionsSeq,seeType:this.$route.query.seeType,noRes:true}})
+      }
+    },
+    getDetail () { // 获取试卷详情
+      this.ajax({
+        ajaxSuccess: (data, res) => {
+          this.myEvaluationInfoMessage = res.data
+          if (this.$route.params.type == 'homework') {
+            let {teacherName: operatorName, startTime: releaseTime, submitTime: endTime, title: name} = res.data
+            let arr = {operatorName, releaseTime, endTime, name}
+            Object.keys(arr).map(key => this.myEvaluationInfoMessage[key] = arr[key])
+          }
+        },
+        // baseURL:'PUBLIC',
+        url: this.$route.params.type != 'homework' ? api.getMyEvaluationInfo.path : api.getMyWorkInfo.path,
+        method: this.$route.params.type != 'homework' ? api.getMyEvaluationInfo.method : api.getMyWorkInfo.method,
+        params: this.params
+
+      })
+    },
+    getUserEvaluationInfo () {
+      this.ajax({// 获取个人详情（试卷)/zuoye
+        ajaxSuccess: (data, res) => {
+          this.UserEvaluationInfo = res.data
+          console.log(this.UserEvaluationInfo)
+        },
+
+        // baseURL:'PUBLIC',
+        url: this.$route.params.type != 'homework' ? api.getUserEvaluationInfo.path : api.getUserWorkInfo.path,
+        method: this.$route.params.type != 'homework' ? api.getUserEvaluationInfo.method : api.getUserWorkInfo.method,
+        params: this.params
+      })
+    }
+
+  },
+  created () {
+    this.init()
+  },
+  mounted () {
+  },
+  components: {headerTitle, ButtonTab, ButtonTabItem, Divider, XTable},
+  watch:{
+    '$route'(to,from){
+      console.log(to,from,'8888')
+//      console.log(this.$store.state.allowBack)
+//      if(to.name=='tEvaluation'){
+//        this.selectTab=to.name;
+//      }else {
+//        this.selectTab='tBook'
+//      }
+    }
+
+  }
+}
+
+</script>
+<style lang="scss">
+      .workAndTestDetail-root{
+          /*.vux-button-group > a.vux-button-tab-item-last:after{*/
+              /*border-right: 0.01rem solid #04BE02 !important;*/
+              /*border-top: 0.01rem solid #04BE02 !important;*/
+              /*border-bottom: 0.01rem solid #04BE02 !important;*/
+          /*}*/
+          .vux-table:after{
+              border: none;
+          }
+          .vux-button-group > a.vux-button-group-current{
+              text-decoration: none;
+          }
+          .vux-button-group > a.vux-button-tab-item-last{
+              text-decoration: none;
+          }
+          .vux-button-group > a.vux-button-tab-item-first{
+              border-top-left-radius: 0.03rem;
+              border-bottom-left-radius: 0;
+              text-decoration: none;
+          }
+          .vux-button-group > a.vux-button-tab-item-first:after{
+              border-top-left-radius: 0.03rem;
+              border-bottom-left-radius: 0;
+              text-decoration: none;
+              border: 0.01rem solid #04BE02;
+              border-bottom: none;
+          }
+          .vux-button-group > a.vux-button-tab-item-last {
+              border-top-right-radius: 0.03rem;
+              border-bottom-right-radius: 0px;
+              text-decoration: none;
+          }
+          .vux-button-group > a.vux-button-tab-item-last:after{
+              border-top-right-radius: 0.03px;
+              border-bottom-right-radius: 0px;
+          }
+          .vux-table td:after, .vux-table th:after{
+              border-right: none;
+          }
+          .vux-table td:before, .vux-table th:before{
+              border-bottom: 1px solid #deeae1;
+          }
+          .content{
+              padding: 0.16rem;
+              p{
+                  font-size: 0.12rem;
+                  color: #c3c4c4;
+              }
+          }
+          h1{
+              line-height: 0.34rem;
+              font-size: 0.20rem;
+          }
+          .border{
+              margin: 0.16rem;
+              margin-top: 0;
+              border: 0.01rem solid #04BE02;
+              min-height: 5rem;
+          }
+          .defaultColor {
+              background: rgba(0, 204, 153, 1);
+          }
+          .detial {
+              line-height: 0.45rem;
+              span {
+                  display: inline-block;
+                  width: 0.3rem;
+                  color: #ffffff;
+                  line-height:0.3rem;
+                  text-align: center;
+                  border-radius: 0.15rem;
+                  margin-right: 0.17rem;
+              }
+              .green {
+                  background: #1cc03b;
+              }
+              .red {
+                  background: red;
+              }
+          }
+          .ul{
+              float: right;
+              width: 1.35rem;
+              margin-top: 0.40rem;
+              margin-right: 0.1rem;
+              li{
+                  font-size: 0.14rem;
+                  line-height: 0.2rem;
+                  color:#222222 ;
+              }
+              .li{
+                  color: #a6a6a6;
+              }
+          }
+          h2{
+              margin-top: 0.6rem;
+          }
+          .green{
+              color: #1aad19;
+              font-size: 0.12rem;
+          }
+          .yellow{
+              color: #ff9004;
+              font-size: 0.12rem;
+          }
+          .orange{
+              color: #ff5e38;
+              font-size: 0.12rem;
+          }
+          .pink{
+              color:#b6b6b6;
+              font-size: 0.12rem;
+          }
+
+      }
+</style>

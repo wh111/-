@@ -1,0 +1,104 @@
+.appraisal_math_open_start {
+    .green{
+        background: #1cc03b;
+    }
+    .red {
+        background: red;
+    }
+    .vux-circle-demo {
+        font-weight: bold;
+        width: 3.45rem;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-sizing: border-box;
+        padding: 0.17rem 0;
+        color: #8F8F8F;
+        border-bottom: 0.01rem solid #EEF4F0;
+        >div>div {
+            font-size: 0.12rem;
+            margin-bottom: 0.08rem;
+        }
+        >div:nth-of-type(3) {
+            text-align: right;
+        }
+        >div>div>span {
+            color: #F19378;
+            margin: 0 0.1rem;
+            font-size: 0.12rem;
+        }
+    }
+    .vux-circle-demo>div:nth-of-type(2) {
+        margin: 0 auto;
+    }
+    .flex-demo {
+        font-size: 0.14rem;
+        font-weight: bold;
+        color: #919191;
+    }
+    .progress_book {
+        box-sizing: border-box;
+        padding: 0.2rem 0.15rem;
+    }
+    .knowledge {
+        box-sizing: border-box;
+        padding: 0.2rem 0 0.2rem 0.15rem;
+    }
+    .knowledge>li {
+        display: flex;
+        align-items: center;
+        margin: 0.1rem 0;
+        >div:nth-of-type(1) {
+            color: #474747;
+            font-weight: bold;
+            font-size: 0.15rem;
+            margin-right: 0.2rem;
+            margin-top: -0.06rem;
+        }
+        .item-div{
+                width: 0.3rem;
+                height: 0.3rem;
+                line-height: 0.3rem;
+            text-align: center;
+            border-radius: 0.05rem;
+            color: #FFFFFF;
+            margin-right: 0.15rem;
+        }
+        //>div:not(:nth-of-type(1)) {
+        //    background: #00BD71;
+        //    display: flex;
+        //    justify-content: center;
+        //    align-items: center;
+        //    width: 0.3rem;
+        //    height: 0.3rem;
+        //    margin-right: 0.15rem;
+        //    color: #FFFFFF;
+        //    border-radius: 0.05rem;
+        //}
+    }
+    .math_header {
+        justify-content: center;
+        align-items: center;
+        color: rgba(27, 27, 27, 1);
+        box-sizing: border-box;
+        padding: 0.13rem 0;
+        border-bottom: 0.05rem solid #DEEAE1;
+    }
+    .math_footer {
+        width: 100%;
+        background: #DEEAE1;
+        box-sizing: border-box;
+        padding: 0.14rem 0.14rem 0.05rem 0.14rem;
+        color: #5A5E5B;
+        font-weight: bold;
+    }
+    .appraisal_press{
+        border-radius:0.05rem ;
+        overflow: hidden;
+        >div{
+            height: 0.1rem;
+
+        }
+    }
+}

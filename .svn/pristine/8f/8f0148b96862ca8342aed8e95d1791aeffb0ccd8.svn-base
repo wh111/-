@@ -1,0 +1,96 @@
+<!----------------------------------
+****--@name     ${*}
+****--@role     ${*}
+****--@date     2018/4/23
+****--@author   zzh
+----------------------------------->
+<template>
+  <div id="homeFirst">
+    <div>
+      <ul class="hello_header">
+        <li @click="skip">
+          <x-icon type="ios-arrow-back" size="0.3rem"></x-icon>
+          <div>返回</div><div>关闭</div>
+        </li>
+        <li><div>鲁教乐学</div></li>
+        <li>
+          <div></div><div></div><div></div>
+        </li>
+      </ul>
+      <div class="stance"></div>
+      <div id="homePage">
+        <div class="homePage_head">
+          <div class="headerImg">
+            <div>
+              <img src="../../../static/img/03.jpg" style="width: 0.4rem;height: 0.4rem;"/>
+              <span class="home_name">李明</span><span style="color: #FFA91B">V</span>
+            </div>
+            <div style="text-align: right">
+              <img src="../../../static/img/08.jpg" style="width: 0.9rem;height: 0.25rem;" @click="open('recentPractice')"/>
+            </div>
+          </div>
+          <div class="homePage_books">
+            <div class="homePage_book" v-for="(item,index) in data" :key="index">
+              <img src="../../../static/img/1_10.jpg"/>
+              <div>{{item.title}}</div>
+              <div><span>价格</span><span>￥99.00</span></div>
+              <div><span>试卷</span><span>50套</span></div>
+            </div>
+          </div>
+        </div>
+        <ul class="homePage_center">
+          <li v-for="(item,index) in data1" :key="index" @click="open('recentPractice_next_question')">
+            {{item}}
+          </li>
+        </ul>
+        <div class="homePage_head" style="box-sizing: border-box;padding: 0.16rem 0.15rem">
+          <div class="headerImg">
+            <div style="margin-bottom: 0.1rem;color: #585858">
+              <h4><strong>推荐练习</strong></h4>
+            </div>
+          </div>
+          <div style="display: flex;justify-content: space-between;width: 100%;flex-wrap: wrap">
+            <div class="homePage_book" v-for="index in 6" :key="index">
+              <img src="../../../static/img/1_03.jpg"/>
+              <div>三年高考五年模拟练习</div>
+              <div><span>价格</span><span>￥99.00</span></div>
+              <div><span>试卷</span><span>50套</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  data () {
+    return {
+      show: true,
+      data: [
+        {title: '三年高考五年模拟练习'},
+        {title: '小学教学好题真卷'},
+        {title: '五年高考三年模拟题'}
+      ],
+      data1: [
+        '小生初', '初生高', '中考', '高考', '高考链接', '寒暑假', '会考', '同步学练', '全部类别'
+      ]
+    }
+  },
+  methods: {
+    open (type) {
+      this.$router.push({name: type})
+    },
+    skip () {
+      this.$router.push({name: 'login'})
+    }
+  },
+  created () {
+  },
+  components: {}
+}
+</script>
+<style lang="scss">
+  @import '../../css/home';
+</style>

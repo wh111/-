@@ -1,0 +1,85 @@
+import { fetch } from './fetch'
+// 自定义组件
+
+let util = {}
+
+// 请求前改变请求头源参数
+util.setAjaxQuestHeader = function (key, v) {
+  fetch.setAjaxQuestHeader(key, v)
+}
+
+// 消息提示
+let success = util.success = function (mes) {
+  console.log('成功消息!')
+}
+let error = util.error = function (mes) {
+  console.log('失败消息!')
+}
+let info = util.info = function (mes) {
+  console.log('普通消息提示!')
+}
+
+export const utils = util
+
+/**
+ * 为方便起见，为所有支持的请求方法提供了别名,可以通过该导出口扩展axios已有的别名方法
+ *
+
+ axios.request(config)
+
+ axios.get(url[, config])
+
+ axios.delete(url[, config])
+
+ axios.head(url[, config])
+
+ axios.post(url[, data[, config]])
+
+ axios.put(url[, data[, config]])
+
+ axios.patch(url[, data[, config]])
+
+ axios.all(iterable)
+
+ axios.spread(callback)
+ 执行多个并发请求,例如:
+
+ function getUserAccount() {
+      return axios.get('/user/12345');
+    }
+
+ function getUserPermissions() {
+      return axios.get('/user/12345/permissions');
+    }
+
+ axios.all([getUserAccount(), getUserPermissions()])
+ .then(axios.spread(function (acct, perms) {
+    // 两个请求现在都执行完成
+  }));
+ * 详细参数说明、用法详见libs/fetch.js
+ */
+export function ajax (options) {
+  fetch.sendAjax(options)
+}
+
+export default {
+  install (Vue) {
+    Vue.prototype.$util = util
+    Vue.mixin({
+      data () {
+        return {
+          fetch
+          // 数据变量
+        }
+      },
+      methods: {
+        successMess: success,
+        errorMess: error,
+        showMess: info,
+        ajax (options) {
+          fetch.sendAjax(options)
+        }
+      }
+    })
+  }
+}

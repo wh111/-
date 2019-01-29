@@ -1,0 +1,90 @@
+<!----------------------------------
+****--@name     ${*}
+****--@role     ${*}
+****--@date     2018/4/24
+****--@author   gx
+----------------------------------->
+<template>
+    <div class="recentPractice_content">
+      <header-title>
+        <slot>最近练习</slot>
+      </header-title>
+      <div class="stance"></div>
+      <div>
+        <div class="contents" v-for="(item,index) in data" :key="index">
+          <div>
+            <img src="../../../../static/img/1_07.jpg"/>
+          </div>
+          <div class="homePage_book">
+            <div>{{item.title}}</div>
+            <div><span>{{item.price}}</span><span>{{item.number}}</span></div>
+            <div><span>{{item.paper}}</span><span>{{item.numbers}}</span></div>
+            <p>{{item.content}}</p>
+          </div>
+        </div>
+      </div>
+      <ul class="recentContent" v-for="(item,index) in examination" :key="index">
+        <li>
+          <div>
+            <p>北京市昌平二中六年级联考</p>
+            <div>
+              <span class="one">卷号</span><span class="two">1000086</span>
+              <span class="one">总分</span><span class="two">100分</span>
+              <span class="one">题数</span><span class="two">100道题</span>
+            </div>
+          </div>
+          <div class="progress1">
+            <div>进度</div>
+            <x-progress id="progress1_x" :percent="item.percent2" :show-cancel="false"></x-progress>
+            <div>{{item.percent2+ '%'}}</div>
+          </div>
+        </li>
+        <li @click="open" v-if="item.percent2==100">
+          <x-icon type="ios-arrow-forward" size="0.3rem"></x-icon>
+        </li>
+        <li v-else @click="show">
+          <x-icon type="ios-arrow-forward" size="0.3rem"></x-icon>
+        </li>
+      </ul>
+    </div>
+</template>
+<script>
+/* 当前组件必要引入 */
+import HeaderTitle from '../header'
+// 当前组件引入全局的util
+let Util = null
+export default {
+  data () {
+    return {
+      data: [
+        {url: '../../../static/img/1_07.jpg', title: '三年高考五年模拟练习', price: '价格', number: '￥99.00', paper: '试卷', numbers: '50套', content: '马赛就死哦啊少见欧萨破解名称马茶食品安交警'}
+      ],
+      examination: [
+        {percent2: 23}, {percent2: 0}, {percent2: 70}, {percent2: 100}, {percent2: 23}
+      ]
+
+    }
+  },
+  methods: {
+    // 初始化请求列表数据
+    init () {
+      // this.open()
+    },
+    open () {
+      this.$router.push({name: 'recentPractice_over'})
+    },
+    show () {
+      this.$router.push({name: 'recentPractice_next'})
+    }
+  },
+  created () {
+    this.init()
+  },
+  mounted () {
+  },
+  components: {HeaderTitle}
+}
+</script>
+<style lang="scss">
+  @import '../../../css/home/recentPractice_content';
+</style>

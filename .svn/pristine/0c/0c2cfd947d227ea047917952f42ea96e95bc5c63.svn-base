@@ -1,0 +1,67 @@
+<!----------------------------------
+****--@name     plan
+****--@role
+****--@date     2018/5/8/008
+****--@author   zzh
+----------------------------------->
+<template>
+    <div>
+        <group>
+            <x-switch title="退出" v-model="show"></x-switch>
+        </group>
+        <div v-transfer-dom>
+            <confirm v-model="show"
+                     title=""
+                     @on-cancel="onCancel"
+                     @on-confirm="onConfirm"
+                     @on-show="onShow"
+                     @on-hide="onHide">
+                <p style="text-align:center;">确认退出?</p>
+            </confirm>
+        </div>
+        <br>
+    </div>
+</template>
+
+<script>
+  import api from './api'
+  export default {
+    data () {
+      return {
+        show: false,
+        stulist: []
+      }
+    },
+    methods: {
+      init () {
+      },
+      onCancel () {
+        console.log('on cancel')
+      },
+      onConfirm (msg) {
+        let obj = {
+          vue: this,
+          options: {
+            method: api.logout.method,
+            url: api.logout.path
+          }
+        }
+        this.$store.dispatch('loginOut', obj)
+        this.$router.push({name: 'login'})
+      },
+      onHide () {
+        console.log('on hide')
+      },
+      onShow () {
+        console.log('on show')
+      }
+
+    },
+    created () {
+      this.init()
+    },
+    mounted () {
+
+    }
+  }
+</script>

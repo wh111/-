@@ -1,0 +1,252 @@
+<template>
+  <div class="patriarch">
+    <ul class="hello_header">
+      <li @click="skip">
+        <x-icon type="ios-arrow-back" size="0.3rem"></x-icon>
+        <div>返回</div><div>关闭</div>
+      </li>
+      <li><div>鲁教乐学</div></li>
+      <li>
+        <div></div><div></div><div></div>
+      </li>
+    </ul>
+    <div class="stance"></div>
+    <div class="hello_img">
+      <img src="../../../../sasmobile/img/03.jpg" alt="">
+      <div>李明</div>
+      <div>
+        <span>北京市四中</span>
+        <span>七年级一班</span>
+      </div>
+      <img class="pSwitch" src="../../../../sasmobile/img/img99.png" @click="openShow"/>
+      <div v-transfer-dom>
+        <alert v-model="show1" @on-show="onShow" @on-hide="onHide">
+          <ul>
+            <li>
+              <checklist :options="commonList" title="切换学生" v-model="radioValue" :max="1" @on-change="change" id="change1"></checklist>
+            </li>
+            <li></li>
+          </ul>
+        </alert>
+      </div>
+    </div>
+    <div class="hello_dynamic">
+      <div @click="changes('pDynamic')">学习动态</div>
+      <div @click="changes()">绑定更多学生</div>
+    </div>
+    <div class="homework" v-for="(item,index) in data" :key="index" @click="open('tAppraisal')">
+      <div v-if="item.title" :class="item.title !== '' ? 'active' : ''">{{item.title}}</div>
+      <div>
+        <div>{{item.mouth}}</div>
+        <div class="element">
+          <ul>
+            <li>{{item.concent}}</li>
+            <li>
+              <span>{{item.total}}</span>
+              <span>{{item.day}}<span>{{item.time}}</span>{{item.hand}}</span>
+              <span>{{item.overhand}}</span>
+            </li>
+          </ul>
+          <ul>
+            <li>
+              <span>{{item.promulgator}}</span>
+              <span>{{item.teacher}}</span>
+            </li>
+            <li>
+              <span>{{item.retime}}</span>
+              <span>{{item.times}}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <p  v-if="item.name" class="btn">
+      	<button @click="open(item.id)">{{item.name}}</button>
+      	<x-icon type="ios-arrow-forward" size="0.25rem"></x-icon>
+      </p>
+    </div>
+
+  </div>
+</template>
+<script>
+export default{
+  data () {
+    return {
+      articles: [],
+      show: '',
+      radioValue: ['李明'],
+      commonList: [ '李明', '李东国样', '陈绍基' ],
+      show1: false,
+      data: [
+        {
+          title: 'TA的作业',
+          mouth: '12月',
+          concent: '第五单元简单的几何测量考验',
+          total: '共5小题',
+          day: '12日',
+          time: '15:00',
+          hand: '之前上交',
+          overhand: '5人已上交',
+          promulgator: '发布者',
+          teacher: '王老师',
+          retime: '发布时间',
+          times: '11月13:30'
+        },
+        {
+          mouth: '12月',
+          concent: '第五单元简单的几何测量考验',
+          total: '共5小题',
+          day: '12日',
+          time: '15:00',
+          hand: '之前上交',
+          overhand: '5人已上交',
+          promulgator: '发布者',
+          teacher: '王老师',
+          retime: '发布时间',
+          times: '11月13:30'
+        },
+        {
+          name: '查看更多',
+          mouth: '12月',
+          concent: '第五单元简单的几何测量考验',
+          total: '共5小题',
+          day: '12日',
+          time: '15:00',
+          hand: '之前上交',
+          overhand: '5人已上交',
+          promulgator: '发布者',
+          teacher: '王老师',
+          retime: '发布时间',
+          times: '11月13:30',
+          id: 1
+        },
+        {
+          title: 'TA的测评',
+          mouth: '12月',
+          concent: '第五单元简单的几何测量考验',
+          total: '共5小题',
+          day: '12日',
+          time: '15:00',
+          hand: '之前上交',
+          overhand: '5人已上交',
+          promulgator: '发布者',
+          teacher: '王老师',
+          retime: '发布时间',
+          times: '11月13:30'
+        },
+        {
+          mouth: '12月',
+          concent: '第五单元简单的几何测量考验',
+          total: '共5小题',
+          day: '12日',
+          time: '15:00',
+          hand: '之前上交',
+          overhand: '5人已上交',
+          promulgator: '发布者',
+          teacher: '王老师',
+          retime: '发布时间',
+          times: '11月13:30'
+        },
+        {
+          name: '查看更多',
+          mouth: '12月',
+          concent: '第五单元简单的几何测量考验',
+          total: '共5小题',
+          day: '12日',
+          time: '15:00',
+          hand: '之前上交',
+          overhand: '5人已上交',
+          promulgator: '发布者',
+          teacher: '王老师',
+          retime: '发布时间',
+          times: '11月13:30',
+          id: 2
+        },
+        {
+          title: 'TA的题库',
+          mouth: '12月',
+          concent: '第五单元简单的几何测量考验',
+          total: '共5小题',
+          day: '12日',
+          time: '15:00',
+          hand: '之前上交',
+          overhand: '5人已上交',
+          promulgator: '发布者',
+          teacher: '王老师',
+          retime: '发布时间',
+          times: '11月13:30'
+        },
+        {
+          mouth: '12月',
+          concent: '第五单元简单的几何测量考验',
+          total: '共5小题',
+          day: '12日',
+          time: '15:00',
+          hand: '之前上交',
+          overhand: '5人已上交',
+          promulgator: '发布者',
+          teacher: '王老师',
+          retime: '发布时间',
+          times: '11月13:30'
+        },
+        {
+          name: '查看更多',
+          mouth: '12月',
+          concent: '第五单元简单的几何测量考验',
+          total: '共5小题',
+          day: '12日',
+          time: '15:00',
+          hand: '之前上交',
+          overhand: '5人已上交',
+          promulgator: '发布者',
+          teacher: '王老师',
+          retime: '发布时间',
+          times: '11月13:30',
+          id: 3
+        }
+      ]
+    }
+  },
+  methods: {
+    skip () {
+      this.$router.push({name: 'login'})
+    },
+    onHide () {
+      console.log('on hide')
+    },
+    onShow () {
+      console.log('on show')
+    },
+    change (val, label) {
+      console.log('change', val, label)
+    },
+    openShow () {
+      this.show1 = true
+    },
+    changes (type) {
+      this.$router.push({name: type})
+    },
+    add (data) {
+      this.show = data
+    },
+    open (type) {
+      if (type === 1) {
+        this.$router.push({name: 'pHerwork'})
+        console.log(type)
+      } else if (type === 2) {
+        this.$router.push({name: 'pHerappraisal'})
+      } else if (type === 3) {
+        this.$router.push({name: 'pHerquestion'})
+      } else {
+        this.$router.push({name: type})
+      }
+    }
+  },
+  created () {
+  },
+  components: {}
+}
+</script>
+<style lang="scss">
+   @import '../../../pcss/patriarch/home';
+  @import "../../../pcss/header";
+</style>

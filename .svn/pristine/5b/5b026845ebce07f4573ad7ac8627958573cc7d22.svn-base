@@ -1,0 +1,57 @@
+.theClassOf_content{
+  .header{
+    box-sizing: border-box;
+    padding: 0.17rem 0.15rem;
+    font-size: 0.12rem;
+    color: #282828;
+    font-weight: bold;
+  }
+  .theClassOf_title{
+    color:rgba(27,27,27,1);
+    font-size: 0.12rem;
+    float: left;
+    //overflow: hidden;
+    white-space: nowrap;
+    //text-overflow: ellipsis;
+    span{
+      color: #626262;
+      font-size: 0.12rem;
+    }
+  }
+  .theClassOf_btn{
+    width: 0.5rem;
+    height: 0.25rem;
+    font-size: 0.11rem;
+    border-radius: 0.05rem;
+    border: 0;
+    color:rgba(27,27,27,0.9);
+  }
+  .thisWeek{
+    >div:nth-of-type(1){
+      box-sizing: border-box;
+      padding: 0.08rem 0.15rem 0.03rem 0.15rem;
+      background: #DEEAE1;
+      font-size: 0.12rem;
+      color:rgba(27,27,27,0.8);
+    }
+    >ul{
+      border-bottom: 1px solid #ECF3EE;
+      box-sizing: border-box;
+      padding: 0.15rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      >li:nth-of-type(1){
+        >div:nth-of-type(1){
+          color:rgba(27,27,27,0.87);
+          font-size: 0.17rem;
+          margin-bottom: 0.1rem;
+        }
+        >div:not(:nth-of-type(1)){
+          color:rgba(98,98,98,1);
+          font-size: 0.12rem;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,79 @@
+* {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.buy {
+  .content {
+    display: flex;
+    align-items: center;
+    border-bottom: 0.02rem solid #E9E9E9;
+    box-sizing: border-box;
+    padding-right: 0.15rem;
+    padding-left: 0.1rem;
+    > :first-child {
+      border: 1px solid #E9E9E9;
+      border-radius: 0.05rem;
+      width: 0.9rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0.05rem 0.2rem;
+      margin: 0.2rem 0.15rem;
+      > img {
+        //width: 0.675rem;
+        height: 0.9rem;
+      }
+    }
+  }
+  .homePage_book {
+    height: 1.4rem;
+    .p {
+      line-height: 0.28rem;
+      font-size: 0.1rem;
+      color: #FF0000;
+      font-weight: bold;
+    }
+    > div {
+      font-size: 0.12rem;
+      color: #1B1B1B;
+      margin-top: 0.1rem;
+    }
+    .itemTitle {
+      line-height: 0.3rem;
+      font-size: 0.14rem;
+    }
+    > div:not(:first-child) {
+      margin-top: 0rem;
+
+      margin-right: 0.2rem;
+      span {
+        font-size: 0.12rem;
+      }
+      > span:nth-of-type(1) {
+        color: #626262;
+        margin-right: 0.05rem;
+      }
+      > span:nth-of-type(2) {
+        color: #EF7E5D;
+      }
+    }
+    p {
+      font-size: 0.14rem;
+      color: #909090;
+    }
+  }
+  .weui-btn {
+    margin: 0 0.15rem;
+    width: 3.45rem;
+    background: #FD7416;
+    color: #FFFFFF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.02rem;
+    border: 0;
+    height: 0.4rem
+  }
+}

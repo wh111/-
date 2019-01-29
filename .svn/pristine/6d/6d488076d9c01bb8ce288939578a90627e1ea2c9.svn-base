@@ -1,0 +1,90 @@
+.topicAlert-root {
+     background: #fff;
+    .tab_click {
+        display: flex;
+        justify-content: center;
+        > div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+            padding: 0.13rem 0.15rem;
+            width: 0.65rem;
+            height: 0.25rem;
+            font-size: 0.13rem;
+            border-radius: 0.05rem;
+            margin: 0.1rem 0.1rem 0.1rem 0;
+        }
+        > div:nth-of-type(1) {
+            color: #91B1DD;
+            border: 0.02rem solid #91B1DD;
+        }
+        > div:nth-of-type(2) {
+            color: #37C0BD;
+            border: 0.02rem solid #37C0BD;
+        }
+        > div:nth-of-type(3) {
+            color: #F5AE79;
+            border: 0.02rem solid #F5AE79;
+        }
+        > :last-child {
+            margin-right: 0;
+        }
+    }
+    .txt {
+        width: 1rem;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+}
+
+.persistent {
+    .weui-dialog__bd {
+        padding: 0.25rem;
+        box-sizing: border-box;
+        overflow: auto;
+        .weui-grid {
+            width: 0.3rem;
+            height: 0.3rem;
+        }
+        .weui-grid:hover {
+            border: 1px solid #0BB20C;
+        }
+        .weui-grids {
+            background-color: #fff;
+        }
+        .grid-center {
+            display: block;
+            width: 0.3rem;
+            height: 0.3rem;
+            margin-top: 0.1rem;
+            float: left;
+            border-radius: 0.03rem ;
+            color: white;
+            text-align: center;
+            line-height: 0.3rem;
+            margin-right: 0.15rem;
+        }
+        .recentPractice_last_title {
+            width: 100%;
+            text-align: left;
+            margin-bottom: 0.1rem;
+        }
+        .recentPractice_last_grid {
+            margin-bottom: 0.1rem;
+            .defaultColor {
+                background: rgba(0, 204, 153, 1);
+            }
+            .green {
+                background: #1cc03b;
+            }
+            .red {
+                background: red;
+            }
+            .select{
+                border: 1px solid #2aabd2;
+            }
+        }
+    }
+}

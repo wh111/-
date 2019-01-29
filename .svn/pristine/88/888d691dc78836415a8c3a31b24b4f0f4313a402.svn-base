@@ -1,0 +1,54 @@
+.appraisal{
+  .box1{
+    text-align: center;
+    color: #1B1B1B;
+    margin-top: 0.1rem;
+    div{
+      text-align: center;
+      height: 0.25rem;
+      width: 0.75rem;float: left;
+      font-size: 0.15rem;
+      line-height: 0.25rem;
+    }
+    div:not(:nth-of-type(1)){
+      font-size: 0.13rem;
+      line-height: 0.23rem;
+      border: 0.01rem solid #fff;
+      height: 0.25rem;
+    }
+    .active{
+      color: #11A640;
+      border: 0.01rem solid #11A640 !important;
+      border-radius: 0.2rem;
+    }
+  }
+  .appraisal_navigation{
+    padding: 0.13rem 0.15rem 0.13rem 0.2rem;
+    border-bottom: 0.03rem solid #DEE9E1;
+    width: 100%;
+    background: #FFFFFF;
+
+    li{
+      font-weight: 600;
+      list-style: none;
+      width: 0.55rem;
+      height: 0.25rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #4B4B4B;
+      box-sizing: border-box;
+      padding: 0.08rem 0;
+      border: 0.02rem solid transparent;
+    }
+    li:not(:nth-of-type(1)){
+      font-size: 0.13rem;
+    }
+    .active{
+      color: #83D19C;
+      border: 0.01rem solid #11A640;
+      border-radius: 0.2rem;
+    }
+  }
+
+}

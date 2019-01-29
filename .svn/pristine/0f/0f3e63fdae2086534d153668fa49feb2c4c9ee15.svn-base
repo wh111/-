@@ -1,0 +1,69 @@
+<!----------------------------------
+****--@name     ${*}
+****--@role     ${*}
+****--@date     2018/4/24
+****--@author   zzh
+----------------------------------->
+<template>
+  <div class="projectLibrary">
+    <header-title>
+      <slot>专题库</slot>
+    </header-title>
+    <div class="stance"></div>
+    <div class="content" v-for="(item,index) in data" :key="index">
+      <div>
+        <img src="../../../../static/img/1_07.jpg"/>
+      </div>
+      <div class="homePage_book">
+        <div>{{item.title}}</div>
+        <div><span>{{item.price}}</span><span>{{item.number}}</span></div>
+        <div><span>{{item.paper}}</span><span>{{item.numbers}}</span></div>
+        <p>{{item.content}}</p>
+        <button class="btns">{{item.type}}</button>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+/* 当前组件必要引入 */
+import HeaderTitle from '../header'
+// 当前组件引入全局的util
+let Util = null
+export default {
+  data () {
+    return {
+      data: [
+        {url: '../../../static/img/1_07.jpg', title: '三年高考五年模拟练习', price: '价格', number: '￥99.00', paper: '试卷', numbers: '50套', content: '整个青年期青年的身心迅猛发展，心理问题层出不穷，如果对所出现的心理问题不加以...', type: '已完成'},
+        {url: '../../../static/img/1_07.jpg', title: '三年高考五年模拟练习', price: '价格', number: '￥99.00', paper: '试卷', numbers: '50套', content: '整个青年期青年的身心迅猛发展，心理问题层出不穷，如果对所出现的心理问题不加以...', type: '去支付'},
+        {url: '../../../static/img/1_07.jpg', title: '三年高考五年模拟练习', price: '价格', number: '￥99.00', paper: '试卷', numbers: '50套', content: '整个青年期青年的身心迅猛发展，心理问题层出不穷，如果对所出现的心理问题不加以...', type: '已取消'}
+      ],
+      contents: [
+        {title: '订单金额', price: '￥199.00'},
+        {title: '订单金额', price: '￥199.00'},
+        {title: '订单金额', price: '￥199.00'},
+        {title: '订单金额', price: '￥199.00'},
+        {title: '订单金额', price: '￥199.00'},
+        {title: '订单金额', price: '￥199.00'}
+      ]
+    }
+  },
+  methods: {
+    // 初始化请求列表数据
+    init () {
+
+    },
+    open () {
+      this.$router.push({name: 'allBook_content'})
+    }
+  },
+  created () {
+    this.init()
+  },
+  mounted () {
+  },
+  components: {HeaderTitle}
+}
+</script>
+<style lang="scss">
+  @import '../../../css/child/projectLibrary';
+</style>

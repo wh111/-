@@ -1,0 +1,19 @@
+// axios 基础属性配置
+import config from '../../config/config'
+
+const api = {
+  login: {// 登录
+    path: '/login',
+    method: 'post'
+  },
+  loginOut: {// 退出登录
+    path: '/logout',
+    method: 'delete'
+  },
+  register: {// 注册
+    path: '/register',
+    method: 'post'
+  },
+  ajaxBaseURL: config.ajaxBaseURL
+}
+export default api

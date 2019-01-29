@@ -1,0 +1,50 @@
+.tClass{
+  .myTeam_header{
+    box-sizing: border-box;
+    padding: 0.15rem;
+    font-weight: bold;
+    border-bottom: 0.01rem solid #DEEAE1;
+    .vux-flexbox-item:nth-of-type(1){
+      >div{
+        font-size: 0.18rem;
+        color: #000;
+      }
+      >div:nth-of-type(1){
+      }
+      >div{
+        >span{
+          font-size: 0.12rem;
+        }
+        >span:nth-of-type(1),>span:nth-of-type(3){
+          color: #626262;
+          margin-right: 0.1rem;
+        }
+        >span:nth-of-type(2),>span:nth-of-type(4){
+          color: #EC6941;
+          margin-right: 0.1rem;
+        }
+      }
+    }
+    .right_box{
+      >div:nth-of-type(1){
+        width: 0.17rem;
+        height: 0.17rem;
+        border-radius: 50%;
+        background: #FB4440;
+        color: #FFFFFF;
+        text-align: center;
+        line-height: 0.17rem;
+        font-size: 0.1rem;
+      }
+    }
+  }
+  .vux-x-icon {
+    fill: #DBDBDB;
+  }
+  .tClassAdd{
+    color: #000;
+    box-sizing: border-box;
+    padding: 0.19rem 0.15rem;
+
+  }
+}

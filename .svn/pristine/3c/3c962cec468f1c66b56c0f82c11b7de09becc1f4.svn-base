@@ -1,0 +1,77 @@
+<!----------------------------------
+****--@name     tBook
+****--@role     ${*}
+****--@date     2018/5/7
+****--@author   zzh
+----------------------------------->
+<template>
+    <div class="tBook">
+        <ul class="tBookHeader" v-for="(item,index) in data" :key="index">
+            <li class="tElement">
+                <div>{{item.title}}</div>
+                <p>布置时间{{item.startTime|formatDate('yyyy-MM-dd HH:mm')}} | 上交时间{{item.submitTime|formatDate('yyyy-MM-dd HH:mm')}}</p>
+            </li>
+            <li class="tCorrect">
+                <ul  @click="open('tAlready','homework',item.id,item.title)">
+                    <li class="tCorrectNumber">{{item.markedNums}}</li>
+                    <li class="tCorrectWord">已批改</li>
+                </ul>
+                <ul  @click="open('tNone',item.unmarkedNums,item.id,item.title)">
+                    <li class="tCorrectNumber">{{item.unmarkedNums}}</li>
+                    <li class="tCorrectWord">未批改</li>
+                </ul>
+                <ul  @click="open('tAccomplish',item.unfinishedNums,item.id,item.title)">
+                    <li class="tCorrectNumber">{{item.unfinishedNums}}</li>
+                    <li class="tCorrectWord">未完成</li>
+                </ul>
+            </li>
+        </ul>
+        <div class="tBookAdd" @click="open('tHomework','homework')">+</div>
+    </div>
+</template>
+<script>
+  /* 当前组件必要引入 */
+  import api from './api'
+  // 当前组件引入全局的util
+  // let Util = null
+  export default {
+    data () {
+      return {
+        num:1,
+        data:[],
+      }
+    },
+    methods: {
+      // 初始化请求列表数据
+      init () {
+        this.setTableData()
+      },
+      setTableData () {
+        this.ajax({
+          ajaxSuccess: (data,res)=>{this.data=data.dataList;console.log(data)},
+          url: api.historyWorkList.path,
+          method: api.historyWorkList.method,
+          params: {
+            curPage:this.num,
+            pageSize:10,
+            name:"",
+            groupsId:this.$route.query.groupsId
+          },
+        })
+      },
+      open (type,selectType,id,title) {
+        this.$router.push({name: type,query:{type:selectType,id:id,title:title,groupsId:this.$route.query.groupsId}})
+      },
+
+    },
+    created () {
+      this.init()
+    },
+    mounted () {
+    },
+    components: {}
+  }
+</script>
+<style lang="scss">
+    @import "../../../tcss/tBook";
+</style>

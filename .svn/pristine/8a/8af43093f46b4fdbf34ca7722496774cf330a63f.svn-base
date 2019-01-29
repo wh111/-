@@ -1,0 +1,67 @@
+<!----------------------------------
+****--@name     theClassOf_member
+****--@role     ${*}
+****--@date     2018/5/3
+****--@author   zzh
+----------------------------------->
+<template>
+    <div class="theClassOf_member">
+      <header-title>
+        <slot>群成员</slot>
+      </header-title>
+      <div class="stance"></div>
+      <div class="mHeader">
+        <div v-for="index in 5" :key="index">
+          <img src="../../../../static/img/img777.png" alt="">
+          <span>马冬梅</span>
+        </div>
+      </div>
+    </div>
+</template>
+<script>
+/* 当前组件必要引入 */
+import HeaderTitle from '../header'
+// 当前组件引入全局的util
+let Util = null
+export default {
+  data () {
+    return {}
+  },
+  methods: {
+    // 初始化请求列表数据
+    init () {
+
+    }
+
+  },
+  created () {
+    this.init()
+  },
+  mounted () {
+  },
+  components: {HeaderTitle}
+}
+</script>
+<style lang="scss">
+    .theClassOf_member{
+      .mHeader{
+        box-sizing: border-box;
+        padding: 0 0.16rem 0.18rem 0.15rem;
+        >div{
+          border-bottom: 0.01rem solid #F8FBF9;
+          display: flex;
+          align-items: center;
+          box-sizing: border-box;
+          padding: 0.18rem 0;
+          >img{
+            margin-right: 0.15rem;
+          }
+          >span{
+            font-size: 0.15rem;
+            color:rgba(27,27,27,0.7);
+            font-weight: bold;
+          }
+        }
+      }
+    }
+</style>

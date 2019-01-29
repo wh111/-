@@ -1,0 +1,103 @@
+.message{
+  text-align: center;
+  font-size: 0.14rem;
+  width: 100%;
+}
+.questionsTypeNameSpan {
+  font-size: 0.11rem !important;
+  color: #EC6941 !important;
+}
+.greenButton{
+  background: #1cc03b !important;
+  color: #fff !important;
+}
+.question_header_num {
+  font-weight: normal;
+  font-size: 0.15rem;
+  color: #1b1b1b;
+  margin-top: 0.1rem;
+}
+.correctButton{
+  font-size: 0.11rem !important;
+  padding: 0 0.12rem !important;
+  height: 0.22rem !important;
+  line-height: 0.22rem !important;
+}
+.question_header_have {
+  float: right;
+  font-size: 0.11rem;
+  color: #707070;
+}
+
+.question_header_queNum {
+  color: #fd7416;
+  font-size: 0.11rem;
+  padding: 0 0.02rem;
+}
+.yellowButton{
+  background: rgb(253, 116, 22) !important;
+  color: #fff !important;
+}
+.hello_header{
+  //width: 100%;
+  //position: fixed;
+  //top: 0;
+  //display: flex;
+  //justify-content: space-between;
+  //align-items: center !important;
+  //background: #373A3C;
+  //font-weight: bold;
+  //box-sizing: border-box;
+  //padding: 0.1rem 0.15rem 0.1rem 0.05rem;
+  //z-index: 999;
+  height: 0;
+  overflow: hidden;
+  li{
+    list-style: none;
+    color:#CBCBCB
+  }
+  li:nth-of-type(1){
+    display: flex;
+    align-items: normal;
+    margin-right: 0.01rem;
+    font-weight: normal;
+    font-size: 0.16rem;
+    color: #fff;
+    >div{
+      box-sizing: border-box;
+      margin-top: 0.035rem;
+    }
+    >div:nth-of-type(1){
+      margin-right: 0.05rem;
+    }
+    >div:nth-of-type(2){
+      margin-right: 0.05rem;
+    }
+    .vux-x-icon {
+      fill: #FAFAFA;
+    }
+  }
+  li:nth-of-type(2){
+    box-sizing: border-box;
+    margin-top: -0.01rem;
+    margin-left: -0.4rem;
+    color: #fff;
+    font-size: 0.19rem;
+    font-weight: normal;
+  }
+  li:nth-of-type(3){
+    display: flex;
+    align-items: center;
+    text-align: right;
+    div{
+      margin-right: 0.03rem;
+      width: 0.06rem;
+      height: 0.06rem;
+      background: #FAFAFA;
+      border-radius: 50%;
+    }
+  }
+}
+.stance{
+  height: 0rem;
+}
